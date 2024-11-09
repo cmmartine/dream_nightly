@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  devise_for :users
+  get 'users/status'
 
   root 'main#index'
   get '/*path' => 'main#index'

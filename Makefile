@@ -7,7 +7,7 @@ up:
 	docker compose up -d
 
 down:
-	docker compose down
+	docker compose down --remove-orphans
 
 rspec: #run all rspec tests
 	docker compose exec rails rspec
@@ -35,3 +35,9 @@ db-reset: #reset and reseed the database
 
 db-migrate: 
 	docker compose exec rails bin/rails db:migrate
+
+run-cmd: # example: make run-cmd rails g controller SomeController
+	docker compose exec rails $(RUN_ARGS)
+
+routes:
+	docker compose exec rails rails routes
