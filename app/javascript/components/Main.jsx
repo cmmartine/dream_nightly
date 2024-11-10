@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { getUserStatus } from "../api/usersApi";
+import Dropdown from "./Dropdown";
 
 export default function Main() {
   const [userStatus, setUserStatus] = useState(false);
@@ -21,7 +22,10 @@ export default function Main() {
     );
   } else if (userStatus == true) {
     return(
-      <div>User is logged in</div>
+      <div>
+        <Dropdown/>
+        User is logged in
+      </div>
     );
   }
 };
