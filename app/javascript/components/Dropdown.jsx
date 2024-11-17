@@ -7,7 +7,7 @@ export default function Dropdown() {
 
   if(!openDropdown) {
     return(
-      <nav role="navigation" className="dropdown dropdown-closed">
+      <nav className="dropdown dropdown-closed">
         <div className="dropdown-btn-container">
           <button className="dropdown-btn" onClick={(e) => {
             e.preventDefault();
@@ -22,7 +22,7 @@ export default function Dropdown() {
     );
   } else {
     return(
-      <nav role="navigation" className="dropdown">
+      <nav className="dropdown">
         <div className="dropdown-btn-container">
           <button className="dropdown-btn" onClick={(e) => {
             e.preventDefault();
