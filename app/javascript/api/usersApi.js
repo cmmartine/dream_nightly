@@ -21,3 +21,11 @@ export const logout = () => {
     location.reload();
   });
 };
+
+export const redirectToSignIn = () => {
+  location.href = "users/sign_in"
+};
+
+export const redirectToSignUp = () => {
+  location.href = "users/sign_up"
+};

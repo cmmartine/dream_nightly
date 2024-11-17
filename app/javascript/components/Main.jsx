@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { getUserStatus } from "../api/usersApi";
+import InfoPage from "./InfoPage";
 import Dropdown from "./Dropdown";
 
 export default function Main() {
@@ -18,13 +19,12 @@ export default function Main() {
 
   if(userStatus == false) {
     return(
-      <div>User not logged in</div>
+      <InfoPage/>
     );
   } else if (userStatus == true) {
     return(
       <div>
         <Dropdown/>
-        User is logged in
       </div>
     );
   }
