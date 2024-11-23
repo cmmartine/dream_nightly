@@ -14,9 +14,9 @@ dream_description4 = "Driving down a long stretch of highway and decided to stop
 dream_description5 = "I was playing Mount and Blade Warband multiplayer. I was climbing up a ladder with my axe and shield in hand, ready to start swinging at the top."
 dream_description6 = "I was flying over this long winding river with a flock of other people who could all apparently fly as well. I landed in the river on the other side of some trees and turned into a crab and started scuttling along the river bank."
 
-dream1 = Dream.create!(body: dream_description1, date: DateTime.now - 1, user_id: user1.id)
-dream2 = Dream.create!(body: dream_description2, date: DateTime.now - 1, user_id: user1.id)
-dream3 = Dream.create!(body: dream_description3, date: DateTime.now, user_id: user1.id)
-dream4 = Dream.create!(body: dream_description4, date: DateTime.now, user_id: user1.id)
-dream5 = Dream.create!(body: dream_description5, date: DateTime.now + 1, user_id: user1.id)
-dream6 = Dream.create!(body: dream_description6, date: DateTime.now + 1, user_id: user1.id)
+dream1 = Dream.create!(body: dream_description1, date: Time.now - 1, user_id: user1.id)
+dream2 = Dream.create!(body: dream_description2, date: Time.now - 1, user_id: user1.id)
+dream3 = Dream.create!(body: dream_description3, date: Time.now, user_id: user1.id)
+dream4 = Dream.create!(body: dream_description4, date: Time.now, user_id: user1.id)
+dream5 = Dream.create!(body: dream_description5, date: Time.now + 1, user_id: user1.id)
+dream6 = Dream.create!(body: dream_description6, date: Time.now + 1, user_id: user1.id)
