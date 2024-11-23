@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   devise_for :users
   get 'users/status'
+  post 'dreams/create'
+  post 'dreams/update'
+  get 'dreams/destroy'
+  get 'dreams/from_date'
 
   root 'main#index'
   get '/*path' => 'main#index'

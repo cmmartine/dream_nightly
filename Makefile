@@ -39,5 +39,8 @@ db-migrate:
 run-cmd: # example: make run-cmd rails g controller SomeController
 	docker compose exec rails $(RUN_ARGS)
 
+bundle-install:
+	docker compose exec rails bundle install
+
 routes:
 	docker compose exec rails rails routes
