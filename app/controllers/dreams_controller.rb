@@ -7,7 +7,7 @@ class DreamsController < ApplicationController
   }.freeze
 
   def create
-    dream = Dream.new(body: dream_params[:body], date: Time.now, user_id: current_user.id)
+    dream = Dream.new(body: dream_params[:body], user_id: current_user.id)
     if !dream.valid?
       flash[:alert] = dream.body.empty? ? INVALID_DREAM[:empty_body] : INVALID_DREAM[:general]
     else

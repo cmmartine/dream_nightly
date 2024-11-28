@@ -26,10 +26,6 @@ RSpec.describe DreamsController, type: :controller do
         it 'sets the dreams body correctly' do
           expect(dream.body).to eq('Test dream')
         end
-
-        it 'set the dreams date' do
-          expect(dream.date).to be_within(1.second).of(Time.now)
-        end
       end
 
       describe 'and the dream is not valid' do
@@ -86,7 +82,7 @@ RSpec.describe DreamsController, type: :controller do
       login_user
 
       it 'updates the dreams body' do
-        Dream.create!(body: 'New dream', date: Time.now, user_id: user.id)
+        Dream.create!(body: 'New dream', user_id: user.id)
         expect(users_dream.body).to eq('New dream')
         post :update, params: updated_dream_params, as: :json
         users_dream.reload
@@ -95,7 +91,7 @@ RSpec.describe DreamsController, type: :controller do
 
       describe 'and the dream is not valid' do
         it 'returns a flash alert' do
-          Dream.create!(body: 'New dream', date: Time.now, user_id: user.id)
+          Dream.create!(body: 'New dream', user_id: user.id)
           post :update, params: invalid_updated_dream_params, as: :json
           expect(flash[:alert]).not_to be(nil)
         end

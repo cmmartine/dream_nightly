@@ -17,7 +17,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_23_193818) do
   create_table "dreams", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.text "body"
-    t.datetime "date"
     t.text "ai_interpretation"
     t.boolean "lucid"
     t.datetime "created_at", null: false
