@@ -111,5 +111,58 @@ RSpec.describe DreamsController, type: :controller do
       end
     end
   end
+
+  describe 'POST /destroy' do
+    let(:dream_params) do
+      {
+        dream: {
+          dream_id: users_dream.id
+        }
+      }
+    end
+    let(:user) { User.first }
+    let(:users_dream) { user.dreams.first }
+
+    context 'When the user is logged in' do
+      login_user
+
+      context 'and the dream is destroyed successfully' do
+        it 'destroys the existing dream' do
+          Dream.create!(body: 'New dream', user_id: user.id)
+          post :destroy, params: dream_params, as: :json
+          expect(Dream.all.length).to eq(0)
+          expect(Dream.exists?(users_dream.id)).to eq(false)
+        end
+
+        it 'returns a flash notice that the dream was destroyed' do
+          Dream.create!(body: 'New dream', user_id: user.id)
+          post :destroy, params: dream_params, as: :json
+          expect(flash[:notice]).to eq(DreamsController::DREAM_DESTROYED[:success])
+        end
+      end
+
+      context 'and the dream is NOT destroyed successfully' do
+        it 'returns a flash notice to try deleting the dream again' do
+          Dream.create!(body: 'New dream', user_id: user.id)
+          allow_any_instance_of(Dream).to receive(:destroyed?) { false }
+          post :destroy, params: dream_params, as: :json
+          expect(flash[:notice]).to eq(DreamsController::DREAM_DESTROYED[:failed])
+        end
+      end
+    end
+
+    context 'When the user is not logged in' do
+      let(:user) { create_user_with_dreams }
+      let(:users_dream) { user.dreams.first }
+
+      it 'does not destroy the dream' do
+        users_initial_dream_count = user.dreams.count
+        post :destroy, params: dream_params, as: :json
+        expect(user.dreams.count).to eq(users_initial_dream_count)
+        expect(Dream.exists?(users_dream.id)).to eq(true)
+        expect(response.body).to include('You need to sign in or sign up before continuing')
+      end
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength

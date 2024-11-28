@@ -6,6 +6,11 @@ class DreamsController < ApplicationController
     general: 'Dream not saved, please try again'
   }.freeze
 
+  DREAM_DESTROYED = {
+    success: 'Dream was successfully deleted',
+    failed: 'Dream could not be deleted, please try again'
+  }.freeze
+
   def create
     dream = Dream.new(body: dream_params[:body], user_id: current_user.id)
     if !dream.valid?
@@ -26,6 +31,9 @@ class DreamsController < ApplicationController
   end
 
   def destroy
+    dream = Dream.find(dream_params[:dream_id])
+    dream.destroy
+    flash[:notice] = dream.destroyed? ? DREAM_DESTROYED[:success] : DREAM_DESTROYED[:failed]
   end
 
   def from_date
