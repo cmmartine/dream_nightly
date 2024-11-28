@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   get 'users/status'
   post 'dreams/create'
   post 'dreams/update'
-  get 'dreams/destroy'
+  post 'dreams/destroy'
   get 'dreams/from_date'
 
   root 'main#index'

@@ -16,6 +16,13 @@ class DreamsController < ApplicationController
   end
 
   def update
+    dream = Dream.find(dream_params[:dream_id])
+    dream.update(body: dream_params[:body])
+    if !dream.valid?
+      flash[:alert] = dream.body.empty? ? INVALID_DREAM[:empty_body] : INVALID_DREAM[:general]
+    else
+      dream.save!
+    end
   end
 
   def destroy
@@ -27,6 +34,6 @@ class DreamsController < ApplicationController
   private
 
   def dream_params
-    params.require(:dream).permit(:body)
+    params.require(:dream).permit(:body, :dream_id)
   end
 end

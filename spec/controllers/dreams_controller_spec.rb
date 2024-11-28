@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe DreamsController, type: :controller do
   describe 'POST /create' do
     dream_params = {
@@ -47,8 +50,6 @@ RSpec.describe DreamsController, type: :controller do
     end
 
     context 'When the user is NOT logged in' do
-      let(:dream) { Dream.first }
-
       before do
         post :create, params: dream_params, as: :json
       end
@@ -58,4 +59,61 @@ RSpec.describe DreamsController, type: :controller do
       end
     end
   end
+
+  describe 'POST /update' do
+    let(:updated_dream_params) do
+      {
+        dream: {
+          body: 'Dream is updated',
+          dream_id: users_dream.id
+        }
+      }
+    end
+
+    let(:invalid_updated_dream_params) do
+      {
+        dream: {
+          body: '',
+          dream_id: users_dream.id
+        }
+      }
+    end
+
+    let(:user) { User.first }
+    let(:users_dream) { user.dreams.first }
+
+    context 'When the user is logged in' do
+      login_user
+
+      it 'updates the dreams body' do
+        Dream.create!(body: 'New dream', date: Time.now, user_id: user.id)
+        expect(users_dream.body).to eq('New dream')
+        post :update, params: updated_dream_params, as: :json
+        users_dream.reload
+        expect(users_dream.body).to eq('Dream is updated')
+      end
+
+      describe 'and the dream is not valid' do
+        it 'returns a flash alert' do
+          Dream.create!(body: 'New dream', date: Time.now, user_id: user.id)
+          post :update, params: invalid_updated_dream_params, as: :json
+          expect(flash[:alert]).not_to be(nil)
+        end
+      end
+    end
+
+    context 'When the user is not logged in' do
+      let(:user) { create_user_with_dreams }
+      let(:users_dream) { user.dreams.first }
+
+      it 'does not update the dreams body' do
+        expect(users_dream.body).to eq('Text for dream factory')
+        post :update, params: updated_dream_params, as: :json
+        users_dream.reload
+        expect(users_dream.body).not_to eq('Dream is updated')
+        expect(response.body).to include('You need to sign in or sign up before continuing')
+      end
+    end
+  end
 end
+# rubocop:enable Metrics/BlockLength
