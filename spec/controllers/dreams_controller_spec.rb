@@ -164,5 +164,47 @@ RSpec.describe DreamsController, type: :controller do
       end
     end
   end
+
+  describe 'POST /from_date' do
+    let(:dream_params) do
+      {
+        dream: {
+          time_in_ms: users_dream.created_at.to_i
+        }
+      }
+    end
+    let(:filtered_dream_array) do
+      [
+        {
+          body: users_dream.body,
+          ai_interpretation: users_dream.ai_interpretation,
+          lucid: users_dream.lucid,
+          created_at: users_dream.created_at.to_i
+        }
+      ]
+    end
+    let(:user) { User.first }
+    let(:users_dream) { user.dreams.first }
+
+    context 'When the user is logged in' do
+      login_user
+
+      it 'renders the filtered dream array' do
+        Dream.create(body: 'Test dream', user_id: user.id)
+        post :from_date, params: dream_params, as: :json
+        expect(response.body).to eq(filtered_dream_array.to_json)
+      end
+    end
+
+    context 'When the user is NOT logged in' do
+      let(:user) { create_user_with_dreams }
+      let(:users_dream) { user.dreams.first }
+
+      it 'does not render the filtered dream array' do
+        post :from_date, params: dream_params, as: :json
+        expect(response.body).to include('error')
+      end
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength

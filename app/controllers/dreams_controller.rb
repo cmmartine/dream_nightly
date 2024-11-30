@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DreamsController < ApplicationController
   before_action :authenticate_user!
 
@@ -37,11 +39,14 @@ class DreamsController < ApplicationController
   end
 
   def from_date
+    date_time = Time.at(dream_params[:time_in_ms])
+    filtered_dreams = current_user.dreams.filtered_from_date(date_time)
+    render json: filtered_dreams
   end
 
   private
 
   def dream_params
-    params.require(:dream).permit(:body, :dream_id)
+    params.require(:dream).permit(:body, :dream_id, :time_in_ms)
   end
 end
