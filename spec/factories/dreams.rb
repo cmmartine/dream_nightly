@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :dream do
-    user_id { nil }
+    user_id { FactoryBot.create(:user).id }
     body { 'Text for dream factory' }
     created_at { '2024-11-23 08:38:19' }
     ai_interpretation { 'MyText' }

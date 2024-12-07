@@ -47,4 +47,11 @@ RSpec.describe Dream, type: :model do
       expect(user.dreams.filtered_from_date(not_dreams_date)).to eq([])
     end
   end
+
+  describe 'created_at_in_ms' do
+    it 'converts the created_at from datetime to ms' do
+      dream = FactoryBot.create(:dream)
+      expect(dream.created_at_in_ms).to eq(1_732_351_099)
+    end
+  end
 end
