@@ -3,27 +3,31 @@ import { useState, useEffect } from "react";
 import { getUserStatus } from "../api/usersApi";
 import InfoPage from "./InfoPage";
 import Dropdown from "./Dropdown";
+import ErrorBanner from "./ErrorBanner";
 
 export default function Main() {
   const [userStatus, setUserStatus] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     checkUserLoggedInStatus();
   }, []);
 
-  function checkUserLoggedInStatus() {
-    getUserStatus().then((data) => {
-      setUserStatus(data.status);
-    })
+  async function checkUserLoggedInStatus() {
+    getUserStatus(setUserStatus, setError);
   };
 
-  if(userStatus == false) {
+if(userStatus == false) {
     return(
-      <InfoPage/>
+      <div>
+        <ErrorBanner currentError={error}/>
+        <InfoPage/>
+      </div>
     );
   } else if (userStatus == true) {
     return(
       <div>
+        <ErrorBanner currentError={error}/>
         <Dropdown/>
       </div>
     );

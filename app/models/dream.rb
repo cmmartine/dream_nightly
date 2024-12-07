@@ -14,8 +14,12 @@ class Dream < ApplicationRecord
         body: dream.body,
         ai_interpretation: dream.ai_interpretation,
         lucid: dream.lucid,
-        created_at: dream.created_at.to_i # convert to ms for frontend
+        created_at: dream.created_at_in_ms
       }
     end
+  end
+
+  def created_at_in_ms
+    created_at.to_i
   end
 end

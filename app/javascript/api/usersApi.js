@@ -1,10 +1,13 @@
 import { getCsrfToken } from "./csrfToken";
 
-export const getUserStatus = () => {
+export const getUserStatus = (setUserStatus, setError) => {
   return fetch('/users/status')
   .then((res) => res.json())
   .then((data) => {
-    return data;
+    setUserStatus(data.status);
+  })
+  .catch((error) => {
+    setError(error);
   });
 };
 
