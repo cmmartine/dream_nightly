@@ -1,0 +1,66 @@
+.devise-wrapper {
+  width: 100%;
+  min-height: 100svh;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.devise-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1920px;
+  width: 40%;
+  height: fit-content;
+  background: rgb(30, 30, 30);
+  border-top: 2px solid rgb(90, 90, 90);
+  border-left: 2px solid rgb(90, 90, 90);
+  border-right: 2px solid rgb(43, 43, 43);
+  border-bottom: 2px solid rgb(43, 43, 43);
+  border-radius: 5px;
+  margin-top: 10px;
+  padding: 10px 25px;
+}
+
+.field {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.field-input {
+  width: 200px;
+  max-width: 100%;
+}
+
+.actions {
+  margin-bottom: 5px;
+}
+
+.devise-btn {
+  background: rgb(100, 1, 213);
+  color: white;
+  border: none;
+  font-weight: bold;
+  border: 2px solid black;
+  box-shadow: 0.15em 0.15em 0.15em rgb(36, 36, 36);
+  height: 35px;
+  width: fit-content;
+  padding: 5px;
+}
+
+.devise-btn:hover {
+  background: rgb(148, 54, 255);
+}
+
+.devise-btn:active {
+  background: rgb(127, 27, 242);
+}
+
+@media (max-width: 480px) {
+
+  .devise-container {
+    width: 82%;
+  }
+}
