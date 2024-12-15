@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { getUserStatus } from "../api/usersApi";
 import InfoPage from "./InfoPage";
 import Dropdown from "./Dropdown";
+import DreamsPage from "./DreamsPage";
 import ErrorBanner from "./ErrorBanner";
 
 export default function Main() {
@@ -37,6 +38,7 @@ export default function Main() {
         <div>
           <ErrorBanner currentError={error}/>
           <Dropdown/>
+          <DreamsPage setError={setError}/>
         </div>
       );
     }

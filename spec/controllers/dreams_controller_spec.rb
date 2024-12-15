@@ -169,7 +169,7 @@ RSpec.describe DreamsController, type: :controller do
     let(:dream_params) do
       {
         dream: {
-          time_in_ms: users_dream.created_at.to_i
+          time_in_ms: users_dream.created_at.to_i * 1000
         }
       }
     end

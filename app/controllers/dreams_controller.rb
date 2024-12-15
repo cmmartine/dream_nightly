@@ -39,7 +39,7 @@ class DreamsController < ApplicationController
   end
 
   def from_date
-    date_time = Time.at(dream_params[:time_in_ms])
+    date_time = convert_from_time_in_ms(dream_params[:time_in_ms])
     filtered_dreams = current_user.dreams.filtered_from_date(date_time)
     render json: filtered_dreams
   end
@@ -48,5 +48,9 @@ class DreamsController < ApplicationController
 
   def dream_params
     params.require(:dream).permit(:body, :dream_id, :time_in_ms)
+  end
+
+  def convert_from_time_in_ms(time)
+    Time.at(time / 1000)
   end
 end
