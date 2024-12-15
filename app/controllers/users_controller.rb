@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
   def status
     if current_user
-      render json: { status: true }
+      render json: true
     else
-      render json: { status: false }
+      render json: false
     end
   end
 end

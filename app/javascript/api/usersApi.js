@@ -1,14 +1,8 @@
 import { getCsrfToken } from "./csrfToken";
+import { apiGetFetch } from "./apiUtil";
 
-export const getUserStatus = (setUserStatus, setError) => {
-  return fetch('/users/status')
-  .then((res) => res.json())
-  .then((data) => {
-    setUserStatus(data.status);
-  })
-  .catch((error) => {
-    setError(error);
-  });
+export const getUserStatus = (setError) => {
+  return apiGetFetch('/users/status', setError);
 };
 
 export const logout = () => {

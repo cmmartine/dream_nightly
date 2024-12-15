@@ -7,7 +7,7 @@ RSpec.describe UsersController, type: :controller do
       it 'returns a status of true' do
         get :status
         return_hash = JSON.parse(response.body)
-        expect(return_hash['status']).to eq(true)
+        expect(return_hash).to eq(true)
       end
     end
 
@@ -15,7 +15,7 @@ RSpec.describe UsersController, type: :controller do
       it 'returns a status of false' do
         get :status
         return_hash = JSON.parse(response.body)
-        expect(return_hash['status']).to eq(false)
+        expect(return_hash).to eq(false)
       end
     end
   end

@@ -7,6 +7,7 @@ import ErrorBanner from "./ErrorBanner";
 
 export default function Main() {
   const [userStatus, setUserStatus] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -14,22 +15,30 @@ export default function Main() {
   }, []);
 
   async function checkUserLoggedInStatus() {
-    getUserStatus(setUserStatus, setError);
+    const status = await getUserStatus(setError);
+    setUserStatus(status);
+    setLoading(false);
   };
 
-if(userStatus == false) {
+  if (loading == true) {
     return(
-      <div>
-        <ErrorBanner currentError={error}/>
-        <InfoPage/>
-      </div>
-    );
-  } else if (userStatus == true) {
-    return(
-      <div>
-        <ErrorBanner currentError={error}/>
-        <Dropdown/>
-      </div>
-    );
+      <div className="loading">loading...</div>
+    )
+  } else {
+    if(userStatus == false) {
+      return(
+        <div>
+          <ErrorBanner currentError={error}/>
+          <InfoPage/>
+        </div>
+      );
+    } else if (userStatus == true) {
+      return(
+        <div>
+          <ErrorBanner currentError={error}/>
+          <Dropdown/>
+        </div>
+      );
+    }
   }
 };
