@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { postDreamsFromDate } from "../api/dreamsApi";
+import Dream from "./Dream";
 
 export default function DreamsPage(props) {
   const { setError } = props;
@@ -33,9 +34,21 @@ export default function DreamsPage(props) {
     return dateTime.getTime();
   };
 
-  return(
-    <div>
-      <input id='calendar' type='date' data-testid='calendar'></input>
-    </div>
-  );
+  const setUpDreams = () => {
+    const dreamList = dreams.map((dream) => {
+       return <Dream key={dream.id} dreamInfo={dream} />
+    });
+    return <div className='dream-list'>{dreamList}</div>
+  };
+
+  if (dreams != []) {
+    return(
+      <div>
+        <input id='calendar' type='date' data-testid='calendar'></input>
+        {setUpDreams()}
+      </div>
+    );
+  } else {
+    <div>There doesn't seem to be any dreams this day.</div>
+  }
 }

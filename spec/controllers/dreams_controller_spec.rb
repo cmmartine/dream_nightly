@@ -176,6 +176,7 @@ RSpec.describe DreamsController, type: :controller do
     let(:filtered_dream_array) do
       [
         {
+          id: users_dream.id,
           body: users_dream.body,
           ai_interpretation: users_dream.ai_interpretation,
           lucid: users_dream.lucid,

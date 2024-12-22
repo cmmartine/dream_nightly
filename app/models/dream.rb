@@ -5,12 +5,13 @@ class Dream < ApplicationRecord
   validates :body, presence: true
 
   def self.from_date(date_time)
-    where('created_at BETWEEN ? AND ?', date_time.beginning_of_day, date_time.end_of_day)
+    where('created_at BETWEEN ? AND ?', date_time.beginning_of_day, date_time.end_of_day).order('id DESC')
   end
 
   def self.filtered_from_date(date_time)
     from_date(date_time).map do |dream|
       {
+        id: dream.id,
         body: dream.body,
         ai_interpretation: dream.ai_interpretation,
         lucid: dream.lucid,

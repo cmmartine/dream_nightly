@@ -11,13 +11,14 @@ RSpec.describe Dream, type: :model do
   end
 
   describe 'self.from_date' do
-    let(:user) { create_user_with_dreams }
-    let(:dream) { user.dreams.first }
-    let(:dreams_date) { dream.created_at }
+    let(:user) { create_user_two_same_date_dreams }
+    let(:first_dream) { user.dreams.first }
+    let(:second_dream) { user.dreams.last }
+    let(:dreams_date) { '2024-11-23 08:38:19'.to_datetime }
     let(:not_dreams_date) { '2000-01-01 00:00:00'.to_datetime }
 
-    it 'returns an array of dreams from the given date' do
-      expect(user.dreams.from_date(dreams_date)).to eq([dream])
+    it 'returns an array of dreams from the given date in ascending order' do
+      expect(user.dreams.from_date(dreams_date)).to eq([second_dream, first_dream])
     end
 
     it 'returns an EMPTY array if there are no dreams from the date' do
@@ -31,6 +32,7 @@ RSpec.describe Dream, type: :model do
     let(:dreams_date) { dream.created_at }
     let(:filtered_dream) do
       {
+        id: dream.id,
         body: dream.body,
         ai_interpretation: dream.ai_interpretation,
         lucid: dream.lucid,
