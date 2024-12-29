@@ -9,3 +9,24 @@ export const postDreamsFromDate = (date_in_ms, setError) => {
 
   return apiPostFetch('dreams/from_date', postParams, setError);
 };
+
+export const postCreateDream = (dreamBody, setError) => {
+  const postParams = {
+    dream: {
+      body: dreamBody
+    }
+  };
+
+  apiPostFetch('dreams/create', postParams, setError);
+};
+
+export const postUpdateDream = (dreamId, dreamBody, setError) => {
+  const postParams = {
+    dream: {
+      dream_id: dreamId,
+      body: dreamBody
+    }
+  };
+
+  apiPostFetch('dreams/update', postParams, setError);
+};

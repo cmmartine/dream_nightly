@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { postDreamsFromDate } from "../api/dreamsApi";
 import Dream from "./Dream";
+import DreamInput from "./DreamInput";
 
 export default function DreamsPage(props) {
   const { setError } = props;
@@ -36,19 +37,30 @@ export default function DreamsPage(props) {
 
   const setUpDreams = () => {
     const dreamList = dreams.map((dream) => {
-       return <Dream key={dream.id} dreamInfo={dream} />
+       return <Dream key={dream.id} dreamInfo={dream} setError={setError}/>
     });
     return <div className='dream-list'>{dreamList}</div>
+  };
+
+  const refetchDreams = () => {
+    retrieveDreamsFromDate(dateTimeInMs);
   };
 
   if (dreams != []) {
     return(
       <div>
         <input id='calendar' type='date' data-testid='calendar'></input>
+        <DreamInput refetchDreams={refetchDreams} setError={setError}/>
         {setUpDreams()}
       </div>
     );
   } else {
-    <div>There doesn't seem to be any dreams this day.</div>
+    return(
+      <div>
+        <input id='calendar' type='date' data-testid='calendar'></input>
+        <DreamInput refetchDreams={refetchDreams} setError={setError}/>
+        <div>There doesn't seem to be any dreams this day.</div>
+      </div>
+    )
   }
 }

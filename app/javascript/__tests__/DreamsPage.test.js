@@ -7,6 +7,11 @@ jest.mock('../components/Dream', () => () => {
   return <MockDream data-testid='mock-dream'/>
 });
 
+jest.mock('../components/DreamInput', () => () => {
+  const MockDreamInput = 'DreamInput';
+  return <MockDreamInput data-testid='mock-dream-input'/>
+});
+
 describe('DreamsPage', () => {
   const returnedDreams = [
     {
@@ -49,6 +54,11 @@ describe('DreamsPage', () => {
       renderDreamsPage();
       expect(dreamsApi.postDreamsFromDate).toBeCalled();
       expect(await screen.findAllByTestId('mock-dream')).toHaveLength(returnedDreams.length);
-    })
+    });
+
+    it('shows a new dream input form', async () => {
+      renderDreamsPage();
+      expect(await screen.findByTestId('mock-dream-input')).toBeInTheDocument();
+    });
   });
 });
