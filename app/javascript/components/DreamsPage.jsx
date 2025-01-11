@@ -25,10 +25,14 @@ export default function DreamsPage(props) {
   const setCalendarDate = (date) => {
     let calendarElement = document.querySelector('input[type="date"]');
     let dateYear = date.getFullYear();
-    let dateMonth = date.getMonth() + 1;
-    let dateDay = date.getDate();
+    let dateMonth = formatDayOrMonth(date.getMonth() + 1);
+    let dateDay = formatDayOrMonth(date.getDate());
     let dateForCalendar = dateYear + '-' + dateMonth + '-' + dateDay;
     calendarElement.value = dateForCalendar;
+  };
+
+  const formatDayOrMonth = (dayOrMonth) => {
+    return dayOrMonth < 10 ? '0' + dayOrMonth : dayOrMonth
   };
 
   const convertDateTimeToMs = (dateTime) => {

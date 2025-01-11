@@ -42,11 +42,36 @@ describe('DreamsPage', () => {
 
   describe('When first rendered', () => {
     describe('the calendar', () => {
-      it('is set to todays date', async () => {
-        jest.useFakeTimers().setSystemTime(new Date('December 15, 2024 00:00:00'));
-        renderDreamsPage();
-        const calendar = await screen.getByTestId('calendar');
-        expect(calendar.value).toBe('2024-12-15')
+      describe('For a date with month and day less than 10', () => {
+        it('Correctly sets the calendars date for 01-01', async () => {
+          jest.useFakeTimers().setSystemTime(new Date('January 01, 2025 00:00:00'));
+          renderDreamsPage();
+          const calendar = await screen.getByTestId('calendar');
+          expect(calendar.value).toBe('2025-01-01')
+        });
+
+        it('Correctly sets the calendars date for 09-09', async () => {
+          jest.useFakeTimers().setSystemTime(new Date('September 09, 2025 00:00:00'));
+          renderDreamsPage();
+          const calendar = await screen.getByTestId('calendar');
+          expect(calendar.value).toBe('2025-09-09')
+        });
+      });
+
+      describe('For a date with month and day 10 or greater', () => {
+        it('Correctly sets the calendars date for 10-10', async () => {
+          jest.useFakeTimers().setSystemTime(new Date('October 10, 2025 00:00:00'));
+          renderDreamsPage();
+          const calendar = await screen.getByTestId('calendar');
+          expect(calendar.value).toBe('2025-10-10')
+        });
+
+        it('Correctly sets the calendars date for 12-25', async () => {
+          jest.useFakeTimers().setSystemTime(new Date('December 25, 2025 00:00:00'));
+          renderDreamsPage();
+          const calendar = await screen.getByTestId('calendar');
+          expect(calendar.value).toBe('2025-12-25')
+        });
       });
     });
 
