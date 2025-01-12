@@ -46,14 +46,23 @@ export default function DreamsPage(props) {
     return <div className='dream-list'>{dreamList}</div>
   };
 
-  const refetchDreams = () => {
-    retrieveDreamsFromDate(dateTimeInMs);
+  const refetchDreams = (dreamsToFetch = dateTimeInMs) => {
+    retrieveDreamsFromDate(dreamsToFetch);
+  };
+
+  const handleDateChange = (e) => {
+    let newDateTime = new Date(e.target.value);
+    let newDateTimeInMs = convertDateTimeToMs(newDateTime);
+    setDateTimeInMs(newDateTimeInMs);
+    refetchDreams(newDateTimeInMs);
   };
 
   if (dreams != []) {
     return(
       <div>
-        <input id='calendar' type='date' data-testid='calendar'></input>
+        <input id='calendar' type='date' data-testid='calendar' onChange={(e) => {
+          handleDateChange(e);
+        }}></input>
         <DreamInput refetchDreams={refetchDreams} setError={setError}/>
         {setUpDreams()}
       </div>
@@ -61,7 +70,9 @@ export default function DreamsPage(props) {
   } else {
     return(
       <div>
-        <input id='calendar' type='date' data-testid='calendar'></input>
+        <input id='calendar' type='date' data-testid='calendar' onChange={(e) => {
+          handleDateChange(e);
+        }}></input>
         <DreamInput refetchDreams={refetchDreams} setError={setError}/>
         <div>There doesn't seem to be any dreams this day.</div>
       </div>
