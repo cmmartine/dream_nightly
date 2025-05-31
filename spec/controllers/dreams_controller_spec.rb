@@ -7,7 +7,8 @@ RSpec.describe DreamsController, type: :controller do
   describe 'POST /create' do
     dream_params = {
       dream: {
-        body: 'Test dream'
+        body: 'Test dream',
+        time_in_ms: Time.now.to_i * 1000
       }
     }
     context 'When the user is logged in' do
@@ -29,18 +30,63 @@ RSpec.describe DreamsController, type: :controller do
       end
 
       describe 'and the dream is not valid' do
-        invalid_dream_params = {
+        invalid_dream_body_params = {
           dream: {
-            body: ''
+            body: '',
+            time_in_ms: Time.now.to_i * 1000
+          }
+        }
+
+        nil_dream_time_params = {
+          dream: {
+            body: 'dream',
+            time_in_ms: nil
+          }
+        }
+
+        invalid_dream_time_params = {
+          dream: {
+            body: 'dream',
+            time_in_ms: 'invalid_time'
           }
         }
 
         before do
-          post :create, params: invalid_dream_params, as: :json
+          post :create, params: invalid_dream_body_params, as: :json
         end
 
-        it 'returns a flash alert' do
-          expect(flash[:alert]).not_to be(nil)
+        context 'when the body is empty' do
+          it 'returns a flash alert' do
+            expect(flash[:alert]).not_to be(nil)
+          end
+        end
+
+        context 'when the time is null' do
+          before do
+            post :create, params: nil_dream_time_params, as: :json
+          end
+
+          it 'returns a flash alert' do
+            expect(flash[:alert]).not_to be(nil)
+          end
+
+          it 'renders a 422 status code' do
+            expect(response.status).to eq(422)
+          end
+        end
+
+        context 'when the time is invalid' do
+          before do
+            post :create, params: invalid_dream_time_params, as: :json
+          end
+
+          it 'returns a flash alert' do
+            expect(flash[:alert]).not_to be(nil)
+          end
+
+          it 'renders a 422 status code' do
+            expect(response.status).to eq(422)
+          end
         end
       end
     end

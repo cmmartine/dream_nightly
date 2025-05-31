@@ -14,12 +14,19 @@ class DreamsController < ApplicationController
   }.freeze
 
   def create
-    dream = Dream.new(body: dream_params[:body], user_id: current_user.id)
+    date_time = convert_from_time_in_ms(dream_params[:time_in_ms])
+    dream = Dream.new(body: dream_params[:body], created_at: date_time, user_id: current_user.id)
     if !dream.valid?
       flash[:alert] = dream.body.empty? ? INVALID_DREAM[:empty_body] : INVALID_DREAM[:general]
+      render json: { status: 'unprocessable' }, status: :unprocessable_entity
     else
       dream.save!
+      render json: { status: 'created' }, status: :created
     end
+  rescue StandardError => e
+    Rails.logger.error "Dream creation failed: #{e.message}"
+    flash[:alert] = INVALID_DREAM[:general]
+    head :unprocessable_entity
   end
 
   def update
@@ -51,6 +58,11 @@ class DreamsController < ApplicationController
   end
 
   def convert_from_time_in_ms(time)
-    Time.at(time / 1000)
+    raise StandardError, 'time_in_ms is missing' if time.nil?
+
+    int_time = Integer(time)
+    raise StandardError, 'time_in_ms is not a valid integer' if int_time.nil?
+
+    Time.at(int_time / 1000)
   end
 end

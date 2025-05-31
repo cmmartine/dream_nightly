@@ -16,8 +16,10 @@ describe('DreamInput', () => {
     )
   };
 
+  const returnValue = { status: 'created' }
+
   beforeEach(async () => {
-    jest.spyOn(dreamsApi, 'postCreateDream');
+    jest.spyOn(dreamsApi, 'postCreateDream').mockReturnValue(returnValue);
     jest.spyOn(dreamsApi, 'postUpdateDream');
   });
 
@@ -41,7 +43,6 @@ describe('DreamInput', () => {
     describe('And the save button is clicked when the textarea IS empty', () => {
       it('DOES NOT call postCreateDream', async () => {
         renderNewDreamInput();
-        const textArea = document.getElementById('dream-input-textarea');
         const saveBtn = document.getElementById('save-dream-btn');
         await userEvent.click(saveBtn);
         expect(dreamsApi.postCreateDream).not.toBeCalled();

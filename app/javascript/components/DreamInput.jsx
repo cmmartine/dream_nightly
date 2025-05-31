@@ -3,20 +3,20 @@ import { useState } from "react";
 import { postCreateDream, postUpdateDream } from "../api/dreamsApi";
 
 export default function DreamInput(props) {
-  const { dreamBody, dreamId, updateDreamBody, refetchDreams, setError } = props;
+  const { dreamBody, dreamId, dateTimeInMs, updateDreamBody, refetchDreams, setError } = props;
   const [formText, setFormText] = useState(checkDreamBody());
 
   function checkDreamBody() {
     return dreamBody ? dreamBody : '';
   };
 
-  function saveDream() {
+  async function saveDream() {
     if (dreamBody) {
       updateDreamBody(formText);
       postUpdateDream(dreamId, formText, setError);
     } else {
-      postCreateDream(formText, setError);
-      refetchDreams();
+       const data = await postCreateDream(formText, dateTimeInMs, setError);
+       data.status == 'created' ? refetchDreams() : null;
     }
   };
 
