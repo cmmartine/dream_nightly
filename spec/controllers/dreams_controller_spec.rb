@@ -56,18 +56,14 @@ RSpec.describe DreamsController, type: :controller do
         end
 
         context 'when the body is empty' do
-          it 'returns a flash alert' do
-            expect(flash[:alert]).not_to be(nil)
+          it 'returns an unprocessable status' do
+            expect(response.status).to eq(422)
           end
         end
 
         context 'when the time is null' do
           before do
             post :create, params: nil_dream_time_params, as: :json
-          end
-
-          it 'returns a flash alert' do
-            expect(flash[:alert]).not_to be(nil)
           end
 
           it 'renders a 422 status code' do
@@ -78,10 +74,6 @@ RSpec.describe DreamsController, type: :controller do
         context 'when the time is invalid' do
           before do
             post :create, params: invalid_dream_time_params, as: :json
-          end
-
-          it 'returns a flash alert' do
-            expect(flash[:alert]).not_to be(nil)
           end
 
           it 'renders a 422 status code' do
@@ -136,10 +128,10 @@ RSpec.describe DreamsController, type: :controller do
       end
 
       describe 'and the dream is not valid' do
-        it 'returns a flash alert' do
+        it 'returns an unprocessable status ' do
           Dream.create!(body: 'New dream', user_id: user.id)
           post :update, params: invalid_updated_dream_params, as: :json
-          expect(flash[:alert]).not_to be(nil)
+          expect(response.status).to eq(422)
         end
       end
     end
@@ -179,20 +171,14 @@ RSpec.describe DreamsController, type: :controller do
           expect(Dream.all.length).to eq(0)
           expect(Dream.exists?(users_dream.id)).to eq(false)
         end
-
-        it 'returns a flash notice that the dream was destroyed' do
-          Dream.create!(body: 'New dream', user_id: user.id)
-          post :destroy, params: dream_params, as: :json
-          expect(flash[:notice]).to eq(DreamsController::DREAM_DESTROYED[:success])
-        end
       end
 
       context 'and the dream is NOT destroyed successfully' do
-        it 'returns a flash notice to try deleting the dream again' do
+        it 'returns an unprocessable status' do
           Dream.create!(body: 'New dream', user_id: user.id)
           allow_any_instance_of(Dream).to receive(:destroyed?) { false }
           post :destroy, params: dream_params, as: :json
-          expect(flash[:notice]).to eq(DreamsController::DREAM_DESTROYED[:failed])
+          expect(response.status).to eq(422)
         end
       end
     end
@@ -219,6 +205,15 @@ RSpec.describe DreamsController, type: :controller do
         }
       }
     end
+
+    let(:invalid_dream_params) do
+      {
+        dream: {
+          time_in_ms: 'invalid_time'
+        }
+      }
+    end
+
     let(:filtered_dream_array) do
       [
         {
@@ -240,6 +235,14 @@ RSpec.describe DreamsController, type: :controller do
         Dream.create(body: 'Test dream', user_id: user.id)
         post :from_date, params: dream_params, as: :json
         expect(response.body).to eq(filtered_dream_array.to_json)
+      end
+
+      context 'and an error occurs' do
+        it 'returns an error message' do
+          post :from_date, params: invalid_dream_params, as: :json
+          expect(response.status).to eq(422)
+          expect(response.body).to include('Failed to filter dreams')
+        end
       end
     end
 

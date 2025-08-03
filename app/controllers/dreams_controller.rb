@@ -3,21 +3,16 @@
 class DreamsController < ApplicationController
   before_action :authenticate_user!
 
-  INVALID_DREAM = {
-    empty_body: 'Dream cannot be empty',
-    general: 'Dream not saved, please try again'
-  }.freeze
-
   DREAM_DESTROYED = {
     success: 'Dream was successfully deleted',
     failed: 'Dream could not be deleted, please try again'
   }.freeze
 
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def create
     date_time = convert_from_time_in_ms(dream_params[:time_in_ms])
     dream = Dream.new(body: dream_params[:body], created_at: date_time, user_id: current_user.id)
     if !dream.valid?
-      flash[:alert] = dream.body.empty? ? INVALID_DREAM[:empty_body] : INVALID_DREAM[:general]
       render json: { status: 'unprocessable' }, status: :unprocessable_entity
     else
       dream.save!
@@ -25,30 +20,40 @@ class DreamsController < ApplicationController
     end
   rescue StandardError => e
     Rails.logger.error "Dream creation failed: #{e.message}"
-    flash[:alert] = INVALID_DREAM[:general]
-    head :unprocessable_entity
+    render json: { status: 'unprocessable', message: e.message }, status: :unprocessable_entity
   end
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   def update
     dream = Dream.find(dream_params[:dream_id])
     dream.update(body: dream_params[:body])
     if !dream.valid?
-      flash[:alert] = dream.body.empty? ? INVALID_DREAM[:empty_body] : INVALID_DREAM[:general]
+      Rails.logger.error "Dream updating failed for ID #{dream.id}"
+      render json: { status: 'unprocessable' }, status: :unprocessable_entity
     else
       dream.save!
+      render json: { status: 'ok' }, status: :ok
     end
   end
 
   def destroy
     dream = Dream.find(dream_params[:dream_id])
     dream.destroy
-    flash[:notice] = dream.destroyed? ? DREAM_DESTROYED[:success] : DREAM_DESTROYED[:failed]
+    if dream.destroyed?
+      render json: { status: 'ok', message: DREAM_DESTROYED[:success] }, status: :ok
+    else
+      Rails.logger.error "Dream destruction failed for ID #{dream.id}"
+      render json: { status: 'unprocessable', message: DREAM_DESTROYED[:failed] }, status: :unprocessable_entity
+    end
   end
 
   def from_date
     date_time = convert_from_time_in_ms(dream_params[:time_in_ms])
     filtered_dreams = current_user.dreams.filtered_from_date(date_time)
     render json: filtered_dreams
+  rescue StandardError => e
+    Rails.logger.error "Dream filtering failed: #{e.message}"
+    render json: { error: 'Failed to filter dreams', message: e.message }, status: :unprocessable_entity
   end
 
   private
