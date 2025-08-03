@@ -1,5 +1,8 @@
 @import './dropdown.css';
 @import './devise-forms.css';
+@import './dreams-page.css';
+@import './dream.css';
+@import './dream-input.css';
 
 body {
   margin: 0;

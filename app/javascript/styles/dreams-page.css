@@ -1,0 +1,18 @@
+.dreams-page-container {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  flex-wrap: wrap;
+}
+
+#calendar {
+  width: 395px;
+  max-width: 90%;
+}
+
+.dream-list {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  flex-wrap: wrap;
+}

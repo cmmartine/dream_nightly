@@ -1,0 +1,18 @@
+#dream-input-form {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  max-width: 90%;
+}
+
+.input-btn {
+  width: 72px;
+  height: 25px;
+  background-color: #723cd1;
+  color: white;
+  align-self: flex-end;
+}
+
+.input-btn:hover {
+  background-color: #9059f0;
+}

@@ -18,6 +18,7 @@ export default function DreamInput(props) {
        const data = await postCreateDream(formText, dateTimeInMs, setError);
        data.status == 'created' ? refetchDreams() : null;
     }
+    setFormText('');
   };
 
   return(
@@ -25,7 +26,7 @@ export default function DreamInput(props) {
       <textarea id='dream-input-textarea' aria-label='enter-dream' spellCheck='true' value={formText} onChange={(e) => {
         setFormText(e.target.value);
       }}/>
-      <button id='save-dream-btn' type='submit' onClick={(e) => {
+      <button id='save-dream-btn' className='input-btn' type='submit' onClick={(e) => {
         e.preventDefault();
         if (formText != '') {
           saveDream();

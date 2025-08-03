@@ -38,6 +38,15 @@ describe('DreamInput', () => {
         expect(dreamsApi.postCreateDream).toBeCalled();
         expect(dreamsApi.postUpdateDream).not.toBeCalled();
       });
+
+      it('resets the textarea', async () => {
+        renderNewDreamInput();
+        const textArea = document.getElementById('dream-input-textarea');
+        const saveBtn = document.getElementById('save-dream-btn');
+        await userEvent.type(textArea, 'Hello');
+        await userEvent.click(saveBtn);
+        expect(textArea.value).toBe('');
+      });
     });
 
     describe('And the save button is clicked when the textarea IS empty', () => {
@@ -61,6 +70,15 @@ describe('DreamInput', () => {
         await userEvent.click(saveBtn);
         expect(dreamsApi.postCreateDream).not.toBeCalled();
         expect(dreamsApi.postUpdateDream).toBeCalled();
+      });
+
+      it('resets the textArea', async () => {
+        renderEditingDreamInput();
+        const textArea = document.getElementById('dream-input-textarea');
+        const saveBtn = document.getElementById('save-dream-btn');
+        await userEvent.type(textArea, 'Hello');
+        await userEvent.click(saveBtn);
+        expect(textArea.value).toBe('');
       });
     });
 

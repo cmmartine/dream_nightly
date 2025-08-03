@@ -15,22 +15,24 @@ export default function Dream(props) {
   if (!expanded) {
     return(
       <div className='dream-container'>
-        <div className='expand-btn' data-testid='expand-btn' onClick={(e) => {
+        <div className='dream-body'>{dreamBody}</div>
+        <div className='expand-btn lucide--expand' data-testid='expand-btn' onClick={(e) => {
           e.preventDefault();
           setExpanded(true);
-        }}>expand arrows</div>
-        <div className='dream-body'>{dreamBody}</div>
+        }}/>
       </div>
     );
   } else {
     return(
       <div className='dream-container'>
-        <div className='unexpand-btn' data-testid='unexpand-btn' onClick={(e) => {
+        <div className='dream-expanded-body-container'>
+          <div className='dream-body'>{dreamBody}</div>
+          <DreamInput dreamBody={dreamBody} dreamId={dreamId} updateDreamBody={updateDreamBody} setError={setError}/>
+        </div>
+        <div className='unexpand-btn lucide--x' data-testid='unexpand-btn' onClick={(e) => {
           e.preventDefault();
           setExpanded(false);
-        }}>unexpand arrows</div>
-        <DreamInput dreamBody={dreamBody} dreamId={dreamId} updateDreamBody={updateDreamBody} setError={setError}/>
-        <div className='dream-body'>{dreamBody}</div>
+        }}/>
       </div>
     )
   }

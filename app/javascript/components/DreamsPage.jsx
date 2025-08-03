@@ -59,7 +59,7 @@ export default function DreamsPage(props) {
 
   if (dreams.length > 0) {
     return(
-      <div>
+      <div className='dreams-page-container'>
         <input id='calendar' type='date' data-testid='calendar' onChange={(e) => {
           handleDateChange(e);
         }}></input>
@@ -69,7 +69,7 @@ export default function DreamsPage(props) {
     );
   } else {
     return(
-      <div>
+      <div className='dreams-page-container'>
         <input id='calendar' type='date' data-testid='calendar' onChange={(e) => {
           handleDateChange(e);
         }}></input>
