@@ -113,8 +113,19 @@ RSpec.describe DreamsController, type: :controller do
       }
     end
 
+    let(:second_user_dream_params) do
+      {
+        dream: {
+          body: 'not updated',
+          dream_id: second_users_dream.id
+        }
+      }
+    end
+
     let(:user) { User.first }
+    let(:second_user) { FactoryBot.create(:user, email: 'testemai2@test.com') }
     let(:users_dream) { user.dreams.first }
+    let(:second_users_dream) { second_user.dreams.first }
 
     context 'When the user is logged in' do
       login_user
@@ -132,6 +143,16 @@ RSpec.describe DreamsController, type: :controller do
           Dream.create!(body: 'New dream', user_id: user.id)
           post :update, params: invalid_updated_dream_params, as: :json
           expect(response.status).to eq(422)
+        end
+      end
+
+      describe 'and the dream is not the current users dream' do
+        it 'returns a forbidden status and does not update the dream' do
+          Dream.create!(body: 'User 2 dream', user_id: second_user.id)
+          post :update, params: second_user_dream_params, as: :json
+          expect(response.status).to eq(403)
+          second_users_dream.reload
+          expect(second_users_dream.body).to eq('User 2 dream')
         end
       end
     end
@@ -158,8 +179,17 @@ RSpec.describe DreamsController, type: :controller do
         }
       }
     end
+    let(:second_user_dream_params) do
+      {
+        dream: {
+          dream_id: second_users_dream.id
+        }
+      }
+    end
     let(:user) { User.first }
+    let(:second_user) { FactoryBot.create(:user, email: 'testemai2@test.com') }
     let(:users_dream) { user.dreams.first }
+    let(:second_users_dream) { second_user.dreams.first }
 
     context 'When the user is logged in' do
       login_user
@@ -179,6 +209,16 @@ RSpec.describe DreamsController, type: :controller do
           allow_any_instance_of(Dream).to receive(:destroyed?) { false }
           post :destroy, params: dream_params, as: :json
           expect(response.status).to eq(422)
+        end
+      end
+
+      context 'and the dream is not the current users dream' do
+        it 'returns a forbidden status and does not delete the dream' do
+          Dream.create!(body: 'User 2 dream', user_id: second_user.id)
+          post :destroy, params: second_user_dream_params, as: :json
+          expect(response.status).to eq(403)
+          second_users_dream.reload
+          expect(second_users_dream.body).to eq('User 2 dream')
         end
       end
     end

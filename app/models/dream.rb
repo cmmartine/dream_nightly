@@ -20,6 +20,10 @@ class Dream < ApplicationRecord
     end
   end
 
+  def self.find_owned_by(user, dream_id)
+    user.dreams.find_by(id: dream_id)
+  end
+
   def created_at_in_ms
     created_at.to_i
   end

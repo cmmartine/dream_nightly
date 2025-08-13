@@ -50,6 +50,21 @@ RSpec.describe Dream, type: :model do
     end
   end
 
+  describe 'self.find_owned_by' do
+    let(:user) { create_user_with_dreams }
+    let(:dream) { user.dreams.first }
+
+    it 'returns the dream if dream id belongs to user and exists' do
+      expect(Dream.find_owned_by(user, dream.id)).not_to eq(nil)
+    end
+
+    it 'does not return the dream if dream id and user do no match' do
+      other_user = FactoryBot.create(:user, email: 'testemai2@test.com')
+      other_user_dream = FactoryBot.create(:dream, user_id: other_user.id)
+      expect(Dream.find_owned_by(user, other_user_dream.id)).to eq(nil)
+    end
+  end
+
   describe 'created_at_in_ms' do
     it 'converts the created_at from datetime to ms' do
       dream = FactoryBot.create(:dream)

@@ -22,10 +22,15 @@ class DreamsController < ApplicationController
     Rails.logger.error "Dream creation failed: #{e.message}"
     render json: { status: 'unprocessable', message: e.message }, status: :unprocessable_entity
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   def update
-    dream = Dream.find(dream_params[:dream_id])
+    dream = Dream.find_owned_by(current_user, dream_params[:dream_id])
+
+    if dream.nil?
+      render json: { error: 'Dream not found or not authorized' }, status: :forbidden
+      return
+    end
+
     dream.update(body: dream_params[:body])
     if !dream.valid?
       Rails.logger.error "Dream updating failed for ID #{dream.id}"
@@ -37,7 +42,13 @@ class DreamsController < ApplicationController
   end
 
   def destroy
-    dream = Dream.find(dream_params[:dream_id])
+    dream = Dream.find_owned_by(current_user, dream_params[:dream_id])
+
+    if dream.nil?
+      render json: { error: 'Dream not found or not authorized' }, status: :forbidden
+      return
+    end
+
     dream.destroy
     if dream.destroyed?
       render json: { status: 'ok', message: DREAM_DESTROYED[:success] }, status: :ok
@@ -46,6 +57,7 @@ class DreamsController < ApplicationController
       render json: { status: 'unprocessable', message: DREAM_DESTROYED[:failed] }, status: :unprocessable_entity
     end
   end
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   def from_date
     date_time = convert_from_time_in_ms(dream_params[:time_in_ms])
