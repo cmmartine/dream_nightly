@@ -3,6 +3,7 @@
   flex-direction: column;
   align-content: center;
   flex-wrap: wrap;
+  margin-top: 65px;
 }
 
 #calendar {
