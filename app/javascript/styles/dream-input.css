@@ -1,6 +1,7 @@
 #dream-input-form {
   display: flex;
   flex-direction: column;
+  margin-top: 15px;
 }
 
 .input-btn {
@@ -9,8 +10,14 @@
   background-color: #723cd1;
   color: white;
   align-self: flex-end;
+  margin-top: 10px;
 }
 
 .input-btn:hover {
   background-color: #9059f0;
+}
+
+.edit-form {
+  width: 80%;
+  align-self: center;
 }

@@ -1,10 +1,30 @@
 .dream-container {
   display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+  width: 100%;
+  position: relative;
+  background: #4e238880;
+  border-radius: 16px;
+  border: none;
+  padding: 10px 15px;
 }
 
 .dream-expanded-body-container {
   display: flex;
   flex-direction: column;
+}
+
+.dream-top-row-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.dream-body {
+  display: flex;
+  width: 80%;
+  align-self: center;
 }
 
 .lucide--expand {
@@ -17,7 +37,8 @@
 }
 
 .lucide--expand:hover {
-  background-color: rgb(59, 15, 169);
+  background-color: #9059f0;
+  border-radius: 4px;
 }
 
 .lucide--x {
@@ -30,5 +51,6 @@
 }
 
 .lucide--x:hover {
-  background-color: rgb(59, 15, 169);
+  background-color: #9059f0;
+  border-radius: 4px;
 }

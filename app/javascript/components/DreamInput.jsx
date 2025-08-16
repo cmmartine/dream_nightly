@@ -6,6 +6,8 @@ export default function DreamInput(props) {
   const { dreamBody, dreamId, dateTimeInMs, updateDreamBody, refetchDreams, setError } = props;
   const [formText, setFormText] = useState(checkDreamBody());
 
+  const formClass = dreamBody ? 'edit-form' : null;
+
   function checkDreamBody() {
     return dreamBody ? dreamBody : '';
   };
@@ -22,7 +24,7 @@ export default function DreamInput(props) {
   };
 
   return(
-    <form id='dream-input-form'>
+    <form id='dream-input-form' className={formClass}>
       <textarea id='dream-input-textarea' aria-label='enter-dream' spellCheck='true' placeHolder='Enter a dream...' value={formText} onChange={(e) => {
         setFormText(e.target.value);
       }}/>

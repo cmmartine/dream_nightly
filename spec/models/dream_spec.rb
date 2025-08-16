@@ -36,7 +36,7 @@ RSpec.describe Dream, type: :model do
         body: dream.body,
         ai_interpretation: dream.ai_interpretation,
         lucid: dream.lucid,
-        created_at: dream.created_at.to_i
+        created_at: dream.created_at.to_i * 1000
       }
     end
     let(:not_dreams_date) { '2000-01-01 00:00:00'.to_datetime }
@@ -68,7 +68,7 @@ RSpec.describe Dream, type: :model do
   describe 'created_at_in_ms' do
     it 'converts the created_at from datetime to ms' do
       dream = FactoryBot.create(:dream)
-      expect(dream.created_at_in_ms).to eq(1_732_351_099)
+      expect(dream.created_at_in_ms).to eq(1_732_351_099_000)
     end
   end
 end

@@ -8,12 +8,16 @@ jest.mock('../components/DreamInput', () => () => {
 });
 
 describe('Dream', () => {
+  const created_at_ms = 1734869890000
+  const created_at_date = new Date(created_at_ms)
+  const created_at_to_local_est = created_at_date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+
   const aDream = {
     id: 1,
     body: 'First dream',
     ai_interpretation: null,
     lucid: null,
-    created_at: 1734869890
+    created_at: created_at_ms
   }
 
   function renderDream(dreamInfo) {
@@ -23,6 +27,11 @@ describe('Dream', () => {
   };
 
   describe('When first rendered', () => {
+    it('displays the dreams created at local time', () => {
+      renderDream(aDream);
+      expect(screen.getByText(created_at_to_local_est)).toBeInTheDocument();
+    });
+
     it('displays the dreams body text', () => {
       renderDream(aDream);
       expect(screen.getByText(aDream.body)).toBeInTheDocument();

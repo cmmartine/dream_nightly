@@ -25,6 +25,6 @@ class Dream < ApplicationRecord
   end
 
   def created_at_in_ms
-    created_at.to_i
+    created_at.to_i * 1000
   end
 end

@@ -261,7 +261,7 @@ RSpec.describe DreamsController, type: :controller do
           body: users_dream.body,
           ai_interpretation: users_dream.ai_interpretation,
           lucid: users_dream.lucid,
-          created_at: users_dream.created_at.to_i
+          created_at: users_dream.created_at.to_i * 1000
         }
       ]
     end
