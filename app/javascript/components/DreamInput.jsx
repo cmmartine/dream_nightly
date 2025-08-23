@@ -19,8 +19,8 @@ export default function DreamInput(props) {
     } else {
        const data = await postCreateDream(formText, dateTimeInMs, setError);
        data.status == 'created' ? refetchDreams() : null;
+       setFormText('');
     }
-    setFormText('');
   };
 
   return(

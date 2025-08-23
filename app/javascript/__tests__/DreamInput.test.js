@@ -4,6 +4,8 @@ import DreamInput from "../components/DreamInput";
 import * as dreamsApi from "../api/dreamsApi";
 
 describe('DreamInput', () => {
+  const editDreamBody = 'Test Body';
+
   function renderNewDreamInput() {
     return render(
       <DreamInput refetchDreams={jest.fn()} setError={jest.fn()}/>
@@ -12,7 +14,7 @@ describe('DreamInput', () => {
 
   function renderEditingDreamInput() {
     return render(
-      <DreamInput dreamBody={'Test Body'} dreamId={1} updateDreamBody={jest.fn()} setError={jest.fn()}/>
+      <DreamInput dreamBody={editDreamBody} dreamId={1} updateDreamBody={jest.fn()} setError={jest.fn()}/>
     )
   };
 
@@ -72,13 +74,13 @@ describe('DreamInput', () => {
         expect(dreamsApi.postUpdateDream).toBeCalled();
       });
 
-      it('resets the textArea', async () => {
+      it('does not reset the textArea', async () => {
         renderEditingDreamInput();
         const textArea = document.getElementById('dream-input-textarea');
         const saveBtn = document.getElementById('save-dream-btn');
-        await userEvent.type(textArea, 'Hello');
+        await userEvent.type(textArea, ' added text');
         await userEvent.click(saveBtn);
-        expect(textArea.value).toBe('');
+        expect(textArea.value).toBe(editDreamBody + ' added text');
       });
     });
 

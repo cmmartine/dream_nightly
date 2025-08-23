@@ -22,7 +22,7 @@ export default function Dream(props) {
       <div className='dream-container'>
         <div className='dream-top-row-container'>
           <div>{formatTimeFromMs(dreamInfo.created_at)}</div>
-          <div className='expand-btn lucide--expand' data-testid='expand-btn' onClick={(e) => {
+          <div className='expand-btn lucide--edit' data-testid='expand-btn' onClick={(e) => {
             e.preventDefault();
             setExpanded(true);
           }}/>
