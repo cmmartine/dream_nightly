@@ -84,14 +84,15 @@
 }
 
 .logout-btn {
+  font-size: large;
   background-color: transparent;
   color: white;
-  line-height: 1.125;
-  padding: 8px;
+  border: none;
+  padding: 2px 4px;
 }
 
 .logout-btn:hover {
-  background-color: #9059f0;
+  text-decoration: underline;
 }
 
 @media (max-width: 480px) {
