@@ -28,7 +28,7 @@ export default function DreamInput(props) {
       <textarea id='dream-input-textarea' aria-label='enter-dream' spellCheck='true' placeHolder='Enter a dream...' value={formText} onChange={(e) => {
         setFormText(e.target.value);
       }}/>
-      <button id='save-dream-btn' className='input-btn' type='submit' onClick={(e) => {
+      <button id='save-dream-btn' className='input-btn gen-btn' type='submit' onClick={(e) => {
         e.preventDefault();
         if (formText != '') {
           saveDream();

@@ -5,16 +5,8 @@
 }
 
 .input-btn {
-  width: 72px;
-  height: 25px;
-  background-color: #723cd1;
-  color: white;
   align-self: flex-end;
   margin-top: 10px;
-}
-
-.input-btn:hover {
-  background-color: #9059f0;
 }
 
 .edit-form {

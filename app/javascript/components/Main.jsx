@@ -1,8 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { getUserStatus } from "../api/usersApi";
+import NavBar from "./NavBar";
 import InfoPage from "./InfoPage";
-import Dropdown from "./Dropdown";
 import DreamsPage from "./DreamsPage";
 import ErrorBanner from "./ErrorBanner";
 
@@ -29,6 +29,7 @@ export default function Main() {
     if(userStatus == false) {
       return(
         <div>
+          <NavBar userStatus={userStatus}/>
           <ErrorBanner currentError={error}/>
           <InfoPage/>
         </div>
@@ -36,8 +37,8 @@ export default function Main() {
     } else if (userStatus == true) {
       return(
         <div>
+          <NavBar userStatus={userStatus}/>
           <ErrorBanner currentError={error}/>
-          <Dropdown/>
           <DreamsPage setError={setError}/>
         </div>
       );

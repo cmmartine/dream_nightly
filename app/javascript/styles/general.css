@@ -3,6 +3,7 @@
 @import './dreams-page.css';
 @import './dream.css';
 @import './dream-input.css';
+@import './navbar.css';
 
 body {
   margin: 0;
@@ -29,10 +30,25 @@ code {
   max-height: 100vh;
 }
 
+h1 {
+  margin: 20px 0px;
+}
+
 a {
   color: white;
 }
 
 a:hover {
   color: rgb(207, 206, 206)
+}
+
+.gen-btn {
+  width: 72px;
+  height: 25px;
+  background-color: #723cd1;
+  color: white;
+}
+
+.gen-btn:hover {
+  background-color: #9059f0;
 }

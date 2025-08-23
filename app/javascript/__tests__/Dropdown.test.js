@@ -28,43 +28,43 @@ describe('Dropdown', () => {
   };
 
   describe('When first rendered, and dropdown button has not been clicked', () => {
-    describe('The nav element', () => {
+    describe('The menu element', () => {
       it('has a class of dropdown-closed', () => {
         renderDropdown();
-        expect(screen.getByRole('navigation')).toHaveClass('dropdown-closed');
+        expect(screen.getByRole('menu')).toHaveClass('dropdown-closed');
       });
     });
   });
 
   describe('After dropdown button has been clicked', () => {
-    describe('The nav element', () => {
+    describe('The menu element', () => {
       it('does not have a class of dropdown-closed', async() => {
         renderDropdown();
         const openDropdown = screen.getByRole('button');
         await userEvent.click(openDropdown);
-        expect(screen.getByRole('navigation')).not.toHaveClass('dropdown-closed');
+        expect(screen.getByRole('menu')).not.toHaveClass('dropdown-closed');
       });
 
       it('closes the dropdown when the area outside of the dropdown is clicked', async() => {
         renderDropdown();
         const openDropdown = screen.getByRole('button');
         await userEvent.click(openDropdown);
-        expect(screen.getByRole('navigation')).toHaveClass('dropdown-open');
+        expect(screen.getByRole('menu')).toHaveClass('dropdown-open');
         const clickTestDiv = screen.getByTestId('click-test');
         await userEvent.click(clickTestDiv);
-        expect(screen.getByRole('navigation')).toHaveClass('dropdown-closed');
+        expect(screen.getByRole('menu')).toHaveClass('dropdown-closed');
       });
 
       it('does not reopen the dropdown when the area outside of the dropdown is clicked twice', async() => {
         renderDropdown();
         const openDropdown = screen.getByRole('button');
         await userEvent.click(openDropdown);
-        expect(screen.getByRole('navigation')).toHaveClass('dropdown-open');
+        expect(screen.getByRole('menu')).toHaveClass('dropdown-open');
         const clickTestDiv = screen.getByTestId('click-test');
         await userEvent.click(clickTestDiv);
-        expect(screen.getByRole('navigation')).toHaveClass('dropdown-closed');
+        expect(screen.getByRole('menu')).toHaveClass('dropdown-closed');
         await userEvent.click(clickTestDiv);
-        expect(screen.getByRole('navigation')).toHaveClass('dropdown-closed');
+        expect(screen.getByRole('menu')).toHaveClass('dropdown-closed');
       });
 
       describe('The logout button', () => {

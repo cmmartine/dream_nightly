@@ -1,22 +1,27 @@
+menu {
+  margin: 0px;
+}
+
 .dropdown {
   display: flex;
   flex-direction: column;
   position: fixed;
   top: 0;
-  left: 0;
+  right: 0;
   justify-content: space-between;
   align-items: center;
   height: 100vh;
   width: calc(250px - 20px); /* 20px for padding left and right */
   background-color: #330d69;
   border-radius: 5px;
-  padding: 15px 10px;
+  padding: 15px 25px;
   z-index: 1000;
 }
 
 .dropdown.dropdown-closed {
   background: transparent;
   border: 0px transparent;
+  margin: 20px 0px;
 }
 
 .dropdown.dropdown-open {
@@ -26,7 +31,7 @@
 
 .dropdown-btn-container {
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-end;
   width: 100%;
   margin-bottom: 20px;
 }
@@ -41,6 +46,10 @@
   height: 35px;
   width: 55px;
   padding: 5px;
+}
+
+.close-dropdown-btn {
+  margin: 20px 0px; /* same as dropdown-closed */
 }
 
 .dropdown-items-container {

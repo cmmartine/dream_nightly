@@ -6,10 +6,19 @@ export default function Dropdown() {
   const [openDropdown, setOpenDropdown] = useState(false);
 
   useEffect(() => {
+    if (!openDropdown) return;
+
     const dropdown = document.getElementsByClassName('dropdown-open')[0];
-    if (dropdown) {
-      let dropdownPosition = findElementPosition(dropdown);
-      document.addEventListener('click', (e) => {closeDropdown(e, dropdownPosition)});
+    if (!dropdown) return;
+
+    let dropdownPosition = findElementPosition(dropdown);
+
+    const handler = (e) => closeDropdown(e, dropdownPosition);
+
+    document.addEventListener('click', handler);
+
+    return() => {
+      document.removeEventListener('click', handler);
     }
   }, [openDropdown]);
 
@@ -27,9 +36,9 @@ export default function Dropdown() {
     };
   };
 
-  return(
-    !openDropdown &&
-      <nav className="dropdown dropdown-closed">
+  if (!openDropdown) {
+    return(
+      <menu role='menu' aria-label='dropdown-menu-closed' className="dropdown dropdown-closed">
         <div className="dropdown-btn-container">
           <button className="dropdown-btn" onClick={(e) => {
             e.preventDefault();
@@ -40,22 +49,25 @@ export default function Dropdown() {
             <span className="hamburger-icon-line"/>
           </button>
         </div>
-      </nav>
-    ||
-    <nav className="dropdown dropdown-open">
-      <div className="dropdown-btn-container">
-        <button className="dropdown-btn" onClick={(e) => {
-          e.preventDefault();
-          setOpenDropdown((prev) => !prev);
-        }}>
-          <span className="hamburger-close-icon-line">X</span>
-        </button>
-      </div>
-      <div className='dropdown-items-container'>
-        <button className="logout-btn" onClick={() => {
-          logout();
-        }}>Log Out</button>
-      </div>
-    </nav>
-  );
+      </menu>
+    )
+  } else {
+    return (
+      <menu role='menu' aria-label='dropdown-menu-open' className="dropdown dropdown-open">
+        <div className="dropdown-btn-container">
+          <button className="dropdown-btn close-dropdown-btn" onClick={(e) => {
+            e.preventDefault();
+            setOpenDropdown((prev) => !prev);
+          }}>
+            <span className="hamburger-close-icon-line">X</span>
+          </button>
+        </div>
+        <div className='dropdown-items-container'>
+          <button className="logout-btn" onClick={() => {
+            logout();
+          }}>Log Out</button>
+        </div>
+      </menu>
+    )
+  }
 };
