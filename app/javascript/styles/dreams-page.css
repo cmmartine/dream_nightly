@@ -1,14 +1,14 @@
 .dreams-page-container {
   display: flex;
   flex-direction: column;
-  align-content: center;
+  align-items: center;
   flex-wrap: wrap;
   margin-top: 25px;
 }
 
 #calendar {
-  width: 395px;
-  max-width: 90%;
+  width: calc(95% - 5px); /* 30px to match dream container padding */
+  max-width: calc(595px - 30px); /* 30px to match dream container padding */
 }
 
 .dream-list {
@@ -16,4 +16,11 @@
   flex-direction: column;
   align-content: center;
   flex-wrap: wrap;
+  max-width: 100%;
+}
+
+@media (max-width: 320px) {
+  .dreams-page-container {
+    max-width: 100vw;
+  }
 }
