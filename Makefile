@@ -10,6 +10,7 @@ down:
 	docker compose down --remove-orphans
 
 rails: #run rails server alone
+	docker compose run --rm rails bin/rails db:seed
 	docker compose run --rm -p 3000:3000 rails bin/rails s -b '0.0.0.0'
 
 rspec: #run all rspec tests
