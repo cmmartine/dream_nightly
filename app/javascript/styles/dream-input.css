@@ -6,6 +6,10 @@
   margin-top: 15px;
 }
 
+#dream-input-textarea {
+  height: 80px;
+}
+
 .input-btn {
   align-self: flex-end;
   margin-top: 10px;
