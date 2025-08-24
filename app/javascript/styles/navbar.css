@@ -12,9 +12,3 @@ nav {
   justify-content: space-between;
   width: 150px;
 }
-
-@media (max-width: 320px) {
-  nav {
-    max-width: 100vw;
-  }
-}

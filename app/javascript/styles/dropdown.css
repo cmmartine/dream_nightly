@@ -48,14 +48,14 @@ menu {
 }
 
 .close-dropdown-btn {
-  margin: 20px 0px; /* same as dropdown-closed */
+  margin-top: 25px;
 }
 
 .dropdown-items-container {
   display: flex;
   flex-direction: column;
   height: 100%;
-  margin-bottom: 55px; /* 55 px from dropdown-btn-container to match*/
+  margin-bottom: 55px;
 }
 
 .dropdown-btn:hover {
@@ -88,7 +88,6 @@ menu {
   font-size: 2.5em;
   height: 35px;
   width: 55px;
-  padding: 5px;
 }
 
 .logout-btn {
@@ -103,9 +102,14 @@ menu {
   text-decoration: underline;
 }
 
-@media (max-width: 320px) {
+@media (max-width: 600px) {
+  .dropdown {
+    padding: 15px 0px;
+  }
+
   .dropdown.dropdown-open {
     height: 100%;
-    width: 100%;
+    width: calc(100% - 50px);
+    padding: 0px 25px;
   }
 }
