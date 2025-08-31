@@ -54,7 +54,7 @@ export default function Dropdown() {
   } else {
     return (
       <menu role='menu' aria-label='dropdown-menu-open' className="dropdown dropdown-open">
-        <div className="dropdown-btn-container">
+        <div className="dropdown-btn-container dropdown-btn-container-open">
           <button className="dropdown-btn close-dropdown-btn" onClick={(e) => {
             e.preventDefault();
             setOpenDropdown((prev) => !prev);

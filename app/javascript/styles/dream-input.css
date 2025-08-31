@@ -4,6 +4,7 @@
   width: 95%;
   max-width: calc(600px - 30px); /* 30px to match dream container padding */;
   margin-top: 15px;
+  margin-bottom: 20px;
 }
 
 #dream-input-textarea {

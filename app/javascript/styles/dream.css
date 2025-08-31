@@ -1,7 +1,6 @@
 .dream-container {
   display: flex;
   flex-direction: column;
-  margin-top: 15px;
   width: 95%;
   max-width: 600px;
   position: relative;
@@ -9,6 +8,7 @@
   border-radius: 16px;
   border: none;
   padding: 10px 15px;
+  margin-bottom: 20px;
   box-sizing: border-box;
 }
 

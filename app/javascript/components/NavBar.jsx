@@ -8,7 +8,7 @@ export default function NavBar(props) {
 
   return(
     <nav>
-      <h1>{appName}</h1>
+      <h1 className='navbar-title'>{appName}</h1>
       {
         userStatus && <Dropdown/>
       }
