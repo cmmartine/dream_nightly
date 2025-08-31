@@ -1,11 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import DreamsPage from "../components/DreamsPage";
 import * as dreamsApi from "../api/dreamsApi";
-
-jest.mock('../components/Dream', () => () => {
-  const MockDream = 'Dream';
-  return <MockDream data-testid='mock-dream'/>
-});
+import userEvent from "@testing-library/user-event";
 
 jest.mock('../components/DreamInput', () => () => {
   const MockDreamInput = 'DreamInput';
@@ -13,17 +9,20 @@ jest.mock('../components/DreamInput', () => () => {
 });
 
 describe('DreamsPage', () => {
+  let dreamBody1 = 'First dream';
+  let dreamBody2 = 'Second dream';
+
   const returnedDreams = [
     {
       id: 2,
-      body: 'Second dream',
+      body: dreamBody2,
       ai_interpretation: null,
       lucid: null,
       created_at: 1734869884
     },
     {
       id: 1,
-      body: 'First dream',
+      body: dreamBody1,
       ai_interpretation: null,
       lucid: null,
       created_at: 1734869880
@@ -40,6 +39,7 @@ describe('DreamsPage', () => {
 
   beforeEach(async () => {
     jest.spyOn(dreamsApi, 'postDreamsFromDate').mockReturnValue(returnedDreams);
+    jest.spyOn(dreamsApi, 'postDeleteDream').mockReturnValue(null);
   });
 
   afterEach(async () => {
@@ -100,7 +100,8 @@ describe('DreamsPage', () => {
   it('shows all dreams returned from api call', async () => {
     renderDreamsPage();
     expect(dreamsApi.postDreamsFromDate).toBeCalled();
-    expect(await screen.findAllByTestId('mock-dream')).toHaveLength(returnedDreams.length);
+    expect(await screen.findByText(dreamBody1)).toBeInTheDocument();
+    expect(await screen.findByText(dreamBody2)).toBeInTheDocument();
   });
 
   it('shows a new dream input form', async () => {

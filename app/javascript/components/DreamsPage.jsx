@@ -41,7 +41,7 @@ export default function DreamsPage(props) {
 
   const setUpDreams = () => {
     const dreamList = dreams.map((dream) => {
-       return <Dream key={dream.id} dreamInfo={dream} setError={setError}/>
+       return <Dream key={dream.id} dreamInfo={dream} removeDreamFromPage={handleDreamDeletion} setError={setError}/>
     });
     return <div className='dream-list'>{dreamList}</div>
   };
@@ -55,6 +55,15 @@ export default function DreamsPage(props) {
     let newDateTimeInMs = convertDateTimeToMs(newDateTime);
     setDateTimeInMs(newDateTimeInMs);
     refetchDreams(newDateTimeInMs);
+  };
+
+  const handleDreamDeletion = (deletedDreamId) => {
+    for(let i = 0; i < dreams.length; i++) {
+      if(dreams[i].id === deletedDreamId) {
+        setDreams(dreams.filter((dream) => dream.id != deletedDreamId));
+        break;
+      }
+    }
   };
 
   if (dreams.length > 0) {
