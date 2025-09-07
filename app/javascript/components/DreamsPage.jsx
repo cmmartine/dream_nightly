@@ -7,7 +7,7 @@ import DreamInput from "./DreamInput";
 export default function DreamsPage(props) {
   const { setError } = props;
   const [dreams, setDreams] = useState([]);
-  const [dateTimeInMs, setDateTimeInMs] = useState()
+  const [dateTimeInMs, setDateTimeInMs] = useState();
 
   useEffect(() => {
     const today = new Date();
@@ -18,7 +18,8 @@ export default function DreamsPage(props) {
   }, []);
 
   const retrieveDreamsFromDate = async (dateTimeInMs) => {
-    const data = await postDreamsFromDate(dateTimeInMs, setError);
+    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const data = await postDreamsFromDate(dateTimeInMs, userTimeZone, setError);
     setDreams(data);
   };
 
@@ -72,7 +73,7 @@ export default function DreamsPage(props) {
         <input id='calendar' type='date' data-testid='calendar' onChange={(e) => {
           handleDateChange(e);
         }}></input>
-        <DreamInput refetchDreams={refetchDreams} setError={setError} dateTimeInMs={dateTimeInMs}/>
+        <DreamInput refetchDreams={refetchDreams} dateTimeInMs={dateTimeInMs} setError={setError}/>
         {setUpDreams()}
       </div>
     );
@@ -82,7 +83,7 @@ export default function DreamsPage(props) {
         <input id='calendar' type='date' data-testid='calendar' onChange={(e) => {
           handleDateChange(e);
         }}></input>
-        <DreamInput refetchDreams={refetchDreams} setError={setError} dateTimeInMs={dateTimeInMs}/>
+        <DreamInput refetchDreams={refetchDreams} dateTimeInMs={dateTimeInMs} setError={setError}/>
         <div>There doesn't seem to be any dreams this day.</div>
       </div>
     )

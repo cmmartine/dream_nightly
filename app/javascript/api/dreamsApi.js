@@ -1,9 +1,10 @@
 import { apiPostFetch } from "./apiUtil";
 
-export const postDreamsFromDate = (date_in_ms, setError) => {
+export const postDreamsFromDate = (dateInMs, userTimezone, setError) => {
   const postParams = {
     dream: {
-      time_in_ms: date_in_ms
+      time_in_ms: dateInMs,
+      user_timezone: userTimezone
     }
   };
 

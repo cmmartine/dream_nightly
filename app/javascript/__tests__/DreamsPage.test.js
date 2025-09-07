@@ -86,12 +86,13 @@ describe('DreamsPage', () => {
         const secondDateString = '2025-01-13';
         const secondDate = new Date(secondDateString);
         const secondDateInMs = secondDate.getTime();
+        const timezone = 'America/New_York'
         jest.useFakeTimers().setSystemTime(firstDateInMs);
         renderDreamsPage();
         const calendar = await screen.getByTestId('calendar');
         fireEvent.change(calendar, {target: {value: secondDateString}});
-        expect(dreamsApi.postDreamsFromDate).toHaveBeenCalledWith(firstDateInMs, mockSetError);
-        expect(dreamsApi.postDreamsFromDate).toHaveBeenCalledWith(secondDateInMs, mockSetError);
+        expect(dreamsApi.postDreamsFromDate).toHaveBeenCalledWith(firstDateInMs, timezone, mockSetError);
+        expect(dreamsApi.postDreamsFromDate).toHaveBeenCalledWith(secondDateInMs, timezone, mockSetError);
         expect(dreamsApi.postDreamsFromDate).toHaveBeenCalledTimes(2);
       });
     });

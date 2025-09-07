@@ -61,7 +61,7 @@ class DreamsController < ApplicationController
 
   def from_date
     date_time = convert_from_time_in_ms(dream_params[:time_in_ms])
-    filtered_dreams = current_user.dreams.filtered_from_date(date_time)
+    filtered_dreams = current_user.dreams.filtered_from_date(date_time, dream_params[:user_timezone])
     render json: filtered_dreams
   rescue StandardError => e
     Rails.logger.error "Dream filtering failed: #{e.message}"
@@ -71,7 +71,7 @@ class DreamsController < ApplicationController
   private
 
   def dream_params
-    params.require(:dream).permit(:body, :dream_id, :time_in_ms)
+    params.require(:dream).permit(:body, :dream_id, :time_in_ms, :user_timezone)
   end
 
   def convert_from_time_in_ms(time)

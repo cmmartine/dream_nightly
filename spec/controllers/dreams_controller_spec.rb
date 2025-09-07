@@ -249,7 +249,8 @@ RSpec.describe DreamsController, type: :controller do
     let(:invalid_dream_params) do
       {
         dream: {
-          time_in_ms: 'invalid_time'
+          time_in_ms: 'invalid_time',
+          user_timezone: 'no timezone'
         }
       }
     end
@@ -271,10 +272,53 @@ RSpec.describe DreamsController, type: :controller do
     context 'When the user is logged in' do
       login_user
 
-      it 'renders the filtered dream array' do
-        Dream.create(body: 'Test dream', user_id: user.id)
-        post :from_date, params: dream_params, as: :json
-        expect(response.body).to eq(filtered_dream_array.to_json)
+      it 'renders the filtered dream array with correct time zone' do
+        # Created with UTC
+        time = Time.new(2024, 1, 1, 8, 0, 0)
+        dream = Dream.create!(body: 'Test dream', user_id: user.id, created_at: time)
+
+        Time.use_zone('America/New_York') do
+          expected_time = Time.use_zone('America/New_York') do
+            Time.zone.parse(time.to_s)
+          end.to_i * 1000
+
+          params = {
+            dream: {
+              time_in_ms: time.to_i * 1000,
+              user_timezone: 'America/New_York'
+            }
+          }
+          post :from_date, params: params, as: :json
+          expected = [
+            {
+              id: dream.id,
+              body: dream.body,
+              ai_interpretation: dream.ai_interpretation,
+              lucid: dream.lucid,
+              created_at: expected_time
+            }
+          ]
+          expect(response.status).to eq(200)
+          expect(JSON.parse(response.body)).to eq(JSON.parse(expected.to_json))
+        end
+      end
+
+      it 'does not include dreams outside the requested date in the timezone' do
+        # Create a dream at 2024-01-02 03:00:00 UTC (which is 2024-01-01 22:00:00 EST)
+        time = Time.utc(2024, 1, 2, 3, 0, 0)
+        Dream.create!(body: 'Test dream', user_id: user.id, created_at: time)
+
+        # 2024-01-02 00:00:00 EST in UTC is 2024-01-02 05:00:00 UTC
+        time_to_get_dreams = Time.use_zone('America/New_York') { Time.zone.local(2024, 1, 2, 0, 0, 0) }
+        params = {
+          dream: {
+            time_in_ms: time_to_get_dreams.to_i * 1000,
+            user_timezone: 'America/New_York'
+          }
+        }
+        post :from_date, params: params, as: :json
+        # Should not include the UTC dream, since it's on 2024-01-01 in EST
+        expect(JSON.parse(response.body)).to be_empty
       end
 
       context 'and an error occurs' do

@@ -6,5 +6,6 @@ module.exports = {
   roots: ['./__tests__'],
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['./jestSetup.js'],
-  verbose: true
+  verbose: true,
+  globalSetup: './global-setup.js'
 };

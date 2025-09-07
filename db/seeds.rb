@@ -29,23 +29,32 @@ if Rails.env.development?
   dream_description10 = 'I was attending a lecture in a massive amphitheater carved into the side of a mountain. The professor was a talking owl wearing a tweed jacket, explaining quantum mechanics using floating holograms of dancing particles. Suddenly, the mountain cracked open and revealed a hidden city inside, where everyone communicated through musical notes. I wandered into a library made of crystal and opened a book that played back one of my forgotten memories like a movie. As I tried to leave, the owl stopped me and said, "You havent asked the right question yet."'
 
   create_for_days = [-3, -2, -1, 0, 1, 2, 3]
+  dreams_hours = [0, 1.1, 2.2, 3.3, 4.4, 5.5, 20.6, 21.7, 22.8, 23.9]
 
-  dreams_descriptions = {
-    1 => dream_description1,
-    2 => dream_description2,
-    3 => dream_description3,
-    4 => dream_description4,
-    5 => dream_description5,
-    6 => dream_description6,
-    7 => dream_description7,
-    8 => dream_description8,
-    9 => dream_description9,
-    10 => dream_description10
-  }
+  dreams_descriptions = [
+    dream_description1,
+    dream_description2,
+    dream_description3,
+    dream_description4,
+    dream_description5,
+    dream_description6,
+    dream_description7,
+    dream_description8,
+    dream_description9,
+    dream_description10
+  ]
 
   create_for_days.each do |num|
     rand(1..10).times do
-      Dream.create!(body: dreams_descriptions[rand(1..10)], user_id: user1.id, created_at: Time.now + num.day)
+      rand_dream = rand(0..9)
+      rand_hour = rand(0..9)
+      new_dream = Dream.new(
+        body: dreams_descriptions[rand_dream],
+        user_id: user1.id
+      )
+
+      new_dream.created_at = DateTime.new(DateTime.now.year, DateTime.now.month, (DateTime.now - num.day).day, dreams_hours[rand_hour])
+      new_dream.save!
     end
   end
 end

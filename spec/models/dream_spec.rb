@@ -12,17 +12,28 @@ RSpec.describe Dream, type: :model do
 
   describe 'self.from_date' do
     let(:user) { create_user_two_same_date_dreams }
-    let(:first_dream) { user.dreams.first }
-    let(:second_dream) { user.dreams.last }
-    let(:dreams_date) { '2024-11-23 08:38:19'.to_datetime }
+    let(:oldest_dream) { user.dreams.first }
+    let(:newest_dream) { user.dreams.last }
+    let(:dreams_date) { oldest_dream.created_at }
     let(:not_dreams_date) { '2000-01-01 00:00:00'.to_datetime }
+    let(:timezone) { 'America/New_York' }
 
-    it 'returns an array of dreams from the given date in ascending order' do
-      expect(user.dreams.from_date(dreams_date)).to eq([second_dream, first_dream])
+    it 'returns an array of dreams from the given date in descending order' do
+      expect(user.dreams.from_date(dreams_date, timezone)).to eq([newest_dream, oldest_dream])
     end
 
     it 'returns an EMPTY array if there are no dreams from the date' do
-      expect(user.dreams.from_date(not_dreams_date)).to eq([])
+      expect(user.dreams.from_date(not_dreams_date, timezone)).to eq([])
+    end
+
+    it 'only returns dreams on the date of the users timezone' do
+      # Create a dream at 2024-01-02 03:00:00 UTC (which is 2024-01-01 22:00:00 EST)
+      time = Time.utc(2024, 1, 2, 3, 0, 0)
+      first_dream = Dream.create!(body: 'Test dream', user_id: user.id, created_at: time)
+      # 2024-01-02 00:00:00 EST in UTC is 2024-01-02 05:00:00 UTC
+      second_time = Time.utc(2024, 1, 5, 0, 0, 0)
+      Dream.create!(body: 'Test dream2', user_id: user.id, created_at: second_time)
+      expect(user.dreams.from_date(first_dream.created_at, timezone)).to eq([first_dream])
     end
   end
 
@@ -30,6 +41,7 @@ RSpec.describe Dream, type: :model do
     let(:user) { create_user_with_dreams }
     let(:dream) { user.dreams.first }
     let(:dreams_date) { dream.created_at }
+    let(:timezone) { 'America/New_York' }
     let(:filtered_dream) do
       {
         id: dream.id,
@@ -42,11 +54,11 @@ RSpec.describe Dream, type: :model do
     let(:not_dreams_date) { '2000-01-01 00:00:00'.to_datetime }
 
     it 'returns an array of filtered dreams from the given date' do
-      expect(user.dreams.filtered_from_date(dreams_date)).to eq([filtered_dream])
+      expect(user.dreams.filtered_from_date(dreams_date, timezone)).to eq([filtered_dream])
     end
 
     it 'returns an EMPTY array if there are no dreams from the date' do
-      expect(user.dreams.filtered_from_date(not_dreams_date)).to eq([])
+      expect(user.dreams.filtered_from_date(not_dreams_date, timezone)).to eq([])
     end
   end
 

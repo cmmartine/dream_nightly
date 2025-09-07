@@ -4,12 +4,18 @@ class Dream < ApplicationRecord
   belongs_to :user
   validates :body, presence: true
 
-  def self.from_date(date_time)
-    where('created_at BETWEEN ? AND ?', date_time.beginning_of_day, date_time.end_of_day).order('id DESC')
+  def self.from_date(date_time, user_timezone)
+    Time.use_zone(user_timezone) do
+      target_date = Time.zone.parse(date_time.to_s)
+      start_of_day = target_date.beginning_of_day
+      end_of_day = target_date.end_of_day
+
+      where('created_at BETWEEN ? AND ?', start_of_day, end_of_day).order(created_at: :desc)
+    end
   end
 
-  def self.filtered_from_date(date_time)
-    from_date(date_time).map do |dream|
+  def self.filtered_from_date(date_time, user_timezone)
+    from_date(date_time, user_timezone).map do |dream|
       {
         id: dream.id,
         body: dream.body,
