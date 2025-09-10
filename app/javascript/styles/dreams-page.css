@@ -7,8 +7,10 @@
 }
 
 #calendar {
-  width: calc(95% - 5px); /* 30px to match dream container padding */
-  max-width: calc(595px - 30px); /* 30px to match dream container padding */
+  color-scheme: dark;
+  background: transparent;
+  border: none;
+  font-size: xx-large;
 }
 
 .dream-list {

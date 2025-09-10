@@ -8,10 +8,13 @@ export default function DreamsPage(props) {
   const { setError } = props;
   const [dreams, setDreams] = useState([]);
   const [dateTimeInMs, setDateTimeInMs] = useState();
+  const [calendarYear, setCalendarYear] = useState();
+  const [calendarMonth, setCalendarMonth] = useState();
+  const [calendarDay, setCalendarDay] = useState();
 
   useEffect(() => {
     const today = new Date();
-    setCalendarDate(today);
+    changeCalendarDate(today);
     const todayInMs = convertDateTimeToMs(today);
     setDateTimeInMs(todayInMs);
     retrieveDreamsFromDate(todayInMs);
@@ -23,13 +26,30 @@ export default function DreamsPage(props) {
     setDreams(data);
   };
 
-  const setCalendarDate = (date) => {
+  const setCalendarStateFromDate = (date) => {
+    const dateYear = date.getFullYear();
+    const dateMonth = formatDayOrMonth(date.getMonth() + 1);
+    const dateDay = formatDayOrMonth(date.getDate());
+    setCalendarYear(dateYear);
+    setCalendarMonth(dateMonth);
+    setCalendarDay(dateDay);
+    return `${dateYear}-${dateMonth}-${dateDay}`;
+  };
+
+  const changeCalendarDate = (date) => {
+    const dateForCalendar = setCalendarStateFromDate(date);
     let calendarElement = document.querySelector('input[type="date"]');
-    let dateYear = date.getFullYear();
-    let dateMonth = formatDayOrMonth(date.getMonth() + 1);
-    let dateDay = formatDayOrMonth(date.getDate());
-    let dateForCalendar = dateYear + '-' + dateMonth + '-' + dateDay;
-    calendarElement.value = dateForCalendar;
+    if (calendarElement) {
+      calendarElement.value = dateForCalendar;
+    }
+  };
+
+  const handleDateChange = (e) => {
+    const newDateTime = new Date(e.target.value);
+    setCalendarStateFromDate(newDateTime);
+    const newDateTimeInMs = convertDateTimeToMs(newDateTime);
+    setDateTimeInMs(newDateTimeInMs);
+    refetchDreams(newDateTimeInMs);
   };
 
   const formatDayOrMonth = (dayOrMonth) => {
@@ -51,13 +71,6 @@ export default function DreamsPage(props) {
     retrieveDreamsFromDate(dreamsToFetch);
   };
 
-  const handleDateChange = (e) => {
-    let newDateTime = new Date(e.target.value);
-    let newDateTimeInMs = convertDateTimeToMs(newDateTime);
-    setDateTimeInMs(newDateTimeInMs);
-    refetchDreams(newDateTimeInMs);
-  };
-
   const handleDreamDeletion = (deletedDreamId) => {
     for(let i = 0; i < dreams.length; i++) {
       if(dreams[i].id === deletedDreamId) {
@@ -73,7 +86,7 @@ export default function DreamsPage(props) {
         <input id='calendar' type='date' data-testid='calendar' onChange={(e) => {
           handleDateChange(e);
         }}></input>
-        <DreamInput refetchDreams={refetchDreams} dateTimeInMs={dateTimeInMs} setError={setError}/>
+        <DreamInput refetchDreams={refetchDreams} calendarYear={calendarYear} calendarMonth={calendarMonth} calendarDay={calendarDay} convertDateTimeToMs={convertDateTimeToMs} setError={setError}/>
         {setUpDreams()}
       </div>
     );
@@ -83,7 +96,7 @@ export default function DreamsPage(props) {
         <input id='calendar' type='date' data-testid='calendar' onChange={(e) => {
           handleDateChange(e);
         }}></input>
-        <DreamInput refetchDreams={refetchDreams} dateTimeInMs={dateTimeInMs} setError={setError}/>
+        <DreamInput refetchDreams={refetchDreams} calendarYear={calendarYear} calendarMonth={calendarMonth} calendarDay={calendarDay} convertDateTimeToMs={convertDateTimeToMs} setError={setError}/>
         <div>There doesn't seem to be any dreams this day.</div>
       </div>
     )

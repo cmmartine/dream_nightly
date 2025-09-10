@@ -9,14 +9,31 @@
 
 #dream-input-textarea {
   height: 80px;
+  color-scheme: dark;
+  background-color: #4e238880;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+#dream-input-time {
+  color-scheme: dark;
+  background: transparent;
+  border: none;
+  font-size: large;
 }
 
 .input-btn {
   align-self: flex-end;
-  margin-top: 10px;
 }
 
 .edit-form {
   width: 80%;
   align-self: center;
+}
+
+.dream-input-bottom-row {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

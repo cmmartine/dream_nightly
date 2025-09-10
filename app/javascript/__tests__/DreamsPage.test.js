@@ -47,6 +47,24 @@ describe('DreamsPage', () => {
   });
 
   describe('the calendar', () => {
+      it('updates calendar state and input value when changeCalendarDate is called', async () => {
+      renderDreamsPage();
+      const calendar = await screen.getByTestId('calendar');
+      fireEvent.change(calendar, { target: { value: '2025-07-15' } });
+      expect(calendar.value).toBe('2025-07-15');
+    });
+
+    it('sets calendar input to today on mount', async () => {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = (today.getMonth() + 1).toString().padStart(2, '0');
+      const dd = today.getDate().toString().padStart(2, '0');
+      const todayString = `${yyyy}-${mm}-${dd}`;
+      renderDreamsPage();
+      const calendar = await screen.getByTestId('calendar');
+      expect(calendar.value).toBe(todayString);
+    });
+
     describe('For a date with month and day less than 10', () => {
       it('Correctly sets the calendars date for 01-01', async () => {
         jest.useFakeTimers().setSystemTime(new Date('January 01, 2025 00:00:00'));
