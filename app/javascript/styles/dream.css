@@ -21,13 +21,13 @@
 .dream-top-row-container {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 15px;
 }
 
 .dream-body {
   display: flex;
   width: 90%;
   align-self: center;
+  margin: 10px 0px;
 }
 
 .lucide--edit::after {
@@ -57,4 +57,10 @@
 .lucide--x:hover {
   background-color: #9059f0;
   border-radius: 4px;
+}
+
+@media (max-width: 600px) {
+  .dream-container {
+    width: 90%;
+  }
 }

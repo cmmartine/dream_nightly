@@ -23,11 +23,26 @@
 
   <body>
     <% if notice.present? %>
-      <p class="notice"><%= notice %></p>
+      <div id="flash-container">
+        <p class="flash-notice"><%= notice %></p>
+      </div>
     <% end %>
     <% if alert.present? %>
-      <p class="alert"><%= alert %></p>
+      <div id="flash-container">
+        <p class="flash-alert"><%= alert %></p>
+      </div>
     <% end %>
     <%= yield %>
   </body>
 </html>
+
+
+<script>
+  const flashContainer = document.getElementById("flash-container");
+
+  if(flashContainer) {
+    setTimeout(() => {
+      flashContainer.remove();
+    }, 4000)
+  }
+</script>

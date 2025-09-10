@@ -58,7 +58,7 @@
   background: rgb(127, 27, 242);
 }
 
-@media (max-width: 320px) {
+@media (max-width: 600px) {
   .devise-container {
     width: 82%;
   }

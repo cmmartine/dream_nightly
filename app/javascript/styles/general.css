@@ -53,3 +53,9 @@ a:hover {
 .gen-btn:hover {
   background-color: #9059f0;
 }
+
+#flash-container {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+}

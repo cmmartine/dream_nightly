@@ -1,8 +1,8 @@
 #dream-input-form {
   display: flex;
   flex-direction: column;
-  width: 95%;
-  max-width: calc(600px - 30px); /* 30px to match dream container padding */;
+  width: 600px;
+  max-width: 90%;
   margin-top: 15px;
   margin-bottom: 20px;
 }
@@ -20,10 +20,11 @@
   background: transparent;
   border: none;
   font-size: large;
+  width: 110px;
 }
 
-.input-btn {
-  align-self: flex-end;
+.save-btn {
+  align-self: flex-start;
 }
 
 .edit-form {
@@ -36,4 +37,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.confirm-delete-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.confirm-delete-btn {
+  margin-top: 5px;
+  margin-right: 5px;
 }

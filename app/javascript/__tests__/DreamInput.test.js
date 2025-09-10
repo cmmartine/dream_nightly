@@ -15,6 +15,7 @@ describe('DreamInput', () => {
 
   const convertDateTimeToMs = jest.fn();
   const setError = jest.fn();
+  const removeDreamFromPage = jest.fn();
 
   function renderNewDreamInput() {
     return render(
@@ -24,7 +25,7 @@ describe('DreamInput', () => {
 
   function renderEditingDreamInput() {
     return render(
-      <DreamInput dreamBody={editDreamBody} dreamId={1} updateDreamBody={jest.fn()} calendarYear={calendarYear} calendarMonth={calendarMonth} calendarDay={calendarDay} convertDateTimeToMs={convertDateTimeToMs} setError={setError}/>
+      <DreamInput dreamBody={editDreamBody} dreamId={1} updateDreamBody={jest.fn()} calendarYear={calendarYear} calendarMonth={calendarMonth} calendarDay={calendarDay} convertDateTimeToMs={convertDateTimeToMs} removeDreamFromPage={removeDreamFromPage} setError={setError}/>
     )
   };
 
@@ -120,6 +121,42 @@ describe('DreamInput', () => {
       renderEditingDreamInput();
       const timeInput = await screen.queryByLabelText('Dream time selector');
       expect(timeInput).not.toBeInTheDocument();
+    });
+
+    describe('Dream deletion', () => {
+
+      beforeEach(async () => {
+        jest.spyOn(dreamsApi, 'postDeleteDream').mockReturnValue(null);
+      });
+
+      afterEach(async () => {
+        jest.clearAllMocks();
+      });
+
+      it('shows confirmation dialog when Delete is clicked', async () => {
+        renderEditingDreamInput();
+        await userEvent.click(screen.getByRole('button', { name: /Delete/i }));
+        expect(screen.getByText(/Confirm dream deletion/i)).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Cancel/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Delete/i })).toBeInTheDocument();
+      });
+
+      it('cancels deletion when Cancel is clicked', async () => {
+        renderEditingDreamInput();
+        await userEvent.click(screen.getByRole('button', { name: /Delete/i }));
+        await userEvent.click(screen.getByRole('button', { name: /Cancel/i }));
+        expect(screen.queryByText(/Confirm dream deletion/i)).not.toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Delete/i })).toBeInTheDocument();
+      });
+
+      it('calls removeDreamFromPage and postDeleteDream when confirmed', async () => {
+        renderEditingDreamInput();
+        await userEvent.click(screen.getByRole('button', { name: /Delete/i }));
+        const deleteButton = screen.getByRole('button', { name: /Delete/i });
+        await userEvent.click(deleteButton);
+        expect(dreamsApi.postDeleteDream).toHaveBeenCalledWith(1, setError);
+        expect(removeDreamFromPage).toHaveBeenCalledWith(1);
+      });
     });
   });
 });

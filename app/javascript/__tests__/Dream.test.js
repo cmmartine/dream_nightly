@@ -71,43 +71,4 @@ describe('Dream', () => {
       });
     });
   });
-
-  describe('Dream deletion', () => {
-
-    beforeEach(async () => {
-      jest.spyOn(dreamsApi, 'postDeleteDream').mockReturnValue(null);
-    });
-
-    afterEach(async () => {
-      jest.clearAllMocks();
-    });
-
-    it('shows confirmation dialog when Delete is clicked', async () => {
-      renderDream(aDream);
-      await userEvent.click(screen.getByTestId('expand-btn'));
-      await userEvent.click(screen.getByRole('button', { name: /Delete/i }));
-      expect(screen.getByText(/Confirm dream deletion/i)).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /Cancel/i })).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /Delete/i })).toBeInTheDocument();
-    });
-
-    it('cancels deletion when Cancel is clicked', async () => {
-      renderDream(aDream);
-      await userEvent.click(screen.getByTestId('expand-btn'));
-      await userEvent.click(screen.getByRole('button', { name: /Delete/i }));
-      await userEvent.click(screen.getByRole('button', { name: /Cancel/i }));
-      expect(screen.queryByText(/Confirm dream deletion/i)).not.toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /Delete/i })).toBeInTheDocument();
-    });
-
-    it('calls removeDreamFromPage and postDeleteDream when confirmed', async () => {
-      renderDream(aDream);
-      await userEvent.click(screen.getByTestId('expand-btn'));
-      await userEvent.click(screen.getByRole('button', { name: /Delete/i }));
-      const deleteButton = screen.getByRole('button', { name: /Delete/i });
-      await userEvent.click(deleteButton);
-      expect(dreamsApi.postDeleteDream).toHaveBeenCalledWith(aDream.id, setError);
-      expect(removeDreamFromPage).toHaveBeenCalledWith(aDream.id);
-    });
-  });
 });

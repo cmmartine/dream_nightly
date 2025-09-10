@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { postCreateDream, postUpdateDream } from "../api/dreamsApi";
+import { postCreateDream, postUpdateDream, postDeleteDream } from "../api/dreamsApi";
 
 export default function DreamInput(props) {
   const {
@@ -12,9 +12,11 @@ export default function DreamInput(props) {
     calendarMonth,
     calendarDay,
     convertDateTimeToMs,
+    removeDreamFromPage,
     setError 
   } = props;
   const [formText, setFormText] = useState(checkDreamBody());
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
   useEffect(() => {
     setTimeInputValue(currentTime());
@@ -60,15 +62,34 @@ export default function DreamInput(props) {
     }
   };
 
+  function deleteDream() {
+    postDeleteDream(dreamId, setError);
+    removeDreamFromPage(dreamId);
+  };
+
   return(
     <form id='dream-input-form' className={formClass}>
       <textarea id='dream-input-textarea' aria-label='enter-dream' spellCheck='true' placeHolder='Enter a dream...' value={formText} onChange={(e) => {
         setFormText(e.target.value);
       }}/>
       <div className='dream-input-bottom-row'>
+        {
+          dreamBody && !showConfirmDelete &&
+            <button className='gen-btn' onClick={() => {setShowConfirmDelete(true)}}>Delete</button>
+        }
+        {
+          dreamBody && showConfirmDelete &&
+          <div className='confirm-delete-container'>
+            <div>Confirm dream deletion?</div>
+            <div>
+              <button className='gen-btn confirm-delete-btn' onClick={() => {setShowConfirmDelete(false)}}>Cancel</button>
+              <button className='gen-btn confirm-delete-btn' onClick={() => {deleteDream()}}>Delete</button>
+            </div>
+          </div>
+        }
         {/* Update dream updating to allow time change? */}
         {!dreamBody && <input id='dream-input-time' type='time' aria-label='Dream time selector'/>}
-        <button id='save-dream-btn' className='input-btn gen-btn' type='submit' onClick={(e) => {
+        <button id='save-dream-btn' className='save-btn gen-btn' type='submit' onClick={(e) => {
           e.preventDefault();
           if (formText != '') {
             saveDream();
