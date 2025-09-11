@@ -1,0 +1,28 @@
+.info-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.info-call-to-action {
+  display: flex;
+  justify-content: center;
+}
+
+.info-text {
+  width: 600px;
+  max-width: 600px;
+}
+
+@media (max-width: 600px) {
+  .info-call-to-action {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .info-text {
+    width: 90%
+  }
+}

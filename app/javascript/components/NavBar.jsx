@@ -1,6 +1,6 @@
 import React from "react";
 import Dropdown from "./Dropdown";
-import { redirectToSignIn, redirectToSignUp } from "../api/usersApi";
+import { redirectToHome, redirectToSignIn, redirectToSignUp } from "../api/usersApi";
 import { appName } from "../constants/appInfo";
 
 export default function NavBar(props) {
@@ -8,7 +8,9 @@ export default function NavBar(props) {
 
   return(
     <nav>
-      <h1 className='navbar-title'>{appName}</h1>
+      <h1 className='navbar-title' onClick={() => {
+        redirectToHome();
+      }}>{appName}</h1>
       {
         userStatus && <Dropdown/>
       }

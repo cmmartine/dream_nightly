@@ -6,14 +6,6 @@
   margin-top: 25px;
 }
 
-#calendar {
-  color-scheme: dark;
-  background: transparent;
-  border: none;
-  font-size: xx-large;
-  width: 200px;
-}
-
 .dream-list {
   display: flex;
   flex-direction: column;

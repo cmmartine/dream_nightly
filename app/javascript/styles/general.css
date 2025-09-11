@@ -4,6 +4,8 @@
 @import './dream.css';
 @import './dream-input.css';
 @import './navbar.css';
+@import './info-page.css';
+@import './dreams-calendar.css';
 
 body {
   margin: 0;
@@ -13,6 +15,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
+  min-width: 200px;
   max-width: 100vw;
   background: rgb(59, 10, 115);
   background: radial-gradient(circle, rgba(59,10,115,1) 0%, rgba(19,2,27,1) 75%);

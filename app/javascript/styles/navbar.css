@@ -13,9 +13,18 @@ nav {
   align-content: center;
 }
 
+.navbar-title:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .session-btns-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 150px;
+}
+
+.session-btn {
+  margin-left: 10px;
 }

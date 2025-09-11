@@ -14,12 +14,8 @@
   max-width: 1920px;
   width: 40%;
   height: fit-content;
-  background: rgb(30, 30, 30);
-  border-top: 2px solid rgb(90, 90, 90);
-  border-left: 2px solid rgb(90, 90, 90);
-  border-right: 2px solid rgb(43, 43, 43);
-  border-bottom: 2px solid rgb(43, 43, 43);
-  border-radius: 5px;
+  background: transparent;
+  border: none;
   margin-top: 10px;
   padding: 10px 25px;
 }
@@ -39,19 +35,15 @@
 }
 
 .devise-btn {
-  background: rgb(100, 1, 213);
+  width: 72px;
+  height: 25px;
+  background-color: #723cd1;
   color: white;
-  border: none;
-  font-weight: bold;
-  border: 2px solid black;
-  box-shadow: 0.15em 0.15em 0.15em rgb(36, 36, 36);
-  height: 35px;
-  width: fit-content;
-  padding: 5px;
+  margin-top: 10px;
 }
 
 .devise-btn:hover {
-  background: rgb(148, 54, 255);
+  background-color: #9059f0;
 }
 
 .devise-btn:active {

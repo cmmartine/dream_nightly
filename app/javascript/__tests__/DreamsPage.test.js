@@ -1,7 +1,6 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import DreamsPage from "../components/DreamsPage";
 import * as dreamsApi from "../api/dreamsApi";
-import userEvent from "@testing-library/user-event";
 
 jest.mock('../components/DreamInput', () => () => {
   const MockDreamInput = 'DreamInput';
@@ -44,76 +43,6 @@ describe('DreamsPage', () => {
 
   afterEach(async () => {
     jest.clearAllMocks();
-  });
-
-  describe('the calendar', () => {
-      it('updates calendar state and input value when changeCalendarDate is called', async () => {
-      renderDreamsPage();
-      const calendar = await screen.getByTestId('calendar');
-      fireEvent.change(calendar, { target: { value: '2025-07-15' } });
-      expect(calendar.value).toBe('2025-07-15');
-    });
-
-    it('sets calendar input to today on mount', async () => {
-      const today = new Date();
-      const yyyy = today.getFullYear();
-      const mm = (today.getMonth() + 1).toString().padStart(2, '0');
-      const dd = today.getDate().toString().padStart(2, '0');
-      const todayString = `${yyyy}-${mm}-${dd}`;
-      renderDreamsPage();
-      const calendar = await screen.getByTestId('calendar');
-      expect(calendar.value).toBe(todayString);
-    });
-
-    describe('For a date with month and day less than 10', () => {
-      it('Correctly sets the calendars date for 01-01', async () => {
-        jest.useFakeTimers().setSystemTime(new Date('January 01, 2025 00:00:00'));
-        renderDreamsPage();
-        const calendar = await screen.getByTestId('calendar');
-        expect(calendar.value).toBe('2025-01-01')
-      });
-
-      it('Correctly sets the calendars date for 09-09', async () => {
-        jest.useFakeTimers().setSystemTime(new Date('September 09, 2025 00:00:00'));
-        renderDreamsPage();
-        const calendar = await screen.getByTestId('calendar');
-        expect(calendar.value).toBe('2025-09-09')
-      });
-    });
-
-    describe('For a date with month and day 10 or greater', () => {
-      it('Correctly sets the calendars date for 10-10', async () => {
-        jest.useFakeTimers().setSystemTime(new Date('October 10, 2025 00:00:00'));
-        renderDreamsPage();
-        const calendar = await screen.getByTestId('calendar');
-        expect(calendar.value).toBe('2025-10-10')
-      });
-
-      it('Correctly sets the calendars date for 12-25', async () => {
-        jest.useFakeTimers().setSystemTime(new Date('December 25, 2025 00:00:00'));
-        renderDreamsPage();
-        const calendar = await screen.getByTestId('calendar');
-        expect(calendar.value).toBe('2025-12-25')
-      });
-    });
-
-    describe('When a new date is selected', () => {
-      it('fetches the dreams from the new date', async () => {
-        const firstDate = new Date('January 12, 2025 00:00:00');
-        const firstDateInMs = firstDate.getTime()
-        const secondDateString = '2025-01-13';
-        const secondDate = new Date(secondDateString);
-        const secondDateInMs = secondDate.getTime();
-        const timezone = 'America/New_York'
-        jest.useFakeTimers().setSystemTime(firstDateInMs);
-        renderDreamsPage();
-        const calendar = await screen.getByTestId('calendar');
-        fireEvent.change(calendar, {target: {value: secondDateString}});
-        expect(dreamsApi.postDreamsFromDate).toHaveBeenCalledWith(firstDateInMs, timezone, mockSetError);
-        expect(dreamsApi.postDreamsFromDate).toHaveBeenCalledWith(secondDateInMs, timezone, mockSetError);
-        expect(dreamsApi.postDreamsFromDate).toHaveBeenCalledTimes(2);
-      });
-    });
   });
 
   it('shows all dreams returned from api call', async () => {

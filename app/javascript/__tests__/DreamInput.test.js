@@ -31,7 +31,7 @@ describe('DreamInput', () => {
 
   const returnValue = { status: 'created' }
 
-  beforeEach(async () => {
+  beforeEach(() => {
     jest.spyOn(dreamsApi, 'postCreateDream').mockReturnValue(returnValue);
     jest.spyOn(dreamsApi, 'postUpdateDream');
     convertDateTimeToMs.mockReturnValue(dateInMsForPost);

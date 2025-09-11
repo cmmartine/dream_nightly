@@ -5,6 +5,10 @@ export const getUserStatus = (setError) => {
   return apiGetFetch('/users/status', setError);
 };
 
+export const redirectToHome = () => {
+  location.href = "/"
+};
+
 export const logout = () => {
   let csrf = getCsrfToken();
   fetch('/users/sign_out', {

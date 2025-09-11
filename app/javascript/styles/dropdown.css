@@ -103,6 +103,7 @@ menu {
 
 .logout-btn:hover {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 @media (max-width: 600px) {
