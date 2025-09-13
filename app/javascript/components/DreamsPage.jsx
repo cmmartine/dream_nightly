@@ -4,6 +4,7 @@ import { postDreamsFromDate } from "../api/dreamsApi";
 import Dream from "./Dream";
 import DreamInput from "./DreamInput";
 import DreamsCalendar from "./DreamsCalendar";
+import * as NONVALID_DREAM_DATE from "../constants/shared/NONVALID_DREAM_DATE.json"
 
 export default function DreamsPage(props) {
   const { setError } = props;
@@ -14,10 +15,10 @@ export default function DreamsPage(props) {
   const [calendarDay, setCalendarDay] = useState();
 
   useEffect(() => {
-    if(!dateTimeInMs) return;
-
+    setDreams([]);
+    if(!dateTimeInMs || isDateOutsideAllowedRange()) return;
     retrieveDreamsFromDate(dateTimeInMs);
-  }, [dateTimeInMs]);
+  }, [dateTimeInMs, calendarYear, calendarMonth, calendarDay]);
 
   const retrieveDreamsFromDate = async (dateTimeInMs) => {
     const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -51,10 +52,23 @@ export default function DreamsPage(props) {
     return dateTime.getTime();
   };
 
+  function isDateOutsideAllowedRange() {
+    if(!calendarYear || !calendarMonth || !calendarDay) return;
+
+    const dateMs = new Date(calendarYear, calendarMonth - 1, calendarDay).getTime();
+    const now = new Date();
+    const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    const tomorrowMs = tomorrow.getTime();
+    const validYear = Number(calendarYear) > Number(NONVALID_DREAM_DATE.BEFORE_YEAR);
+    return !(dateMs < tomorrowMs) || !validYear;
+  };
+
   return(
     <div className='dreams-page-container'>
       <DreamsCalendar setDateTimeInMs={setDateTimeInMs} convertDateTimeToMs={convertDateTimeToMs} setCalendarDay={setCalendarDay} setCalendarMonth={setCalendarMonth} setCalendarYear={setCalendarYear}/>
+      {!isDateOutsideAllowedRange() && 
       <DreamInput refetchDreams={refetchDreams} calendarYear={calendarYear} calendarMonth={calendarMonth} calendarDay={calendarDay} convertDateTimeToMs={convertDateTimeToMs} setError={setError}/>
+      }
       {setUpDreams() || <div>There doesn't seem to be any dreams this day.</div>}
     </div>
   );

@@ -6,8 +6,8 @@ import * as dreamsApi from "../api/dreamsApi";
 describe('DreamInput', () => {
   const editDreamBody = 'Test Body';
   const calendarYear = '2025';
-  const calendarMonth = '10'
-  const calendarDay = '10';
+  const calendarMonth = '09'
+  const calendarDay = '09';
   const hours = 10;
   const minutes = 10;
   const dateForPost = new Date(calendarYear, calendarMonth - 1, calendarDay, hours, minutes);
@@ -33,12 +33,13 @@ describe('DreamInput', () => {
 
   beforeEach(() => {
     jest.spyOn(dreamsApi, 'postCreateDream').mockReturnValue(returnValue);
-    jest.spyOn(dreamsApi, 'postUpdateDream');
+    jest.spyOn(dreamsApi, 'postUpdateDream').mockReturnValue('');
     convertDateTimeToMs.mockReturnValue(dateInMsForPost);
   });
 
   afterEach(() => {
     jest.restoreAllMocks();
+    jest.useRealTimers();
   })
 
   describe('When the props are for a new dream', () => {

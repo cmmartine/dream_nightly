@@ -17,6 +17,7 @@ describe('DreamsCalendar', () => {
 
   afterEach(async() => {
     jest.clearAllMocks();
+    jest.useRealTimers();
   });
 
   it('updates state when calendar values are changed', async () => {

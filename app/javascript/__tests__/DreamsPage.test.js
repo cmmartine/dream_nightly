@@ -7,6 +7,16 @@ jest.mock('../components/DreamInput', () => () => {
   return <MockDreamInput data-testid='mock-dream-input'/>
 });
 
+let mockCalendarDate;
+
+jest.mock('../components/DreamsCalendar', () => (props) => {
+  props.setCalendarYear(mockCalendarDate.getFullYear());
+  props.setCalendarMonth(mockCalendarDate.getMonth() + 1);
+  props.setCalendarDay(mockCalendarDate.getDate());
+  props.setDateTimeInMs(mockCalendarDate.getTime());
+  return <div data-testid="mock-dreams-calendar" />;
+});
+
 describe('DreamsPage', () => {
   let dreamBody1 = 'First dream';
   let dreamBody2 = 'Second dream';
@@ -46,6 +56,7 @@ describe('DreamsPage', () => {
   });
 
   it('shows all dreams returned from api call', async () => {
+    mockCalendarDate = new Date(2025, 8, 12);
     renderDreamsPage();
     expect(dreamsApi.postDreamsFromDate).toBeCalled();
     expect(await screen.findByText(dreamBody1)).toBeInTheDocument();
@@ -53,7 +64,28 @@ describe('DreamsPage', () => {
   });
 
   it('shows a new dream input form', async () => {
+    mockCalendarDate = new Date(2025, 8, 12);
     renderDreamsPage();
     expect(await screen.findByTestId('mock-dream-input')).toBeInTheDocument();
+  });
+
+  it('does not show dream input form when date is invalid', async () => {
+    mockCalendarDate = new Date(2000, 0, 1);
+    renderDreamsPage();
+    expect(await screen.queryByTestId('mock-dream-input')).not.toBeInTheDocument();
+  });
+
+  it('does not call dreams API for date before 2010', async () => {
+    mockCalendarDate = new Date(2000, 0, 1);
+    renderDreamsPage();
+    expect(dreamsApi.postDreamsFromDate).not.toBeCalled();
+  });
+
+  it('does not call dreams API for date after today', async () => {
+    const now = new Date();
+    const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    mockCalendarDate = tomorrow;
+    renderDreamsPage();
+    expect(dreamsApi.postDreamsFromDate).not.toBeCalled();
   });
 });

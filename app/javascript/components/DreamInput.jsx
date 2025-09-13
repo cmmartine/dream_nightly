@@ -21,7 +21,8 @@ export default function DreamInput(props) {
 
   useEffect(() => {
     setTimeValue(currentTime());
-  }, [calendarDay, calendarMonth, calendarYear]);
+  }, []);
+
 
   const formClass = dreamBody ? 'edit-form' : null;
 
@@ -63,22 +64,32 @@ export default function DreamInput(props) {
 
   return(
     <form id='dream-input-form' className={formClass}>
-      <textarea id='dream-input-textarea' aria-label='enter-dream' spellCheck='true' placeHolder='Enter a dream...' value={formText} onChange={(e) => {
+      <textarea id='dream-input-textarea' aria-label='enter-dream' spellCheck='true' placeholder='Enter a dream...' value={formText}onChange={(e) => {
+        e.preventDefault();
         setFormText(e.target.value);
       }}/>
       <div className='dream-input-bottom-row'>
         {
           dreamBody && !showConfirmDelete &&
-            <button className='gen-btn' onClick={() => {setShowConfirmDelete(true)}}>Delete</button>
+            <button className='gen-btn' onClick={(e) => {
+              e.preventDefault();
+              setShowConfirmDelete(true)
+            }}>Delete</button>
         }
         {
           dreamBody && showConfirmDelete &&
           <div className='confirm-delete-container'>
-            <div>Confirm dream deletion?</div>
             <div>
-              <button className='gen-btn confirm-delete-btn' onClick={() => {setShowConfirmDelete(false)}}>Cancel</button>
-              <button className='gen-btn confirm-delete-btn' onClick={() => {deleteDream()}}>Delete</button>
+              <button className='gen-btn confirm-delete-btn' onClick={(e) => {
+                e.preventDefault();
+                setShowConfirmDelete(false)
+              }}>Cancel</button>
+              <button className='gen-btn confirm-delete-btn' onClick={(e) => {
+                e.preventDefault();
+                deleteDream()
+              }}>Delete</button>
             </div>
+            <div>Confirm dream deletion?</div>
           </div>
         }
         {/* Update dream updating to allow time change? */}

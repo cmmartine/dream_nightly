@@ -28,7 +28,7 @@ if Rails.env.development?
   dream_description9 = 'I was baking a cake in a kitchen that kept shifting locations. One moment I was in a cozy cabin, the next I was on a boat in the middle of a storm. The cake kept changing flavors every time I looked away—chocolate, then lemon, then something glowing and blue.'
   dream_description10 = 'I was attending a lecture in a massive amphitheater carved into the side of a mountain. The professor was a talking owl wearing a tweed jacket, explaining quantum mechanics using floating holograms of dancing particles. Suddenly, the mountain cracked open and revealed a hidden city inside, where everyone communicated through musical notes. I wandered into a library made of crystal and opened a book that played back one of my forgotten memories like a movie. As I tried to leave, the owl stopped me and said, "You havent asked the right question yet."'
 
-  create_for_days = [-3, -2, -1, 0, 1, 2, 3]
+  create_for_days = [-5, -4, -3, -2, -1, 0]
   dreams_hours = [0, 1.1, 2.2, 3.3, 4.4, 5.5, 20.6, 21.7, 22.8, 23.9]
 
   dreams_descriptions = [
@@ -53,7 +53,7 @@ if Rails.env.development?
         user_id: user1.id
       )
 
-      new_dream.created_at = DateTime.new(DateTime.now.year, DateTime.now.month, (DateTime.now - num.day).day, dreams_hours[rand_hour])
+      new_dream.created_at = DateTime.new(DateTime.now.year, DateTime.now.month, (DateTime.now + num.day).day, dreams_hours[rand_hour])
       new_dream.save!
     end
   end
