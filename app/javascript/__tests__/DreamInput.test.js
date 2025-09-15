@@ -12,6 +12,7 @@ describe('DreamInput', () => {
   const minutes = 10;
   const dateForPost = new Date(calendarYear, calendarMonth - 1, calendarDay, hours, minutes);
   const dateInMsForPost = dateForPost.getTime();
+  const timezone = 'America/New_York';
 
   const convertDateTimeToMs = jest.fn();
   const setError = jest.fn();
@@ -50,7 +51,7 @@ describe('DreamInput', () => {
         const saveBtn = document.getElementById('save-dream-btn');
         await userEvent.type(textArea, 'Hello');
         await userEvent.click(saveBtn);
-        expect(dreamsApi.postCreateDream).toHaveBeenCalledWith('Hello', dateInMsForPost, setError);
+        expect(dreamsApi.postCreateDream).toHaveBeenCalledWith('Hello', dateInMsForPost, timezone, setError);
         expect(dreamsApi.postUpdateDream).not.toHaveBeenCalled();
       });
 

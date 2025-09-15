@@ -51,7 +51,8 @@ export default function DreamInput(props) {
       updateDreamBody(formText);
       postUpdateDream(dreamId, formText, setError);
     } else {
-       const data = await postCreateDream(formText, createdAtTimeInMs(), setError);
+      const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+       const data = await postCreateDream(formText, createdAtTimeInMs(), userTimeZone, setError);
        data.status == 'created' ? refetchDreams() : null;
        setFormText('');
     }

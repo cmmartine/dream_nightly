@@ -83,4 +83,31 @@ RSpec.describe Dream, type: :model do
       expect(dream.created_at_in_ms).to eq(1_732_351_099_000)
     end
   end
+
+  describe 'self.valid_range?' do
+    let(:valid_time) { Time.now.to_i * 1000 }
+    let(:invalid_future_time) { (Time.now + 2.days).to_i }
+    let(:invalid_past_time) { Time.new(Constants::NONVALID_DREAM_DATE['BEFORE_YEAR']).beginning_of_year.to_i }
+    let(:user_timezone) { 'America/New_York' }
+
+    it 'returns false if there is no date_time' do
+      expect(Dream.valid_range?(nil, user_timezone)).to eq(false)
+    end
+
+    it 'returns false if there is no user_timezone' do
+      expect(Dream.valid_range?(valid_time, nil)).to eq(false)
+    end
+
+    it 'returns false if date is before valid range' do
+      expect(Dream.valid_range?(invalid_past_time, user_timezone)).to eq(false)
+    end
+
+    it 'returns false if date is after valid range' do
+      expect(Dream.valid_range?(invalid_future_time, user_timezone)).to eq(false)
+    end
+
+    it 'returns true when time is within range and there is a timezone' do
+      expect(Dream.valid_range?(valid_time, user_timezone)).to eq(true)
+    end
+  end
 end

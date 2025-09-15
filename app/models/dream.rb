@@ -33,4 +33,16 @@ class Dream < ApplicationRecord
   def created_at_in_ms
     created_at.to_i * 1000
   end
+
+  def self.valid_range?(date_time, user_timezone)
+    return false unless user_timezone && date_time
+
+    converted_date_time = date_time / 1000
+
+    Time.use_zone(user_timezone) do
+      invalid_before_date = Time.new(Constants::NONVALID_DREAM_DATE['BEFORE_YEAR']).end_of_year.to_i
+      invalid_after_date = (Time.now + 1.day).beginning_of_day.to_i
+      converted_date_time > invalid_before_date && converted_date_time <= invalid_after_date
+    end
+  end
 end

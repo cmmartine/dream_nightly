@@ -11,11 +11,12 @@ export const postDreamsFromDate = (dateInMs, userTimezone, setError) => {
   return apiPostFetch('dreams/from_date', postParams, setError);
 };
 
-export const postCreateDream = (dreamBody, dateTimeInMs, setError) => {
+export const postCreateDream = (dreamBody, dateTimeInMs, userTimezone, setError) => {
   const postParams = {
     dream: {
       body: dreamBody,
-      time_in_ms: dateTimeInMs
+      time_in_ms: dateTimeInMs,
+      user_timezone: userTimezone
     }
   };
 

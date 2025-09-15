@@ -8,7 +8,8 @@ RSpec.describe DreamsController, type: :controller do
     dream_params = {
       dream: {
         body: 'Test dream',
-        time_in_ms: Time.now.to_i * 1000
+        time_in_ms: Time.now.to_i * 1000,
+        user_timezone: 'America/New_York'
       }
     }
     context 'When the user is logged in' do
@@ -33,51 +34,93 @@ RSpec.describe DreamsController, type: :controller do
         invalid_dream_body_params = {
           dream: {
             body: '',
-            time_in_ms: Time.now.to_i * 1000
+            time_in_ms: Time.now.to_i * 1000,
+            user_timezone: 'America/New_York'
           }
         }
 
         nil_dream_time_params = {
           dream: {
             body: 'dream',
-            time_in_ms: nil
+            time_in_ms: nil,
+            user_timezone: 'America/New_York'
           }
         }
 
         invalid_dream_time_params = {
           dream: {
             body: 'dream',
-            time_in_ms: 'invalid_time'
+            time_in_ms: 'invalid_time',
+            user_timezone: 'America/New_York'
           }
         }
 
-        before do
-          post :create, params: invalid_dream_body_params, as: :json
-        end
+        date_greater_than_valid_range = {
+          dream: {
+            body: 'dream',
+            time_in_ms: (Time.now + 2.days).to_i * 1000,
+            user_timezone: 'America/New_York'
+          }
+        }
+
+        date_less_than_valid_range = {
+          dream: {
+            body: 'dream',
+            time_in_ms: Time.new(Constants::NONVALID_DREAM_DATE['BEFORE_YEAR']).end_of_year.to_i,
+            user_timezone: 'America/New_York'
+          }
+        }
 
         context 'when the body is empty' do
           it 'returns an unprocessable status' do
+            post :create, params: invalid_dream_body_params, as: :json
             expect(response.status).to eq(422)
           end
         end
 
         context 'when the time is null' do
           before do
-            post :create, params: nil_dream_time_params, as: :json
+            allow(Dream).to receive(:valid_range?).and_return(true)
           end
 
           it 'renders a 422 status code' do
+            post :create, params: nil_dream_time_params, as: :json
             expect(response.status).to eq(422)
           end
         end
 
         context 'when the time is invalid' do
           before do
-            post :create, params: invalid_dream_time_params, as: :json
+            allow(Dream).to receive(:valid_range?).and_return(true)
           end
 
           it 'renders a 422 status code' do
+            post :create, params: invalid_dream_time_params, as: :json
             expect(response.status).to eq(422)
+          end
+        end
+
+        context 'when the date is after the allowed range' do
+          it 'does not create the dream' do
+            post :create, params: date_greater_than_valid_range, as: :json
+            expect(Dream.all.length).to eq(0)
+          end
+
+          it 'renders a 403 status code' do
+            post :create, params: date_greater_than_valid_range, as: :json
+            expect(response.status).to eq(403)
+          end
+        end
+
+        context 'when the date is before the allowed range' do
+          it 'does not create the dream' do
+            post :create, params: date_less_than_valid_range, as: :json
+            expect(Dream.all.length).to eq(0)
+          end
+
+          it 'renders a 403 status code' do
+            post :create, params: date_less_than_valid_range, as: :json
+            expect(response.status).to eq(403)
           end
         end
       end
