@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { logout } from "../api/usersApi";
+import { redirectToEditAccount, logout } from "../api/usersApi";
 
 export default function Dropdown() {
   const [openDropdown, setOpenDropdown] = useState(false);
@@ -63,7 +63,10 @@ export default function Dropdown() {
           </button>
         </div>
         <div className='dropdown-items-container'>
-          <button className="logout-btn" onClick={() => {
+          <button className='link-btn' onClick={() => {
+            redirectToEditAccount();
+          }}>Edit Account</button>
+          <button className="link-btn" onClick={() => {
             logout();
           }}>Log Out</button>
         </div>

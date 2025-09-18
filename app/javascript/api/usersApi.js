@@ -9,6 +9,10 @@ export const redirectToHome = () => {
   location.href = "/"
 };
 
+export const redirectToEditAccount = () => {
+  location.href = "/users/edit"
+};
+
 export const logout = () => {
   let csrf = getCsrfToken();
   fetch('/users/sign_out', {

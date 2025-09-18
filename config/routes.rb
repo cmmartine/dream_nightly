@@ -3,6 +3,7 @@
 Rails.application.routes.draw do
   devise_for :users
   get 'users/status'
+  get '/users', to: redirect('/users/sign_up')
   post 'dreams/create'
   post 'dreams/update'
   post 'dreams/destroy'

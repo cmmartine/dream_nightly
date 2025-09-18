@@ -2,7 +2,7 @@
   <div class="devise-container">
     <h2>Sign up</h2>
 
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: {class: "devise-form"}) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
 
       <div class="field">
@@ -11,11 +11,9 @@
       </div>
 
       <div class="field">
-        <%= f.label :password %>
-        <% if @minimum_password_length %>
-        <em>(<%= @minimum_password_length %> characters minimum)</em>
-        <% end %><br />
-        <%= f.password_field :password, autocomplete: "new-password", :class => "field-input" %>
+        <%= f.label :password %><br />
+        <%= f.password_field :password, required: true, pattern: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,128}$/, autocomplete: "new-password", class: "field-input"%>
+        <span class="error-message">Password must be at least 8 characters long and contain 1 uppercase, 1 lowercase, 1 number and 1 special character</span>
       </div>
 
       <div class="field">

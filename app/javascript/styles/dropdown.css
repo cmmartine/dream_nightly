@@ -93,15 +93,16 @@ menu {
   width: 55px;
 }
 
-.logout-btn {
+.link-btn {
   font-size: large;
   background-color: transparent;
   color: white;
   border: none;
+  margin-top: 20px;
   padding: 2px 4px;
 }
 
-.logout-btn:hover {
+.link-btn:hover {
   text-decoration: underline;
   cursor: pointer;
 }

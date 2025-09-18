@@ -2,16 +2,14 @@
   <div class="devise-container">
     <h2>Change your password</h2>
 
-    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: "devise-form"}) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
       <%= f.hidden_field :reset_password_token %>
 
       <div class="field">
         <%= f.label :password, "New password" %><br />
-        <% if @minimum_password_length %>
-          <em>(<%= @minimum_password_length %> characters minimum)</em><br />
-        <% end %>
-        <%= f.password_field :password, autofocus: true, autocomplete: "new-password", :class => "field-input" %>
+        <%= f.password_field :password, required: true, pattern: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,128}$/, autocomplete: "new-password", class: "field-input"%>
+        <span class="error-message">Password must be at least 8 characters long and contain 1 uppercase, 1 lowercase, 1 number and 1 special character</span>
       </div>
 
       <div class="field">
