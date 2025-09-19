@@ -32,6 +32,10 @@
   align-self: center;
 }
 
+.input-char-count {
+  align-self: flex-end;
+}
+
 .dream-input-bottom-row {
   margin-top: 10px;
   display: flex;

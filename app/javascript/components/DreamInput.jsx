@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { postCreateDream, postUpdateDream, postDeleteDream } from "../api/dreamsApi";
+import * as MAX_CHAR_COUNT from "../constants/shared/MAX_CHAR_COUNT.json";
 
 export default function DreamInput(props) {
   const {
@@ -15,13 +16,26 @@ export default function DreamInput(props) {
     removeDreamFromPage,
     setError 
   } = props;
-  const [formText, setFormText] = useState(checkDreamBody());
+  const inputMaxLength = MAX_CHAR_COUNT.DREAM;
+  const [formText, setFormText] = useState();
+  const [numOfChars, setNumOfChars] = useState(0);
+  const [numCharsLeft, setNumCharsLeft] = useState();
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [timeValue, setTimeValue] = useState(currentTime());
 
   useEffect(() => {
     setTimeValue(currentTime());
   }, []);
+
+  useEffect(() => {
+    const existingDreamText = checkDreamBody();
+    setFormText(existingDreamText);
+    setNumOfChars(existingDreamText.length)
+  }, []);
+
+  useEffect(() => {
+    setNumCharsLeft(inputMaxLength - numOfChars);
+  }, [numOfChars])
 
 
   const formClass = dreamBody ? 'edit-form' : null;
@@ -55,6 +69,7 @@ export default function DreamInput(props) {
        const data = await postCreateDream(formText, createdAtTimeInMs(), userTimeZone, setError);
        data.status == 'created' ? refetchDreams() : null;
        setFormText('');
+       setNumOfChars(0);
     }
   };
 
@@ -65,10 +80,19 @@ export default function DreamInput(props) {
 
   return(
     <form id='dream-input-form' className={formClass}>
-      <textarea id='dream-input-textarea' aria-label='enter-dream' spellCheck='true' placeholder='Enter a dream...' value={formText}onChange={(e) => {
+      <textarea
+      id='dream-input-textarea'
+      aria-label='enter-dream'
+      spellCheck='true'
+      placeholder='Enter a dream...'
+      value={formText}
+      maxLength={inputMaxLength}
+      onChange={(e) => {
         e.preventDefault();
         setFormText(e.target.value);
+        setNumOfChars(e.target.value.length);
       }}/>
+      <div className='input-char-count'>{numCharsLeft} characters left</div>
       <div className='dream-input-bottom-row'>
         {
           dreamBody && !showConfirmDelete &&

@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import DreamInput from "../components/DreamInput";
 import * as dreamsApi from "../api/dreamsApi";
+import * as MAX_CHAR_COUNT from "../constants/shared/MAX_CHAR_COUNT.json";
 
 describe('DreamInput', () => {
   const editDreamBody = 'Test Body';
@@ -159,6 +160,44 @@ describe('DreamInput', () => {
         expect(dreamsApi.postDeleteDream).toHaveBeenCalledWith(1, setError);
         expect(removeDreamFromPage).toHaveBeenCalledWith(1);
       });
+    });
+
+    describe('character counting', () => {
+      it('subtracts the dreams body text from the initial count', () => {
+        renderEditingDreamInput();
+        const newCount = MAX_CHAR_COUNT.DREAM - editDreamBody.length
+        const charCountBox = screen.getByText(`${newCount} characters left`);
+        expect(charCountBox).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('character counting', () => {
+    it('Shows the starting number of characters left', () => {
+      renderNewDreamInput();
+      const charCountBox = screen.getByText(`${MAX_CHAR_COUNT.DREAM} characters left`);
+      expect(charCountBox).toBeInTheDocument();
+    });
+
+    it('subtracts from characters when input is typed in', async () => {
+      renderNewDreamInput();
+      const textArea = document.getElementById('dream-input-textarea');
+      const word = "Four";
+      await userEvent.type(textArea, word);
+      const newCount = MAX_CHAR_COUNT.DREAM - word.length
+      const charCountBox = screen.getByText(`${newCount} characters left`);
+      expect(charCountBox).toBeInTheDocument();
+    });
+
+    it('adds to characters when input is deleted', async () => {
+      renderNewDreamInput();
+      const textArea = document.getElementById('dream-input-textarea');
+      const word = "Four";
+      await userEvent.type(textArea, word);
+      await userEvent.keyboard('{backspace}');
+      const newCount = MAX_CHAR_COUNT.DREAM - word.length + 1;
+      const charCountBox = screen.getByText(`${newCount} characters left`);
+      expect(charCountBox).toBeInTheDocument();
     });
   });
 });
