@@ -62,3 +62,10 @@ a:hover {
   bottom: 0px;
   left: 0px;
 }
+
+.not-found-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
