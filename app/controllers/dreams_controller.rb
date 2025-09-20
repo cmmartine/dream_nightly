@@ -10,8 +10,14 @@ class DreamsController < ApplicationController
 
   # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def create
-    if Dream.valid_range?(dream_params[:time_in_ms], dream_params[:user_timezone])
-      date_time = convert_from_time_in_ms(dream_params[:time_in_ms])
+    time_in_ms = dream_params[:time_in_ms]
+    date_time = convert_from_time_in_ms(time_in_ms)
+    user_timezone = dream_params[:user_timezone]
+
+    if Dream.valid_range?(time_in_ms, user_timezone) &&
+       Dream.from_date(date_time, user_timezone).length < Constants::MAX_COUNTS['DREAMS_IN_A_DAY']
+
+      date_time = convert_from_time_in_ms(time_in_ms)
 
       dream = Dream.new(body: dream_params[:body], created_at: date_time, user_id: current_user.id)
       if !dream.valid?
@@ -21,7 +27,9 @@ class DreamsController < ApplicationController
         render json: { status: 'created' }, status: :created
       end
     else
-      render json: { error: 'Dreams cannot be created before 2010 or beyond today' }, status: :forbidden
+      render json: {
+        error: 'Only 10 dreams can be created per day, and dreams cannot be created before 2010 or beyond today'
+      }, status: :forbidden
     end
   rescue StandardError => e
     Rails.logger.error "Dream creation failed: #{e.message}"

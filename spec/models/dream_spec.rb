@@ -8,6 +8,7 @@ RSpec.describe Dream, type: :model do
   describe 'validations' do
     create_user_with_dreams
     it { should validate_presence_of(:body) }
+    it { should validate_length_of(:body).is_at_least(1).is_at_most(Constants::MAX_COUNTS['DREAM_CHARS']) }
   end
 
   describe 'self.from_date' do

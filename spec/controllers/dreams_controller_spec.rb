@@ -5,28 +5,55 @@ require 'rails_helper'
 # rubocop:disable Metrics/BlockLength
 RSpec.describe DreamsController, type: :controller do
   describe 'POST /create' do
-    dream_params = {
-      dream: {
-        body: 'Test dream',
-        time_in_ms: Time.now.to_i * 1000,
-        user_timezone: 'America/New_York'
+    let(:valid_time) { Time.now.to_i * 1000 }
+    def dream_params(time)
+      {
+        dream: {
+          body: 'Test dream',
+          time_in_ms: time,
+          user_timezone: 'America/New_York'
+        }
       }
-    }
+    end
     context 'When the user is logged in' do
       login_user
       let(:dream) { Dream.first }
+      valid_num_of_dreams = Constants::MAX_COUNTS['DREAMS_IN_A_DAY']
 
-      describe 'and the dream is valid' do
+      describe "and the dream is within valid time range and there are less than #{valid_num_of_dreams} dreams that day" do
         before do
-          post :create, params: dream_params, as: :json
+          post :create, params: dream_params(valid_time), as: :json
         end
 
         it 'creates the dream' do
-          expect(Dream.all.length).to eq(1)
+          expect(Dream.all.count).to eq(1)
         end
 
         it 'sets the dreams body correctly' do
           expect(dream.body).to eq('Test dream')
+        end
+      end
+
+      describe("when there are less than #{valid_num_of_dreams} dreams but dream is outside of the time range") do
+        it 'does not create the dream' do
+          post :create, params: dream_params((Time.now + 2.days).to_i * 1000), as: :json
+
+          expect(Dream.all.count).to eq(0)
+          expect(response.status).to eq(403)
+        end
+      end
+
+      describe("when dream is in valid time range but there are more than #{valid_num_of_dreams} in the day") do
+        it 'does not create the dream' do
+          user = User.first
+          10.times do
+            Dream.create(body: 'test', user_id: user.id)
+          end
+
+          post :create, params: dream_params(valid_time), as: :json
+
+          expect(Dream.all.count).to eq(10)
+          expect(response.status).to eq(403)
         end
       end
 
@@ -128,7 +155,7 @@ RSpec.describe DreamsController, type: :controller do
 
     context 'When the user is NOT logged in' do
       before do
-        post :create, params: dream_params, as: :json
+        post :create, params: dream_params(valid_time), as: :json
       end
 
       it 'does not create the dream' do

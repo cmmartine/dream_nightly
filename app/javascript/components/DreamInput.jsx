@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { postCreateDream, postUpdateDream, postDeleteDream } from "../api/dreamsApi";
-import * as MAX_CHAR_COUNT from "../constants/shared/MAX_CHAR_COUNT.json";
+import * as MAX_COUNTS from '../constants/shared/MAX_COUNTS.json';
 
 export default function DreamInput(props) {
   const {
@@ -16,7 +16,7 @@ export default function DreamInput(props) {
     removeDreamFromPage,
     setError 
   } = props;
-  const inputMaxLength = MAX_CHAR_COUNT.DREAM;
+  const inputMaxLength = MAX_COUNTS.DREAM_CHARS;
   const [formText, setFormText] = useState();
   const [numOfChars, setNumOfChars] = useState(0);
   const [numCharsLeft, setNumCharsLeft] = useState();

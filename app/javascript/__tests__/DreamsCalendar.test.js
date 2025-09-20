@@ -15,7 +15,7 @@ describe('DreamsCalendar', () => {
     )
   };
 
-  afterEach(async() => {
+  afterEach(() => {
     jest.clearAllMocks();
     jest.useRealTimers();
   });

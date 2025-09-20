@@ -2,7 +2,7 @@
 
 class Dream < ApplicationRecord
   belongs_to :user
-  validates :body, presence: true
+  validates :body, presence: true, length: { in: 1..Constants::MAX_COUNTS['DREAM_CHARS'] }
 
   def self.from_date(date_time, user_timezone)
     Time.use_zone(user_timezone) do
@@ -34,10 +34,10 @@ class Dream < ApplicationRecord
     created_at.to_i * 1000
   end
 
-  def self.valid_range?(date_time, user_timezone)
-    return false unless user_timezone && date_time
+  def self.valid_range?(time_in_ms, user_timezone)
+    return false unless user_timezone && time_in_ms
 
-    converted_date_time = date_time / 1000
+    converted_date_time = time_in_ms / 1000
 
     Time.use_zone(user_timezone) do
       invalid_before_date = Time.new(Constants::NONVALID_DREAM_DATE['BEFORE_YEAR']).end_of_year.to_i

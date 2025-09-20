@@ -17,7 +17,7 @@ describe('NavBar', () => {
   };
 
   describe('when the user is NOT signed in', () => {
-    beforeEach(async () => {
+    beforeEach(() => {
       jest.spyOn(usersApi, 'redirectToSignIn').mockImplementation(jest.fn());
       jest.spyOn(usersApi, 'redirectToSignUp').mockImplementation(jest.fn());
     });

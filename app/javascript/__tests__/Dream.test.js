@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Dream from "../components/Dream";
-import * as dreamsApi from '../api/dreamsApi';
 
 jest.mock('../components/DreamInput', () => () => {
   const MockDreamInput = 'DreamInput';

@@ -27,6 +27,10 @@ describe('Dropdown', () => {
     )
   };
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe('When first rendered, and dropdown button has not been clicked', () => {
     describe('The menu element', () => {
       it('has a class of dropdown-closed', () => {
@@ -76,18 +80,40 @@ describe('Dropdown', () => {
           renderDropdown();
           const openDropdown = screen.getByRole('button');
           await userEvent.click(openDropdown);
-          expect(screen.getAllByRole('button')[1]).toHaveClass('logout-btn');
+          expect(screen.getByText('Log Out')).toBeInTheDocument();
         });
 
         it('calls the usersApi logout function when clicked', async() => {
           renderDropdown();
           const openDropdown = screen.getByRole('button');
           await userEvent.click(openDropdown);
-          const logoutBtn = screen.getAllByRole('button')[1];
+          const logoutBtn = screen.getByText('Log Out');
           await(userEvent.click(logoutBtn));
           expect(usersApi.logout).toBeCalled();
         });
       })
+
+      describe('The edit account button', () => {
+        beforeEach(async () => {
+          jest.spyOn(usersApi, 'redirectToEditAccount').mockImplementation(jest.fn());
+        });
+
+        it('is rendered on screen', async() => {
+          renderDropdown();
+          const openDropdown = screen.getByRole('button');
+          await userEvent.click(openDropdown);
+          expect(screen.getByText('Edit Account')).toBeInTheDocument();
+        });
+
+        it('calls the usersApi redirectToEditAccount function when clicked', async() => {
+          renderDropdown();
+          const openDropdown = screen.getByRole('button');
+          await userEvent.click(openDropdown);
+          const editAccountBtn = screen.getByText('Edit Account');
+          await(userEvent.click(editAccountBtn));
+          expect(usersApi.redirectToEditAccount).toBeCalled();
+        });
+      });
     });
   });
 });
