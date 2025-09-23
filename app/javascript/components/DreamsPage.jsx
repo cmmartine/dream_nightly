@@ -5,6 +5,7 @@ import Dream from "./Dream";
 import DreamInput from "./DreamInput";
 import DreamsCalendar from "./DreamsCalendar";
 import * as NONVALID_DREAM_DATE from "../constants/shared/NONVALID_DREAM_DATE.json"
+import * as MAX_COUNTS from '../constants/shared/MAX_COUNTS.json';
 
 export default function DreamsPage(props) {
   const { setError } = props;
@@ -48,6 +49,10 @@ export default function DreamsPage(props) {
     }
   };
 
+  const atMaximumNumDreams = () => {
+    return dreams.length >= MAX_COUNTS.DREAMS_IN_A_DAY;
+  };
+
   const convertDateTimeToMs = (dateTime) => {
     return dateTime.getTime();
   };
@@ -67,7 +72,7 @@ export default function DreamsPage(props) {
     <div className='dreams-page-container'>
       <DreamsCalendar setDateTimeInMs={setDateTimeInMs} convertDateTimeToMs={convertDateTimeToMs} setCalendarDay={setCalendarDay} setCalendarMonth={setCalendarMonth} setCalendarYear={setCalendarYear}/>
       {!isDateOutsideAllowedRange() && 
-      <DreamInput refetchDreams={refetchDreams} calendarYear={calendarYear} calendarMonth={calendarMonth} calendarDay={calendarDay} convertDateTimeToMs={convertDateTimeToMs} setError={setError}/>
+      <DreamInput refetchDreams={refetchDreams} calendarYear={calendarYear} calendarMonth={calendarMonth} calendarDay={calendarDay} convertDateTimeToMs={convertDateTimeToMs} disableCreation={atMaximumNumDreams()} setError={setError}/>
       }
       {setUpDreams() || <div>There doesn't seem to be any dreams this day.</div>}
     </div>

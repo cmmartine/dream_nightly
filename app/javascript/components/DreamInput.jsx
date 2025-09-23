@@ -14,6 +14,7 @@ export default function DreamInput(props) {
     calendarDay,
     convertDateTimeToMs,
     removeDreamFromPage,
+    disableCreation = false,
     setError 
   } = props;
   const inputMaxLength = MAX_COUNTS.DREAM_CHARS;
@@ -79,60 +80,64 @@ export default function DreamInput(props) {
   };
 
   return(
-    <form id='dream-input-form' className={formClass}>
-      <textarea
-      id='dream-input-textarea'
-      aria-label='enter-dream'
-      spellCheck='true'
-      placeholder='Enter a dream...'
-      value={formText}
-      maxLength={inputMaxLength}
-      onChange={(e) => {
-        e.preventDefault();
-        setFormText(e.target.value);
-        setNumOfChars(e.target.value.length);
-      }}/>
-      <div className='input-char-count'>{numCharsLeft} characters left</div>
-      <div className='dream-input-bottom-row'>
-        {
-          dreamBody && !showConfirmDelete &&
-            <button className='gen-btn' onClick={(e) => {
-              e.preventDefault();
-              setShowConfirmDelete(true)
-            }}>Delete</button>
-        }
-        {
-          dreamBody && showConfirmDelete &&
-          <div className='confirm-delete-container'>
-            <div>
-              <button className='gen-btn confirm-delete-btn' onClick={(e) => {
-                e.preventDefault();
-                setShowConfirmDelete(false)
-              }}>Cancel</button>
-              <button className='gen-btn confirm-delete-btn' onClick={(e) => {
-                e.preventDefault();
-                deleteDream()
-              }}>Delete</button>
-            </div>
-            <div>Confirm dream deletion?</div>
-          </div>
-        }
-        {/* Update dream updating to allow time change? */}
-        {!dreamBody && 
-          <input
-            id='dream-input-time'
-            type='time'
-            aria-label='Dream time selector'
-            value={timeValue}
-            onChange={e => setTimeValue(e.target.value)}
-          />}
-        <button id='save-dream-btn' className='save-btn gen-btn' type='submit' onClick={(e) => {
+    (
+      !disableCreation &&
+      <form id='dream-input-form' className={formClass}>
+        <textarea
+        id='dream-input-textarea'
+        aria-label='enter-dream'
+        spellCheck='true'
+        placeholder='Enter a dream...'
+        value={formText}
+        maxLength={inputMaxLength}
+        onChange={(e) => {
           e.preventDefault();
-          if (formText != '') {
-            saveDream();
+          setFormText(e.target.value);
+          setNumOfChars(e.target.value.length);
+        }}/>
+        <div className='input-char-count'>{numCharsLeft} characters left</div>
+        <div className='dream-input-bottom-row'>
+          {
+            dreamBody && !showConfirmDelete &&
+              <button className='gen-btn' onClick={(e) => {
+                e.preventDefault();
+                setShowConfirmDelete(true)
+              }}>Delete</button>
           }
-        }}>Save</button>
-      </div>
-    </form>
+          {
+            dreamBody && showConfirmDelete &&
+            <div className='confirm-delete-container'>
+              <div>
+                <button className='gen-btn confirm-delete-btn' onClick={(e) => {
+                  e.preventDefault();
+                  setShowConfirmDelete(false)
+                }}>Cancel</button>
+                <button className='gen-btn confirm-delete-btn' onClick={(e) => {
+                  e.preventDefault();
+                  deleteDream()
+                }}>Delete</button>
+              </div>
+              <div>Confirm dream deletion?</div>
+            </div>
+          }
+          {/* Update dream updating to allow time change? */}
+          {!dreamBody && 
+            <input
+              id='dream-input-time'
+              type='time'
+              aria-label='Dream time selector'
+              value={timeValue}
+              onChange={e => setTimeValue(e.target.value)}
+            />}
+          <button id='save-dream-btn' className='save-btn gen-btn' type='submit' onClick={(e) => {
+            e.preventDefault();
+            if (formText != '') {
+              saveDream();
+            }
+          }}>Save</button>
+        </div>
+      </form>
+    ) ||
+    disableCreation && <div className='disabled-creation-msg'>Only {MAX_COUNTS.DREAMS_IN_A_DAY} dreams can be created per day</div>
   )
 }

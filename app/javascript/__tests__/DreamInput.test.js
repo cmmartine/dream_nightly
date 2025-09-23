@@ -19,9 +19,9 @@ describe('DreamInput', () => {
   const setError = jest.fn();
   const removeDreamFromPage = jest.fn();
 
-  function renderNewDreamInput() {
+  function renderNewDreamInput(disableCreation) {
     return render(
-      <DreamInput refetchDreams={jest.fn()} calendarYear={calendarYear} calendarMonth={calendarMonth} calendarDay={calendarDay} convertDateTimeToMs={convertDateTimeToMs} setError={setError}/>
+      <DreamInput refetchDreams={jest.fn()} calendarYear={calendarYear} calendarMonth={calendarMonth} calendarDay={calendarDay} convertDateTimeToMs={convertDateTimeToMs} disableCreation={disableCreation} setError={setError}/>
     )
   };
 
@@ -198,6 +198,14 @@ describe('DreamInput', () => {
       const newCount = MAX_COUNTS.DREAM_CHARS - word.length + 1;
       const charCountBox = screen.getByText(`${newCount} characters left`);
       expect(charCountBox).toBeInTheDocument();
+    });
+  });
+
+  describe('when the dream limit per day has been reached', () => {
+    it('shows only a message that dream limit per day has been reached', () => {
+      renderNewDreamInput(true);
+
+      expect(screen.getByText(`Only ${MAX_COUNTS.DREAMS_IN_A_DAY} dreams can be created per day`)).toBeInTheDocument();
     });
   });
 });

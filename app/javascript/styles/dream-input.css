@@ -23,6 +23,11 @@
   width: 110px;
 }
 
+.disabled-creation-msg {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
 .save-btn {
   align-self: flex-start;
 }
