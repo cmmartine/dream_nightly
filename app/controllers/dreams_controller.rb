@@ -3,11 +3,6 @@
 class DreamsController < ApplicationController
   before_action :authenticate_user!
 
-  DREAM_DESTROYED = {
-    success: 'Dream was successfully deleted',
-    failed: 'Dream could not be deleted, please try again'
-  }.freeze
-
   # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def create
     time_in_ms = dream_params[:time_in_ms]
@@ -34,42 +29,42 @@ class DreamsController < ApplicationController
     end
   rescue StandardError => e
     Rails.logger.error "Dream creation failed: #{e.message}"
-    render json: { status: 'unprocessable', message: e.message }, status: :unprocessable_entity
+    render json: { message: 'Dream creation failed' }, status: :unprocessable_entity
   end
 
   def update
     dream = Dream.find_owned_by(current_user, dream_params[:dream_id])
 
     if dream.nil?
-      render json: { error: 'Dream not found or not authorized' }, status: :forbidden
+      render json: { message: 'Dream not found or not authorized' }, status: :forbidden
       return
     end
 
     dream.update(body: dream_params[:body])
-    if !dream.valid?
-      Rails.logger.error "Dream updating failed for ID #{dream.id}"
-      render json: { status: 'unprocessable' }, status: :unprocessable_entity
-    else
-      dream.save!
-      render json: { status: 'ok' }, status: :ok
-    end
+    raise unless dream.valid?
+
+    dream.save!
+    render json: { status: 'ok' }, status: :ok
+  rescue StandardError => e
+    Rails.logger.error "Dream updating failed: #{e.message}"
+    render json: { message: 'Dream updating failed' }, status: :unprocessable_entity
   end
 
   def destroy
     dream = Dream.find_owned_by(current_user, dream_params[:dream_id])
 
     if dream.nil?
-      render json: { error: 'Dream not found or not authorized' }, status: :forbidden
+      render json: { message: 'Dream not found or not authorized' }, status: :forbidden
       return
     end
 
     dream.destroy
-    if dream.destroyed?
-      render json: { status: 'ok', message: DREAM_DESTROYED[:success] }, status: :ok
-    else
-      Rails.logger.error "Dream destruction failed for ID #{dream.id}"
-      render json: { status: 'unprocessable', message: DREAM_DESTROYED[:failed] }, status: :unprocessable_entity
-    end
+    raise unless dream.destroyed?
+
+    render json: { status: 'ok' }, status: :ok
+  rescue StandardError => e
+    Rails.logger.error "Dream destruction failed: #{e.message}"
+    render json: { message: 'Dream deletion failed' }, status: :unprocessable_entity
   end
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
@@ -79,7 +74,7 @@ class DreamsController < ApplicationController
     render json: filtered_dreams
   rescue StandardError => e
     Rails.logger.error "Dream filtering failed: #{e.message}"
-    render json: { error: 'Failed to filter dreams', message: e.message }, status: :unprocessable_entity
+    render json: { message: 'Failed to retrieve dreams' }, status: :unprocessable_entity
   end
 
   private

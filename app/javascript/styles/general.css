@@ -6,6 +6,7 @@
 @import './navbar.css';
 @import './info-page.css';
 @import './dreams-calendar.css';
+@import './error-banner.css';
 
 body {
   margin: 0;

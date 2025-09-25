@@ -403,7 +403,7 @@ RSpec.describe DreamsController, type: :controller do
         it 'returns an error message' do
           post :from_date, params: invalid_dream_params, as: :json
           expect(response.status).to eq(422)
-          expect(response.body).to include('Failed to filter dreams')
+          expect(response.body).to include('Failed to retrieve dreams')
         end
       end
     end

@@ -11,11 +11,11 @@ describe('ErrorBanner', () => {
 
   describe('When passed an error', () => {
     it('renders the error banner', () => {
-      const newError = new Error('Testing error');
+      const newError = new Error({ message: 'Testing error' });
       renderErrorBanner(newError);
       expect(screen.queryByText(errorPageText.header)).toBeInTheDocument();
       expect(screen.queryByText(errorPageText.body)).toBeInTheDocument();
-      expect(screen.queryByText(`${newError}`)).toBeInTheDocument();
+      expect(screen.queryByText(`${newError.message}`)).toBeInTheDocument();
     })
   });
 

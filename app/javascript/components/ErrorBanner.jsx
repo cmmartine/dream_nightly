@@ -9,7 +9,7 @@ export default function ErrorBanner(props) {
       <div id="error-banner">
         <h1>{errorPageText.header}</h1>
         <p>{errorPageText.body}</p>
-        <p>{`${currentError}`}</p>
+        <p>{`${currentError.message}`}</p>
       </div>
     );
   };

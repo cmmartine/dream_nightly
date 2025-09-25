@@ -4,11 +4,12 @@ export const apiGetFetch = async (url, setError) => {
   try {
     const res = await fetch(url);
 
+    const json = await res.json();
+
     if (!res.ok) {
-      throw new Error(`GET ${url} error: ${res.status}`);
+      throw new Error(`${res.status}: ${json.message}`);
     }
 
-    const json = await res.json();
     return json;
   } catch (error) {
     setError(error);
@@ -28,14 +29,13 @@ export const apiPostFetch = async (url, postParams, setError) => {
         JSON.stringify(postParams)
     });
 
+    const json = await res.json();
+
     if (!res.ok) {
-      throw new Error(`POST ${url} error: ${res.status}`);
+      throw new Error(`${res.status}: ${json.message}`);
     }
 
-    if (res.status !== 204) {
-      const json = await res.json();
-      return json;
-    }
+    return json;
   } catch (error) {
     setError(error);
   }
