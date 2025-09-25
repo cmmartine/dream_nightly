@@ -24,7 +24,8 @@ class DreamsController < ApplicationController
         render json: { status: 'unprocessable' }, status: :unprocessable_entity
       else
         dream.save!
-        render json: { status: 'created' }, status: :created
+        filtered_dream = Dream.filtered_dream_object(dream)
+        render json: { status: 'created', dream: filtered_dream }, status: :created
       end
     else
       render json: {

@@ -63,6 +63,25 @@ RSpec.describe Dream, type: :model do
     end
   end
 
+  describe('self.filtered_dream_object') do
+    let(:user) { create_user_with_dreams }
+    let(:dream) { user.dreams.first }
+
+    it 'returns the dream object with attributes converted correctly' do
+      filtered_dream = Dream.filtered_dream_object(dream)
+
+      expect(filtered_dream).to eq(
+        {
+          id: dream.id,
+          body: dream.body,
+          ai_interpretation: dream.ai_interpretation,
+          lucid: dream.lucid,
+          created_at: dream.created_at.to_i * 1000
+        }
+      )
+    end
+  end
+
   describe 'self.find_owned_by' do
     let(:user) { create_user_with_dreams }
     let(:dream) { user.dreams.first }

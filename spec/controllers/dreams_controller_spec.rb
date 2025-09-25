@@ -6,12 +6,14 @@ require 'rails_helper'
 RSpec.describe DreamsController, type: :controller do
   describe 'POST /create' do
     let(:valid_time) { Time.now.to_i * 1000 }
+    let(:dream_body) { 'Test dream' }
+    let(:user_timezone) { 'America/New_York' }
     def dream_params(time)
       {
         dream: {
-          body: 'Test dream',
+          body: dream_body,
           time_in_ms: time,
-          user_timezone: 'America/New_York'
+          user_timezone: user_timezone
         }
       }
     end
@@ -30,7 +32,13 @@ RSpec.describe DreamsController, type: :controller do
         end
 
         it 'sets the dreams body correctly' do
-          expect(dream.body).to eq('Test dream')
+          expect(dream.body).to eq(dream_body)
+        end
+
+        it 'returns a filtered dream object' do
+          returned_dream = JSON.parse(response.body)['dream']
+          expect(returned_dream['body']).to eq(dream_body)
+          expect(returned_dream['created_at']).to eq(valid_time)
         end
       end
 

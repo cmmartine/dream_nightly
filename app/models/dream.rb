@@ -16,14 +16,18 @@ class Dream < ApplicationRecord
 
   def self.filtered_from_date(date_time, user_timezone)
     from_date(date_time, user_timezone).map do |dream|
-      {
-        id: dream.id,
-        body: dream.body,
-        ai_interpretation: dream.ai_interpretation,
-        lucid: dream.lucid,
-        created_at: dream.created_at_in_ms
-      }
+      filtered_dream_object(dream)
     end
+  end
+
+  def self.filtered_dream_object(dream)
+    {
+      id: dream.id,
+      body: dream.body,
+      ai_interpretation: dream.ai_interpretation,
+      lucid: dream.lucid,
+      created_at: dream.created_at_in_ms
+    }
   end
 
   def self.find_owned_by(user, dream_id)

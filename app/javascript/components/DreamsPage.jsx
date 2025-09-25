@@ -36,8 +36,8 @@ export default function DreamsPage(props) {
     return <div className='dream-list'>{dreamList}</div>
   };
 
-  const refetchDreams = (dreamsToFetch = dateTimeInMs) => {
-    retrieveDreamsFromDate(dreamsToFetch);
+  const addNewDream = (newDream) => {
+    setDreams(prevDreams => [...prevDreams, newDream].sort((a, b) => b.created_at - a.created_at));
   };
 
   const handleDreamDeletion = (deletedDreamId) => {
@@ -72,7 +72,7 @@ export default function DreamsPage(props) {
     <div className='dreams-page-container'>
       <DreamsCalendar setDateTimeInMs={setDateTimeInMs} convertDateTimeToMs={convertDateTimeToMs} setCalendarDay={setCalendarDay} setCalendarMonth={setCalendarMonth} setCalendarYear={setCalendarYear}/>
       {!isDateOutsideAllowedRange() && 
-      <DreamInput refetchDreams={refetchDreams} calendarYear={calendarYear} calendarMonth={calendarMonth} calendarDay={calendarDay} convertDateTimeToMs={convertDateTimeToMs} disableCreation={atMaximumNumDreams()} setError={setError}/>
+      <DreamInput addNewDream={addNewDream} calendarYear={calendarYear} calendarMonth={calendarMonth} calendarDay={calendarDay} convertDateTimeToMs={convertDateTimeToMs} disableCreation={atMaximumNumDreams()} setError={setError}/>
       }
       {setUpDreams() || <div>There doesn't seem to be any dreams this day.</div>}
     </div>

@@ -18,10 +18,11 @@ describe('DreamInput', () => {
   const convertDateTimeToMs = jest.fn();
   const setError = jest.fn();
   const removeDreamFromPage = jest.fn();
+  const addNewDream = jest.fn();
 
   function renderNewDreamInput(disableCreation) {
     return render(
-      <DreamInput refetchDreams={jest.fn()} calendarYear={calendarYear} calendarMonth={calendarMonth} calendarDay={calendarDay} convertDateTimeToMs={convertDateTimeToMs} disableCreation={disableCreation} setError={setError}/>
+      <DreamInput addNewDream={addNewDream} calendarYear={calendarYear} calendarMonth={calendarMonth} calendarDay={calendarDay} convertDateTimeToMs={convertDateTimeToMs} disableCreation={disableCreation} setError={setError}/>
     )
   };
 
@@ -54,6 +55,15 @@ describe('DreamInput', () => {
         await userEvent.click(saveBtn);
         expect(dreamsApi.postCreateDream).toHaveBeenCalledWith('Hello', dateInMsForPost, timezone, setError);
         expect(dreamsApi.postUpdateDream).not.toHaveBeenCalled();
+      });
+
+      it('calls addNewDream', async () => {
+        renderNewDreamInput();
+        const textArea = document.getElementById('dream-input-textarea');
+        const saveBtn = document.getElementById('save-dream-btn');
+        await userEvent.type(textArea, 'Hello');
+        await userEvent.click(saveBtn);
+        expect(addNewDream).toHaveBeenCalled();
       });
 
       it('resets the textarea', async () => {

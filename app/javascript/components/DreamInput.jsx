@@ -8,7 +8,7 @@ export default function DreamInput(props) {
     dreamBody,
     dreamId,
     updateDreamBody,
-    refetchDreams,
+    addNewDream,
     calendarYear,
     calendarMonth,
     calendarDay,
@@ -68,7 +68,7 @@ export default function DreamInput(props) {
     } else {
       const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
        const data = await postCreateDream(formText, createdAtTimeInMs(), userTimeZone, setError);
-       data.status == 'created' ? refetchDreams() : null;
+       data.status == 'created' ? addNewDream(data.dream) : null;
        setFormText('');
        setNumOfChars(0);
     }
