@@ -1,12 +1,28 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import DreamInput from "./DreamInput";
 
 export default function Dream(props) {
   const { dreamInfo, removeDreamFromPage, setError } = props;
   const [expanded, setExpanded] = useState(false);
   const [dreamBody, setDreamBody] = useState(dreamInfo.body);
+  const [scrolledTo, setScrolledTo] = useState(false);
+  const expandedDreamRef = useRef(null);
   const dreamId = dreamInfo.id;
+
+  const handleScroll = (refCurrent) => {
+    refCurrent.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  };
+
+  useEffect(() => {
+    if (expanded && !scrolledTo && expandedDreamRef?.current) {
+      handleScroll(expandedDreamRef.current)
+      setScrolledTo(true);
+    }
+  }, [expanded, scrolledTo, expandedDreamRef]);
 
   function updateDreamBody(newBody) {
     setDreamBody(newBody);
@@ -17,7 +33,10 @@ export default function Dream(props) {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   };
 
-  // Add scrolling to show entire block when dream is expanded
+  function handleUnexpand() {
+    setExpanded(false);
+    setScrolledTo(false);
+  };
 
   if (!expanded) {
     return(
@@ -34,12 +53,12 @@ export default function Dream(props) {
     );
   } else {
     return(
-      <div className='dream-container'>
+      <div className='dream-container' ref={expandedDreamRef}>
         <div className='dream-top-row-container'>
           <div>{formatTimeFromMs(dreamInfo.created_at)}</div>
           <div className='unexpand-btn lucide--x' data-testid='unexpand-btn' onClick={(e) => {
             e.preventDefault();
-            setExpanded(false);
+            handleUnexpand();
           }}/>
         </div>
         <div className='dream-expanded-body-container'>

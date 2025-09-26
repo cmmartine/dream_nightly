@@ -10,6 +10,7 @@
   padding: 10px 15px;
   margin-bottom: 20px;
   box-sizing: border-box;
+  scroll-margin-top: 80px;
 }
 
 .dream-expanded-body-container {
