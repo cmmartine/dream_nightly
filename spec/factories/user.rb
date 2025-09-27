@@ -16,7 +16,7 @@ end
 
 def create_user_two_same_date_dreams
   user = FactoryBot.create(:user)
-  FactoryBot.create(:dream, user_id: user.id, created_at: '2024-11-22 07:15:11')
-  FactoryBot.create(:dream, user_id: user.id, created_at: '2024-11-22 08:15:11')
+  FactoryBot.create(:dream, user_id: user.id, dreamed_at: '2024-11-22 07:15:11')
+  FactoryBot.create(:dream, user_id: user.id, dreamed_at: '2024-11-22 08:15:11')
   user
 end

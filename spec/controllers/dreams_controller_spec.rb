@@ -38,7 +38,7 @@ RSpec.describe DreamsController, type: :controller do
         it 'returns a filtered dream object' do
           returned_dream = JSON.parse(response.body)['dream']
           expect(returned_dream['body']).to eq(dream_body)
-          expect(returned_dream['created_at']).to eq(valid_time)
+          expect(returned_dream['dreamed_at']).to eq(valid_time)
         end
       end
 
@@ -55,7 +55,7 @@ RSpec.describe DreamsController, type: :controller do
         it 'does not create the dream' do
           user = User.first
           10.times do
-            Dream.create(body: 'test', user_id: user.id)
+            Dream.create(body: 'test', user_id: user.id, dreamed_at: Time.now)
           end
 
           post :create, params: dream_params(valid_time), as: :json
@@ -209,7 +209,7 @@ RSpec.describe DreamsController, type: :controller do
       login_user
 
       it 'updates the dreams body' do
-        Dream.create!(body: 'New dream', user_id: user.id)
+        Dream.create!(body: 'New dream', user_id: user.id, dreamed_at: Time.now)
         expect(users_dream.body).to eq('New dream')
         post :update, params: updated_dream_params, as: :json
         users_dream.reload
@@ -218,7 +218,7 @@ RSpec.describe DreamsController, type: :controller do
 
       describe 'and the dream is not valid' do
         it 'returns an unprocessable status ' do
-          Dream.create!(body: 'New dream', user_id: user.id)
+          Dream.create!(body: 'New dream', user_id: user.id, dreamed_at: Time.now)
           post :update, params: invalid_updated_dream_params, as: :json
           expect(response.status).to eq(422)
         end
@@ -226,7 +226,7 @@ RSpec.describe DreamsController, type: :controller do
 
       describe 'and the dream is not the current users dream' do
         it 'returns a forbidden status and does not update the dream' do
-          Dream.create!(body: 'User 2 dream', user_id: second_user.id)
+          Dream.create!(body: 'User 2 dream', user_id: second_user.id, dreamed_at: Time.now)
           post :update, params: second_user_dream_params, as: :json
           expect(response.status).to eq(403)
           second_users_dream.reload
@@ -274,7 +274,7 @@ RSpec.describe DreamsController, type: :controller do
 
       context 'and the dream is destroyed successfully' do
         it 'destroys the existing dream' do
-          Dream.create!(body: 'New dream', user_id: user.id)
+          Dream.create!(body: 'New dream', user_id: user.id, dreamed_at: Time.now)
           post :destroy, params: dream_params, as: :json
           expect(Dream.all.length).to eq(0)
           expect(Dream.exists?(users_dream.id)).to eq(false)
@@ -283,7 +283,7 @@ RSpec.describe DreamsController, type: :controller do
 
       context 'and the dream is NOT destroyed successfully' do
         it 'returns an unprocessable status' do
-          Dream.create!(body: 'New dream', user_id: user.id)
+          Dream.create!(body: 'New dream', user_id: user.id, dreamed_at: Time.now)
           allow_any_instance_of(Dream).to receive(:destroyed?) { false }
           post :destroy, params: dream_params, as: :json
           expect(response.status).to eq(422)
@@ -292,7 +292,7 @@ RSpec.describe DreamsController, type: :controller do
 
       context 'and the dream is not the current users dream' do
         it 'returns a forbidden status and does not delete the dream' do
-          Dream.create!(body: 'User 2 dream', user_id: second_user.id)
+          Dream.create!(body: 'User 2 dream', user_id: second_user.id, dreamed_at: Time.now)
           post :destroy, params: second_user_dream_params, as: :json
           expect(response.status).to eq(403)
           second_users_dream.reload
@@ -319,7 +319,7 @@ RSpec.describe DreamsController, type: :controller do
     let(:dream_params) do
       {
         dream: {
-          time_in_ms: users_dream.created_at.to_i * 1000
+          time_in_ms: users_dream.dreamed_at.to_i * 1000
         }
       }
     end
@@ -340,7 +340,7 @@ RSpec.describe DreamsController, type: :controller do
           body: users_dream.body,
           ai_interpretation: users_dream.ai_interpretation,
           lucid: users_dream.lucid,
-          created_at: users_dream.created_at.to_i * 1000
+          dreamed_at: users_dream.dreamed_at.to_i * 1000
         }
       ]
     end
@@ -353,7 +353,7 @@ RSpec.describe DreamsController, type: :controller do
       it 'renders the filtered dream array with correct time zone' do
         # Created with UTC
         time = Time.new(2024, 1, 1, 8, 0, 0)
-        dream = Dream.create!(body: 'Test dream', user_id: user.id, created_at: time)
+        dream = Dream.create!(body: 'Test dream', user_id: user.id, dreamed_at: time)
 
         Time.use_zone('America/New_York') do
           expected_time = Time.use_zone('America/New_York') do
@@ -373,7 +373,7 @@ RSpec.describe DreamsController, type: :controller do
               body: dream.body,
               ai_interpretation: dream.ai_interpretation,
               lucid: dream.lucid,
-              created_at: expected_time
+              dreamed_at: expected_time
             }
           ]
           expect(response.status).to eq(200)
@@ -384,7 +384,7 @@ RSpec.describe DreamsController, type: :controller do
       it 'does not include dreams outside the requested date in the timezone' do
         # Create a dream at 2024-01-02 03:00:00 UTC (which is 2024-01-01 22:00:00 EST)
         time = Time.utc(2024, 1, 2, 3, 0, 0)
-        Dream.create!(body: 'Test dream', user_id: user.id, created_at: time)
+        Dream.create!(body: 'Test dream', user_id: user.id, dreamed_at: time)
 
         # 2024-01-02 00:00:00 EST in UTC is 2024-01-02 05:00:00 UTC
         time_to_get_dreams = Time.use_zone('America/New_York') { Time.zone.local(2024, 1, 2, 0, 0, 0) }

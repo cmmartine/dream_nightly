@@ -15,7 +15,7 @@ RSpec.describe Dream, type: :model do
     let(:user) { create_user_two_same_date_dreams }
     let(:oldest_dream) { user.dreams.first }
     let(:newest_dream) { user.dreams.last }
-    let(:dreams_date) { oldest_dream.created_at }
+    let(:dreams_date) { oldest_dream.dreamed_at }
     let(:not_dreams_date) { '2000-01-01 00:00:00'.to_datetime }
     let(:timezone) { 'America/New_York' }
 
@@ -30,18 +30,18 @@ RSpec.describe Dream, type: :model do
     it 'only returns dreams on the date of the users timezone' do
       # Create a dream at 2024-01-02 03:00:00 UTC (which is 2024-01-01 22:00:00 EST)
       time = Time.utc(2024, 1, 2, 3, 0, 0)
-      first_dream = Dream.create!(body: 'Test dream', user_id: user.id, created_at: time)
+      first_dream = Dream.create!(body: 'Test dream', user_id: user.id, dreamed_at: time)
       # 2024-01-02 00:00:00 EST in UTC is 2024-01-02 05:00:00 UTC
       second_time = Time.utc(2024, 1, 5, 0, 0, 0)
-      Dream.create!(body: 'Test dream2', user_id: user.id, created_at: second_time)
-      expect(user.dreams.from_date(first_dream.created_at, timezone)).to eq([first_dream])
+      Dream.create!(body: 'Test dream2', user_id: user.id, dreamed_at: second_time)
+      expect(user.dreams.from_date(first_dream.dreamed_at, timezone)).to eq([first_dream])
     end
   end
 
   describe 'self.filtered_from_date' do
     let(:user) { create_user_with_dreams }
     let(:dream) { user.dreams.first }
-    let(:dreams_date) { dream.created_at }
+    let(:dreams_date) { dream.dreamed_at }
     let(:timezone) { 'America/New_York' }
     let(:filtered_dream) do
       {
@@ -49,7 +49,7 @@ RSpec.describe Dream, type: :model do
         body: dream.body,
         ai_interpretation: dream.ai_interpretation,
         lucid: dream.lucid,
-        created_at: dream.created_at.to_i * 1000
+        dreamed_at: dream.dreamed_at.to_i * 1000
       }
     end
     let(:not_dreams_date) { '2000-01-01 00:00:00'.to_datetime }
@@ -76,7 +76,7 @@ RSpec.describe Dream, type: :model do
           body: dream.body,
           ai_interpretation: dream.ai_interpretation,
           lucid: dream.lucid,
-          created_at: dream.created_at.to_i * 1000
+          dreamed_at: dream.dreamed_at.to_i * 1000
         }
       )
     end
@@ -97,10 +97,10 @@ RSpec.describe Dream, type: :model do
     end
   end
 
-  describe 'created_at_in_ms' do
-    it 'converts the created_at from datetime to ms' do
+  describe 'dreamed_at_in_ms' do
+    it 'converts the dreamed_at from datetime to ms' do
       dream = FactoryBot.create(:dream)
-      expect(dream.created_at_in_ms).to eq(1_732_351_099_000)
+      expect(dream.dreamed_at_in_ms).to eq(1_732_351_099_000)
     end
   end
 

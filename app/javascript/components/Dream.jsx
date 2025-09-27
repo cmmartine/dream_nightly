@@ -48,7 +48,7 @@ export default function Dream(props) {
     return(
       <div className={containerClass} ref={newDreamRef}>
         <div className='dream-top-row-container'>
-          <div>{formatTimeFromMs(dreamInfo.created_at)}</div>
+          <div>{formatTimeFromMs(dreamInfo.dreamed_at)}</div>
           <button
             className='expand-btn lucide--edit'
             aria-label='Open dream editor'
@@ -68,7 +68,7 @@ export default function Dream(props) {
     return(
       <div className='dream-container' ref={expandedDreamRef}>
         <div className='dream-top-row-container'>
-          <div>{formatTimeFromMs(dreamInfo.created_at)}</div>
+          <div>{formatTimeFromMs(dreamInfo.dreamed_at)}</div>
           <div className='expand-btn lucide--x' aria-label='Close dream editor' data-testid='unexpand-btn' tabIndex={0} onClick={(e) => {
             e.preventDefault();
             handleUnexpand();

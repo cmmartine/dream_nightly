@@ -10,7 +10,7 @@ class Dream < ApplicationRecord
       start_of_day = target_date.beginning_of_day
       end_of_day = target_date.end_of_day
 
-      where('created_at BETWEEN ? AND ?', start_of_day, end_of_day).order(created_at: :desc)
+      where('dreamed_at BETWEEN ? AND ?', start_of_day, end_of_day).order(dreamed_at: :desc)
     end
   end
 
@@ -26,7 +26,7 @@ class Dream < ApplicationRecord
       body: dream.body,
       ai_interpretation: dream.ai_interpretation,
       lucid: dream.lucid,
-      created_at: dream.created_at_in_ms
+      dreamed_at: dream.dreamed_at_in_ms
     }
   end
 
@@ -34,8 +34,8 @@ class Dream < ApplicationRecord
     user.dreams.find_by(id: dream_id)
   end
 
-  def created_at_in_ms
-    created_at.to_i * 1000
+  def dreamed_at_in_ms
+    dreamed_at.to_i * 1000
   end
 
   def self.valid_range?(time_in_ms, user_timezone)

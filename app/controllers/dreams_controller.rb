@@ -14,7 +14,7 @@ class DreamsController < ApplicationController
 
       date_time = convert_from_time_in_ms(time_in_ms)
 
-      dream = Dream.new(body: dream_params[:body], created_at: date_time, user_id: current_user.id)
+      dream = Dream.new(body: dream_params[:body], dreamed_at: date_time, user_id: current_user.id)
       if !dream.valid?
         render json: { status: 'unprocessable' }, status: :unprocessable_entity
       else

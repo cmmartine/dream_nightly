@@ -57,7 +57,7 @@ export default function DreamsPage(props) {
 
   const addNewDream = (newDream) => {
     setNewDreamId(newDream.id);
-    setDreams(prevDreams => [...prevDreams, newDream].sort((a, b) => b.created_at - a.created_at));
+    setDreams(prevDreams => [...prevDreams, newDream].sort((a, b) => b.dreamed_at - a.dreamed_at));
   };
 
   const isDreamNew = (dreamId) => {
