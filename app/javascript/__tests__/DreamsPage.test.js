@@ -27,14 +27,14 @@ describe('DreamsPage', () => {
       body: dreamBody2,
       ai_interpretation: null,
       lucid: null,
-      created_at: 1734869884
+      dreamed_at: 1734869884
     },
     {
       id: 1,
       body: dreamBody1,
       ai_interpretation: null,
       lucid: null,
-      created_at: 1734869880
+      dreamed_at: 1734869880
     }
   ];
 

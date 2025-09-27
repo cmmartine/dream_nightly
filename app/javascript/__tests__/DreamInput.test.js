@@ -148,24 +148,24 @@ describe('DreamInput', () => {
 
       it('shows confirmation dialog when Delete is clicked', async () => {
         renderEditingDreamInput();
-        await userEvent.click(screen.getByRole('button', { name: /Delete/i }));
+        await userEvent.click(screen.getByRole('button', { name: 'Start dream deletion' }));
         expect(screen.getByText(/Confirm dream deletion/i)).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /Cancel/i })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /Delete/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Cancel dream deletion' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Confirm dream deletion' })).toBeInTheDocument();
       });
 
       it('cancels deletion when Cancel is clicked', async () => {
         renderEditingDreamInput();
-        await userEvent.click(screen.getByRole('button', { name: /Delete/i }));
-        await userEvent.click(screen.getByRole('button', { name: /Cancel/i }));
+        await userEvent.click(screen.getByRole('button', { name: 'Start dream deletion' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Cancel dream deletion' }));
         expect(screen.queryByText(/Confirm dream deletion/i)).not.toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /Delete/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Start dream deletion' })).toBeInTheDocument();
       });
 
       it('calls removeDreamFromPage and postDeleteDream when confirmed', async () => {
         renderEditingDreamInput();
-        await userEvent.click(screen.getByRole('button', { name: /Delete/i }));
-        const deleteButton = screen.getByRole('button', { name: /Delete/i });
+        await userEvent.click(screen.getByRole('button', { name: 'Start dream deletion' }));
+        const deleteButton = screen.getByRole('button', { name: 'Confirm dream deletion' });
         await userEvent.click(deleteButton);
         expect(dreamsApi.postDeleteDream).toHaveBeenCalledWith(1, setError);
         expect(removeDreamFromPage).toHaveBeenCalledWith(1);

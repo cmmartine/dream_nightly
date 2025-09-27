@@ -14,10 +14,10 @@ export default function NavBar(props) {
       {
         !userStatus && 
         <div className="session-btns-container">
-          <a href='users/sign_in' className="link-btn">
+          <a href='users/sign_in' className="link-btn" aria-label="Link to Sign In">
             Sign In
           </a>
-          <a href='users/sign_up' className="link-btn">
+          <a href='users/sign_up' className="link-btn" aria-label="Link to Sign Up">
             Sign Up
           </a>
         </div>

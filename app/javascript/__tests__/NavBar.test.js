@@ -17,28 +17,18 @@ describe('NavBar', () => {
   };
 
   describe('when the user is NOT signed in', () => {
-    beforeEach(() => {
-      jest.spyOn(usersApi, 'redirectToSignIn').mockImplementation(jest.fn());
-      jest.spyOn(usersApi, 'redirectToSignUp').mockImplementation(jest.fn());
-    });
-
     it('shows the applications name', () => {
       renderNavBar();
       expect(screen.queryByText(appName)).toBeInTheDocument();
     });
 
-    it('calls the usersApi redirectToSignIn function when sign in button is clicked', async() => {
+    it('shows the sign up and sign in links', async() => {
       renderNavBar();
-      const signInBtn = screen.getAllByRole('button')[0];
-      await userEvent.click(signInBtn);
-      expect(usersApi.redirectToSignIn).toBeCalled();
-    });
+      const signInBtn = screen.getByRole('link', { name: 'Link to Sign In' });
+      const signUpBtn = screen.getByRole('link', { name: 'Link to Sign Up' });
 
-    it('calls the usersApi redirectToSignUp function when sign up button is clicked', async() => {
-      renderNavBar();
-      const signUpBtn = screen.getAllByRole('button')[1];
-      await userEvent.click(signUpBtn);
-      expect(usersApi.redirectToSignUp).toBeCalled();
+      expect(signInBtn).toBeInTheDocument();
+      expect(signUpBtn).toBeInTheDocument();
     });
 
     it('does not render the dropdown', async() => {

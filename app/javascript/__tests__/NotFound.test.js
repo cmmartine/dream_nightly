@@ -1,24 +1,21 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import NotFound from "../components/NotFound";
-import * as usersApi from '../api/usersApi';
 
 describe("NotFound", () => {
   renderNotFoundPage = () => {
     render(<NotFound/>);
   };
 
-  describe('clicking the back to home button', () => {
-    beforeEach(() => {
-      jest.spyOn(usersApi, 'redirectToHome').mockImplementation(jest.fn());
-    });
-
-    it('calls redirectToHome', async () => {
+  describe('on render', () => {
+    it('shows the not found text', () => {
       renderNotFoundPage();
-      const homeLink = screen.getByText('Go to home page');
-      await userEvent.click(homeLink);
+      const header = screen.getByText('404 - Page Not Found');
+      const pageText = screen.getByText("The page you were looking for doesn't exist.");
+      const homeLink = screen.getByRole('link');
 
-      expect(usersApi.redirectToHome).toHaveBeenCalled();
+      expect(header).toBeInTheDocument();
+      expect(pageText).toBeInTheDocument();
+      expect(homeLink).toBeInTheDocument();
     });
   });
 });

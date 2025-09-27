@@ -94,24 +94,11 @@ describe('Dropdown', () => {
       })
 
       describe('The edit account button', () => {
-        beforeEach(async () => {
-          jest.spyOn(usersApi, 'redirectToEditAccount').mockImplementation(jest.fn());
-        });
-
         it('is rendered on screen', async() => {
           renderDropdown();
           const openDropdown = screen.getByRole('button');
           await userEvent.click(openDropdown);
-          expect(screen.getByText('Edit Account')).toBeInTheDocument();
-        });
-
-        it('calls the usersApi redirectToEditAccount function when clicked', async() => {
-          renderDropdown();
-          const openDropdown = screen.getByRole('button');
-          await userEvent.click(openDropdown);
-          const editAccountBtn = screen.getByText('Edit Account');
-          await(userEvent.click(editAccountBtn));
-          expect(usersApi.redirectToEditAccount).toBeCalled();
+          expect(screen.getByRole('menuitem', { name: 'Link to Edit Account' })).toBeInTheDocument();
         });
       });
     });

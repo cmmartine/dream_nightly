@@ -76,6 +76,7 @@ export default function Dropdown() {
             className='link-btn dropdown-link-btn'
             href='/users/edit'
             role='menuitem'
+            aria-label='Link to Edit Account'
           >
             Edit Account
           </a>
