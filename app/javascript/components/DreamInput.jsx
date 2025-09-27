@@ -21,6 +21,7 @@ export default function DreamInput(props) {
   const [formText, setFormText] = useState();
   const [numOfChars, setNumOfChars] = useState(0);
   const [numCharsLeft, setNumCharsLeft] = useState();
+  const [showDreamUpdatedMsg, setShowDreamUpdatedMsg] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [timeValue, setTimeValue] = useState(currentTime());
 
@@ -61,11 +62,19 @@ export default function DreamInput(props) {
     return convertDateTimeToMs(dateTime);
   };
 
+  function dreamUpdateNotice() {
+    setShowDreamUpdatedMsg(true);
+    setTimeout(() => {
+      setShowDreamUpdatedMsg(false);
+    }, 3000);
+  };
+
   async function saveDream() {
-    if (dreamBody) {
+    if (dreamBody && dreamBody != formText) {
       updateDreamBody(formText);
-      postUpdateDream(dreamId, formText, setError);
-    } else {
+      const updateData = await postUpdateDream(dreamId, formText, setError);
+      updateData.status == 'ok' ? dreamUpdateNotice() : null;
+    } else if (!dreamBody) {
       const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
        const data = await postCreateDream(formText, createdAtTimeInMs(), userTimeZone, setError);
        data.status == 'created' ? addNewDream(data.dream) : null;
@@ -85,7 +94,7 @@ export default function DreamInput(props) {
       <form id='dream-input-form' className={formClass}>
         <textarea
         id='dream-input-textarea'
-        aria-label='enter-dream'
+        aria-label='Enter dream'
         spellCheck='true'
         placeholder='Enter a dream...'
         value={formText}
@@ -99,7 +108,7 @@ export default function DreamInput(props) {
         <div className='dream-input-bottom-row'>
           {
             dreamBody && !showConfirmDelete &&
-              <button className='gen-btn' onClick={(e) => {
+              <button className='gen-btn' aria-label='Start dream deletion' onClick={(e) => {
                 e.preventDefault();
                 setShowConfirmDelete(true)
               }}>Delete</button>
@@ -108,16 +117,16 @@ export default function DreamInput(props) {
             dreamBody && showConfirmDelete &&
             <div className='confirm-delete-container'>
               <div>
-                <button className='gen-btn confirm-delete-btn' onClick={(e) => {
+                <button className='gen-btn confirm-delete-btn' aria-label='Cancel dream deletion' onClick={(e) => {
                   e.preventDefault();
                   setShowConfirmDelete(false)
                 }}>Cancel</button>
-                <button className='gen-btn confirm-delete-btn' onClick={(e) => {
+                <button className='gen-btn confirm-delete-btn' aria-label='Confirm dream deletion' onClick={(e) => {
                   e.preventDefault();
                   deleteDream()
                 }}>Delete</button>
               </div>
-              <div>Confirm dream deletion?</div>
+              <div className='dream-delete-confirm-msg'>Confirm dream deletion?</div>
             </div>
           }
           {/* Update dream updating to allow time change? */}
@@ -129,12 +138,23 @@ export default function DreamInput(props) {
               value={timeValue}
               onChange={e => setTimeValue(e.target.value)}
             />}
-          <button id='save-dream-btn' className='save-btn gen-btn' type='submit' onClick={(e) => {
-            e.preventDefault();
-            if (formText != '') {
-              saveDream();
-            }
-          }}>Save</button>
+          <div>
+            <button
+              id='save-dream-btn'
+              className='gen-btn'
+              type='submit'
+              aria-label='Save dream'
+              onClick={(e) => {
+                e.preventDefault();
+                if (formText != '') {
+                  saveDream();
+                }
+              }}
+            >
+              Save
+            </button>
+            {showDreamUpdatedMsg && <div className='dream-update-msg'>Dream updated</div>}
+          </div>
         </div>
       </form>
     ) ||

@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { postDreamsFromDate } from "../api/dreamsApi";
 import Dream from "./Dream";
 import DreamInput from "./DreamInput";
@@ -10,6 +10,8 @@ import * as MAX_COUNTS from '../constants/shared/MAX_COUNTS.json';
 export default function DreamsPage(props) {
   const { setError } = props;
   const [dreams, setDreams] = useState([]);
+  const [newDreamId, setNewDreamId] = useState(null);
+  const newDreamRef = useRef(null);
   const [dateTimeInMs, setDateTimeInMs] = useState();
   const [calendarYear, setCalendarYear] = useState();
   const [calendarMonth, setCalendarMonth] = useState();
@@ -21,6 +23,15 @@ export default function DreamsPage(props) {
     retrieveDreamsFromDate(dateTimeInMs);
   }, [dateTimeInMs, calendarYear, calendarMonth, calendarDay]);
 
+  useEffect(() => {
+    if (newDreamRef?.current) {
+      newDreamRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  }, [newDreamRef, newDreamId]);
+
   const retrieveDreamsFromDate = async (dateTimeInMs) => {
     const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const data = await postDreamsFromDate(dateTimeInMs, userTimeZone, setError);
@@ -31,13 +42,26 @@ export default function DreamsPage(props) {
     if (!dreams) return null;
 
     const dreamList = dreams.map((dream) => {
-       return <Dream key={dream.id} dreamInfo={dream} removeDreamFromPage={handleDreamDeletion} setError={setError}/>
+       return (
+        <Dream
+          key={dream.id}
+          dreamInfo={dream}
+          removeDreamFromPage={handleDreamDeletion}
+          setError={setError}
+          newDreamRef={isDreamNew(dream.id)}
+          />
+        )
     });
     return <div className='dream-list'>{dreamList}</div>
   };
 
   const addNewDream = (newDream) => {
+    setNewDreamId(newDream.id);
     setDreams(prevDreams => [...prevDreams, newDream].sort((a, b) => b.created_at - a.created_at));
+  };
+
+  const isDreamNew = (dreamId) => {
+    return dreamId === newDreamId ? newDreamRef : null;
   };
 
   const handleDreamDeletion = (deletedDreamId) => {

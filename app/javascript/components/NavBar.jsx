@@ -1,6 +1,5 @@
 import React from "react";
 import Dropdown from "./Dropdown";
-import { redirectToHome, redirectToSignIn, redirectToSignUp } from "../api/usersApi";
 import { appName } from "../constants/appInfo";
 
 export default function NavBar(props) {
@@ -8,25 +7,19 @@ export default function NavBar(props) {
 
   return(
     <nav>
-      <h1 className='navbar-title' onClick={() => {
-        redirectToHome();
-      }}>{appName}</h1>
+      <a id='navbar-title' className='link-btn' href='/'>{appName}</a>
       {
         userStatus && <Dropdown/>
       }
       {
         !userStatus && 
         <div className="session-btns-container">
-          <button className="gen-btn session-btn" onClick={() => {
-            redirectToSignIn();
-          }}>
+          <a href='users/sign_in' className="link-btn">
             Sign In
-          </button>
-          <button className="gen-btn session-btn" onClick={() => {
-            redirectToSignUp();
-          }}>
+          </a>
+          <a href='users/sign_up' className="link-btn">
             Sign Up
-          </button>
+          </a>
         </div>
       }
     </nav>

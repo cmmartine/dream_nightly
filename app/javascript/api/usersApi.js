@@ -5,14 +5,6 @@ export const getUserStatus = (setError) => {
   return apiGetFetch('/users/status', setError);
 };
 
-export const redirectToHome = () => {
-  location.href = "/"
-};
-
-export const redirectToEditAccount = () => {
-  location.href = "/users/edit"
-};
-
 export const logout = () => {
   let csrf = getCsrfToken();
   fetch('/users/sign_out', {
@@ -25,12 +17,4 @@ export const logout = () => {
     
     location.reload();
   });
-};
-
-export const redirectToSignIn = () => {
-  location.href = "users/sign_in"
-};
-
-export const redirectToSignUp = () => {
-  location.href = "users/sign_up"
 };

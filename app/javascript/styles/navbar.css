@@ -6,16 +6,10 @@ nav {
   height: 60px;
 }
 
-.navbar-title {
-  display: flex;
-  margin: 0;
-  flex-wrap: wrap;
-  align-content: center;
-}
-
-.navbar-title:hover {
-  text-decoration: underline;
-  cursor: pointer;
+#navbar-title {
+  font-size: xx-large;
+  font-weight: bold;
+  align-self: center;
 }
 
 .session-btns-container {

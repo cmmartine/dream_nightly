@@ -28,10 +28,6 @@
   margin-bottom: 15px;
 }
 
-.save-btn {
-  align-self: flex-start;
-}
-
 .edit-form {
   width: 80%;
   align-self: center;
@@ -51,9 +47,20 @@
 .confirm-delete-container {
   display: flex;
   flex-direction: column;
+  
 }
 
 .confirm-delete-btn {
-  margin-top: 5px;
   margin-right: 5px;
+}
+
+.dream-delete-confirm-msg {
+  position: absolute;
+  bottom: 8px;
+  left: 30px;
+}
+
+.dream-update-msg {
+  position: absolute;
+  right: 20px;
 }

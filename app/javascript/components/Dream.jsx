@@ -3,26 +3,32 @@ import { useState, useEffect, useRef } from "react";
 import DreamInput from "./DreamInput";
 
 export default function Dream(props) {
-  const { dreamInfo, removeDreamFromPage, setError } = props;
+  const { dreamInfo, removeDreamFromPage, setError, newDreamRef } = props;
   const [expanded, setExpanded] = useState(false);
   const [dreamBody, setDreamBody] = useState(dreamInfo.body);
   const [scrolledTo, setScrolledTo] = useState(false);
+  const [containerClass, setContainerClass] = useState('dream-container');
   const expandedDreamRef = useRef(null);
   const dreamId = dreamInfo.id;
 
-  const handleScroll = (refCurrent) => {
-    refCurrent.scrollIntoView({
+  useEffect(() => {
+    if (expanded && !scrolledTo && expandedDreamRef?.current) {
+      expandedDreamRef.current.scrollIntoView({
       behavior: 'smooth',
       block: 'start'
     });
-  };
-
-  useEffect(() => {
-    if (expanded && !scrolledTo && expandedDreamRef?.current) {
-      handleScroll(expandedDreamRef.current)
       setScrolledTo(true);
     }
   }, [expanded, scrolledTo, expandedDreamRef]);
+
+  useEffect(() => {
+    if (newDreamRef?.current) {
+      setContainerClass('dream-container highlight-container');
+      setTimeout(() => {
+        setContainerClass('dream-container');
+      }, 5000);
+    }
+  }, [newDreamRef]);
 
   function updateDreamBody(newBody) {
     setDreamBody(newBody);
@@ -40,13 +46,20 @@ export default function Dream(props) {
 
   if (!expanded) {
     return(
-      <div className='dream-container'>
+      <div className={containerClass} ref={newDreamRef}>
         <div className='dream-top-row-container'>
           <div>{formatTimeFromMs(dreamInfo.created_at)}</div>
-          <div className='expand-btn lucide--edit' data-testid='expand-btn' onClick={(e) => {
-            e.preventDefault();
-            setExpanded(true);
-          }}/>
+          <button
+            className='expand-btn lucide--edit'
+            aria-label='Open dream editor'
+            data-testid='expand-btn'
+            tabIndex={0}
+            onClick={(e) => {
+              e.preventDefault();
+              setExpanded(true);
+            }}
+            
+          />
         </div>
         <div className='dream-body'>{dreamBody}</div>
       </div>
@@ -56,7 +69,7 @@ export default function Dream(props) {
       <div className='dream-container' ref={expandedDreamRef}>
         <div className='dream-top-row-container'>
           <div>{formatTimeFromMs(dreamInfo.created_at)}</div>
-          <div className='unexpand-btn lucide--x' data-testid='unexpand-btn' onClick={(e) => {
+          <div className='expand-btn lucide--x' aria-label='Close dream editor' data-testid='unexpand-btn' tabIndex={0} onClick={(e) => {
             e.preventDefault();
             handleUnexpand();
           }}/>

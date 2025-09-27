@@ -31,7 +31,7 @@ export const postUpdateDream = (dreamId, dreamBody, setError) => {
     }
   };
 
-  apiPostFetch('dreams/update', postParams, setError);
+  return apiPostFetch('dreams/update', postParams, setError);
 };
 
 export const postDeleteDream = (dreamId, setError) => {

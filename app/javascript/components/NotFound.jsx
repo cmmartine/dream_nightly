@@ -6,9 +6,7 @@ export default function NotFound() {
     <div className='not-found-page'>
       <h1>404 - Page Not Found</h1>
       <p>The page you were looking for doesn't exist.</p>
-      <h3 className='link-btn' onClick={() => {
-        redirectToHome();
-      }}>Go to home page</h3>
+      <a className='link-btn' href='/'>Go to home page</a>
     </div>
   )
 };

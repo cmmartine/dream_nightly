@@ -10,7 +10,7 @@ menu {
   justify-content: space-between;
   align-items: center;
   height: 100vh;
-  background-color: #330d69;
+  background-color: #3a176b;
   border-radius: 5px;
   padding: 15px 25px;
   z-index: 1000;
@@ -93,18 +93,8 @@ menu {
   width: 55px;
 }
 
-.link-btn {
-  font-size: large;
-  background-color: transparent;
-  color: white;
-  border: none;
+.link-btn.dropdown-link-btn {
   margin-top: 20px;
-  padding: 2px 4px;
-}
-
-.link-btn:hover {
-  text-decoration: underline;
-  cursor: pointer;
 }
 
 @media (max-width: 600px) {

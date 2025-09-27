@@ -43,8 +43,15 @@ export default function DreamsCalendar(props) {
   };
 
   return(
-    <input id='calendar' type='date' data-testid='calendar' value={calendarValue} onChange={(e) => {
-      handleDateChange(e);
-    }}/>
+    <input
+      id='calendar'
+      type='date'
+      data-testid='calendar'
+      aria-label='Calendar'
+      value={calendarValue}
+      onChange={(e) => {
+        handleDateChange(e);
+      }}
+    />
   )
 } 
