@@ -22,16 +22,21 @@ describe('Dream', () => {
 
   const removeDreamFromPage = jest.fn();
   const setError = jest.fn();
+  const scrollIntoViewMock = jest.fn();
 
-  function renderDream(dreamInfo) {
+  function renderDream(dreamInfo, dreamRef) {
     return render(
-      <Dream dreamInfo={dreamInfo} removeDreamFromPage={removeDreamFromPage} setError={setError}/>
+      <Dream
+        dreamInfo={dreamInfo}
+        removeDreamFromPage={removeDreamFromPage}
+        setError={setError}
+        newDreamRef={dreamRef}
+      />
     )
   };
 
   describe('When first rendered', () => {
     beforeEach(() => {
-      const scrollIntoViewMock = jest.fn();
       Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
         writable: true,
         value: scrollIntoViewMock,
@@ -57,6 +62,19 @@ describe('Dream', () => {
       expect(screen.getByTestId('expand-btn')).toBeInTheDocument();
     });
 
+    it('applies the highlight-container class when rendered with a ref', () => {
+      const newDreamRef = { current: <div/> };
+      renderDream(aDream, newDreamRef);
+      const container = screen.getByText(aDream.body).closest('.dream-container');
+      expect(container).toHaveClass('highlight-container');
+    });
+
+    it('does not apply the highlight-container class when rendered with no ref', () => {
+      renderDream(aDream);
+      const container = screen.getByText(aDream.body).closest('.dream-container');
+      expect(container).not.toHaveClass('highlight-container');
+    });
+
     describe('When the expand button is clicked', () => {
       it('changes to show the unexpand button', async () => {
         renderDream(aDream);
@@ -69,6 +87,12 @@ describe('Dream', () => {
         renderDream(aDream);
         await userEvent.click(screen.queryByTestId('expand-btn'));
         expect(await screen.findByTestId('mock-dream-input')).toBeInTheDocument();
+      });
+
+      it('calls scroll to view', async () => {
+        renderDream(aDream);
+        await userEvent.click(screen.queryByTestId('expand-btn'));
+        expect(scrollIntoViewMock).toBeCalledTimes(1);
       });
 
       describe('when the unexpand button is clicked', () => {
