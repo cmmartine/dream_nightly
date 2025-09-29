@@ -1,5 +1,4 @@
 import React from "react";
-import { redirectToHome } from "../api/usersApi";
 
 export default function NotFound() {
   return(

@@ -3,7 +3,7 @@ nav {
   justify-content: space-between;
   padding: 10px 25px;
   max-width: 100%;
-  height: 60px;
+  height: 70px;
 }
 
 #navbar-title {
@@ -16,7 +16,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 150px;
+  width: 170px;
 }
 
 .session-btn {

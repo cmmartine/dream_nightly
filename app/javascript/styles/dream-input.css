@@ -37,6 +37,12 @@
   align-self: flex-end;
 }
 
+.dream-input-top-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
 .dream-input-bottom-row {
   margin-top: 10px;
   display: flex;

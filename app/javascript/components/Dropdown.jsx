@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { redirectToEditAccount, logout } from "../api/usersApi";
+import { logout } from "../api/usersApi";
 
 export default function Dropdown() {
   const [openDropdown, setOpenDropdown] = useState(false);

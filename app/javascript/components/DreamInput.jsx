@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { postCreateDream, postUpdateDream, postDeleteDream } from "../api/dreamsApi";
 import * as MAX_COUNTS from '../constants/shared/MAX_COUNTS.json';
+import { addOutsideClickListener } from "../util/elementUtils";
 
 export default function DreamInput(props) {
   const {
@@ -37,8 +38,19 @@ export default function DreamInput(props) {
 
   useEffect(() => {
     setNumCharsLeft(inputMaxLength - numOfChars);
-  }, [numOfChars])
+  }, [numOfChars]);
 
+  useEffect(() => {
+    const deleteConfirmContainer = document.getElementById('confirm-delete-container');
+    let cleanupFunction;
+    if(showConfirmDelete && deleteConfirmContainer) {
+      cleanupFunction = addOutsideClickListener(deleteConfirmContainer, () => setShowConfirmDelete(false));
+    };
+
+    return () => {
+      if (cleanupFunction) cleanupFunction();
+    };
+  }, [showConfirmDelete]);
 
   const formClass = dreamBody ? 'edit-form' : null;
 
@@ -104,7 +116,17 @@ export default function DreamInput(props) {
           setFormText(e.target.value);
           setNumOfChars(e.target.value.length);
         }}/>
-        <div className='input-char-count'>{numCharsLeft} characters left</div>
+        <div className='dream-input-top-row'>
+          {!dreamBody && 
+            <input
+              id='dream-input-time'
+              type='time'
+              aria-label='Dream time selector'
+              value={timeValue}
+              onChange={e => setTimeValue(e.target.value)}
+            /> || <div/>}
+          <div className='input-char-count'>{numCharsLeft} characters left</div>
+        </div>
         <div className='dream-input-bottom-row'>
           {
             dreamBody && !showConfirmDelete &&
@@ -115,7 +137,7 @@ export default function DreamInput(props) {
           }
           {
             dreamBody && showConfirmDelete &&
-            <div className='confirm-delete-container'>
+            <div id='confirm-delete-container' className='confirm-delete-container'>
               <div>
                 <button className='gen-btn confirm-delete-btn' aria-label='Cancel dream deletion' onClick={(e) => {
                   e.preventDefault();
@@ -130,14 +152,7 @@ export default function DreamInput(props) {
             </div>
           }
           {/* Update dream updating to allow time change? */}
-          {!dreamBody && 
-            <input
-              id='dream-input-time'
-              type='time'
-              aria-label='Dream time selector'
-              value={timeValue}
-              onChange={e => setTimeValue(e.target.value)}
-            />}
+          {!dreamBody && <div/>}
           <div>
             <button
               id='save-dream-btn'
