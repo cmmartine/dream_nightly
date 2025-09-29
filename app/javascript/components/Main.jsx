@@ -23,7 +23,9 @@ export default function Main() {
 
   if (loading == true) {
     return(
-      <div className="loading">loading...</div>
+      <div className="loading-container">
+        <span className="loading" />
+      </div>
     )
   } else {
     if(userStatus == false) {
