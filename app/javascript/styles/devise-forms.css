@@ -45,7 +45,8 @@
 }
 
 .devise-btn {
-  width: 72px;
+  min-width: 72px;
+  max-width: 210px;
   height: 25px;
   background-color: #723cd1;
   color: white;

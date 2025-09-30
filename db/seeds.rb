@@ -15,7 +15,7 @@ if Rails.env.development?
     user_to_destroy.destroy
   end
 
-  user1 = User.create!(email: 'testuser@test.com', password: 'Testuser1!', password_confirmation: 'Testuser1!')
+  user1 = User.create!(email: 'testuser@test.com', password: 'Testuser1!', password_confirmation: 'Testuser1!', confirmed_at: Time.now - 1.day)
 
   dream_description1 = 'I had a dream while sleeping, it involved something crazy'
   dream_description2 = 'I was in the woods walking along a path, it was a bright sunny day. Then bear started to chase me'
