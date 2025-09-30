@@ -16,15 +16,15 @@ services:
     env_file:
       - './docker-bin/env.sh'
 
-  nginx:
-    image: nginx
-    container_name: nginx
-    ports:
-      - 8080:80
-    volumes:
-      - ./docker-bin/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-    depends_on:
-      - rails
+  # nginx:
+  #   image: nginx
+  #   container_name: nginx
+  #   ports:
+  #     - 8080:80
+  #   volumes:
+  #     - ./docker-bin/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+  #   depends_on:
+  #     - rails
 
 volumes:
   postgres:

@@ -48,3 +48,6 @@ bundle-install:
 
 routes:
 	docker compose exec rails rails routes
+
+clean:
+	docker compose exec rails rm -r tmp/letter_opener

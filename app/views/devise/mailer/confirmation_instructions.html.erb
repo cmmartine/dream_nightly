@@ -1,5 +1,9 @@
-<p>Welcome <%= @email %>!</p>
+<div style="font-family:Arial, Helvetica, sans-serif;">
+  <%= render "devise/mailer/shared/header" %>
+  <p style="margin-left: 5px;">Welcome <%= @email %>!</p>
 
-<p>You can confirm your account email through the link below:</p>
+  <p style="margin-left: 5px;">You can confirm your account email through the link below:</p>
 
-<p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
+  <p style="margin-left: 5px;"><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
+  <%= render "devise/mailer/shared/footer"%>
+</div>

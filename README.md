@@ -12,3 +12,5 @@ In console run `sudo chown -R $USER:$USER .` to have editing permissions for fil
 
 ### To use Launchy in WSL for mailer follow the steps in this link:
 https://github.com/copiousfreetime/launchy/issues/117#issuecomment-805730312
+
+Then you can use `wslopen tmp/letter_opener/path_to_file`

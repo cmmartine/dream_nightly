@@ -18,15 +18,15 @@ en:
       unconfirmed: "You have to confirm your email address before continuing."
     mailer:
       confirmation_instructions:
-        subject: "Confirmation instructions"
+        subject: "Confirm your Dream Nightly account"
       reset_password_instructions:
-        subject: "Reset password instructions"
+        subject: "Reset password instructions for your Dream Nightly account"
       unlock_instructions:
-        subject: "Unlock instructions"
+        subject: "Unlock instructions for your Dream Nightly account"
       email_changed:
-        subject: "Email Changed"
+        subject: "Email Changed for your Dream Nightly account"
       password_change:
-        subject: "Password Changed"
+        subject: "Password Changed for your Dream Nightly account"
     omniauth_callbacks:
       failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
       success: "Successfully authenticated from %{kind} account."
