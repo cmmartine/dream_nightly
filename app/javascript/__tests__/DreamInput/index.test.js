@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import DreamInput from "../components/DreamInput";
-import * as dreamsApi from "../api/dreamsApi";
-import * as MAX_COUNTS from "../constants/shared/MAX_COUNTS.json";
+import DreamInput from "../../components/DreamInput";
+import * as dreamsApi from "../../api/dreamsApi";
+import * as MAX_COUNTS from "../../constants/shared/MAX_COUNTS.json";
 
 describe('DreamInput', () => {
   const editDreamBody = 'Test Body';
@@ -134,42 +134,6 @@ describe('DreamInput', () => {
       renderEditingDreamInput();
       const timeInput = await screen.queryByLabelText('Dream time selector');
       expect(timeInput).not.toBeInTheDocument();
-    });
-
-    describe('Dream deletion', () => {
-
-      beforeEach(async () => {
-        jest.spyOn(dreamsApi, 'postDeleteDream').mockReturnValue(null);
-      });
-
-      afterEach(() => {
-        jest.clearAllMocks();
-      });
-
-      it('shows confirmation dialog when Delete is clicked', async () => {
-        renderEditingDreamInput();
-        await userEvent.click(screen.getByRole('button', { name: 'Start dream deletion' }));
-        expect(screen.getByText(/Confirm dream deletion/i)).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Cancel dream deletion' })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Confirm dream deletion' })).toBeInTheDocument();
-      });
-
-      it('cancels deletion when Cancel is clicked', async () => {
-        renderEditingDreamInput();
-        await userEvent.click(screen.getByRole('button', { name: 'Start dream deletion' }));
-        await userEvent.click(screen.getByRole('button', { name: 'Cancel dream deletion' }));
-        expect(screen.queryByText(/Confirm dream deletion/i)).not.toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Start dream deletion' })).toBeInTheDocument();
-      });
-
-      it('calls removeDreamFromPage and postDeleteDream when confirmed', async () => {
-        renderEditingDreamInput();
-        await userEvent.click(screen.getByRole('button', { name: 'Start dream deletion' }));
-        const deleteButton = screen.getByRole('button', { name: 'Confirm dream deletion' });
-        await userEvent.click(deleteButton);
-        expect(dreamsApi.postDeleteDream).toHaveBeenCalledWith(1, setError);
-        expect(removeDreamFromPage).toHaveBeenCalledWith(1);
-      });
     });
 
     describe('character counting', () => {

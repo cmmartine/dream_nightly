@@ -28,6 +28,5 @@ console.log('Visit the guide for more information: ', 'https://vite-ruby.netlify
 // import '~/index.css'
 
 import "../router";
-import "../components/Main.jsx";
-import "../components/Dropdown.jsx"
+import "../components";
 import "../styles/general.css"

@@ -1,8 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { postCreateDream, postUpdateDream, postDeleteDream } from "../api/dreamsApi";
-import * as MAX_COUNTS from '../constants/shared/MAX_COUNTS.json';
-import { addOutsideClickListener } from "../util/elementUtils";
+import { postCreateDream, postUpdateDream } from "../../api/dreamsApi";
+import * as MAX_COUNTS from '../../constants/shared/MAX_COUNTS.json';
+import { DreamDeletor } from "./DreamDeletor";
 
 export default function DreamInput(props) {
   const {
@@ -19,11 +19,9 @@ export default function DreamInput(props) {
     setError 
   } = props;
   const inputMaxLength = MAX_COUNTS.DREAM_CHARS;
-  const [formText, setFormText] = useState();
-  const [numOfChars, setNumOfChars] = useState(0);
-  const [numCharsLeft, setNumCharsLeft] = useState();
+  const [formText, setFormText] = useState("");
   const [showDreamUpdatedMsg, setShowDreamUpdatedMsg] = useState(false);
-  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [showSaveBtn, setShowSaveBtn] = useState(true);
   const [timeValue, setTimeValue] = useState(currentTime());
 
   useEffect(() => {
@@ -33,24 +31,7 @@ export default function DreamInput(props) {
   useEffect(() => {
     const existingDreamText = checkDreamBody();
     setFormText(existingDreamText);
-    setNumOfChars(existingDreamText.length)
   }, []);
-
-  useEffect(() => {
-    setNumCharsLeft(inputMaxLength - numOfChars);
-  }, [numOfChars]);
-
-  useEffect(() => {
-    const deleteConfirmContainer = document.getElementById('confirm-delete-container');
-    let cleanupFunction;
-    if(showConfirmDelete && deleteConfirmContainer) {
-      cleanupFunction = addOutsideClickListener(deleteConfirmContainer, () => setShowConfirmDelete(false));
-    };
-
-    return () => {
-      if (cleanupFunction) cleanupFunction();
-    };
-  }, [showConfirmDelete]);
 
   const formClass = dreamBody ? 'edit-form' : null;
 
@@ -91,13 +72,7 @@ export default function DreamInput(props) {
        const data = await postCreateDream(formText, createdAtTimeInMs(), userTimeZone, setError);
        data.status == 'created' ? addNewDream(data.dream) : null;
        setFormText('');
-       setNumOfChars(0);
     }
-  };
-
-  function deleteDream() {
-    postDeleteDream(dreamId, setError);
-    removeDreamFromPage(dreamId);
   };
 
   return(
@@ -114,7 +89,6 @@ export default function DreamInput(props) {
         onChange={(e) => {
           e.preventDefault();
           setFormText(e.target.value);
-          setNumOfChars(e.target.value.length);
         }}/>
         <div className='dream-input-top-row'>
           {!dreamBody && 
@@ -124,51 +98,39 @@ export default function DreamInput(props) {
               aria-label='Dream time selector'
               value={timeValue}
               onChange={e => setTimeValue(e.target.value)}
-            /> || <div/>}
-          <div className='input-char-count'>{numCharsLeft} characters left</div>
+            /> || <div/>
+          }
+          <div className='input-char-count'>{inputMaxLength - formText.length} characters left</div>
         </div>
         <div className='dream-input-bottom-row'>
-          {
-            dreamBody && !showConfirmDelete &&
-              <button className='gen-btn' aria-label='Start dream deletion' onClick={(e) => {
-                e.preventDefault();
-                setShowConfirmDelete(true)
-              }}>Delete</button>
-          }
-          {
-            dreamBody && showConfirmDelete &&
-            <div id='confirm-delete-container' className='confirm-delete-container'>
-              <div>
-                <button className='gen-btn confirm-delete-btn' aria-label='Cancel dream deletion' onClick={(e) => {
-                  e.preventDefault();
-                  setShowConfirmDelete(false)
-                }}>Cancel</button>
-                <button className='gen-btn confirm-delete-btn' aria-label='Confirm dream deletion' onClick={(e) => {
-                  e.preventDefault();
-                  deleteDream()
-                }}>Delete</button>
-              </div>
-              <div className='dream-delete-confirm-msg'>Confirm dream deletion?</div>
-            </div>
+          { dreamBody && 
+            <DreamDeletor
+              dreamId={dreamId}
+              removeDreamFromPage={removeDreamFromPage}
+              setShowSaveBtn={setShowSaveBtn}
+              setError={setError}
+            />
           }
           {/* Update dream updating to allow time change? */}
           {!dreamBody && <div/>}
           <div>
-            <button
-              id='save-dream-btn'
-              className='gen-btn'
-              type='submit'
-              aria-label='Save dream'
-              onClick={(e) => {
-                e.preventDefault();
-                if (formText != '') {
-                  saveDream();
-                }
-              }}
-            >
+            { showSaveBtn && 
+              <button
+                id='save-dream-btn'
+                className='gen-btn'
+                type='submit'
+                aria-label='Save dream'
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (formText != '') {
+                    saveDream();
+                  }
+                }}
+              >
               Save
             </button>
-            {showDreamUpdatedMsg && <div className='dream-update-msg'>Dream updated</div>}
+            }
+            {showDreamUpdatedMsg && <div className='dream-update-msg'>Dream Updated</div>}
           </div>
         </div>
       </form>
