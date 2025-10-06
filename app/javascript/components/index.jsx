@@ -2,7 +2,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { getUserStatus } from "../api/usersApi";
 import NavBar from "./NavBar";
-import InfoPage from "./InfoPage";
+import Footer from "./Footer";
+import LandingPage from "./LandingPage";
 import DreamsPage from "./DreamsPage";
 import ErrorBanner from "./ErrorBanner";
 
@@ -33,7 +34,8 @@ export default function Main() {
         <div>
           <NavBar userStatus={userStatus}/>
           <ErrorBanner currentError={error}/>
-          <InfoPage/>
+          <LandingPage/>
+          <Footer/>
         </div>
       );
     } else if (userStatus == true) {
@@ -42,6 +44,7 @@ export default function Main() {
           <NavBar userStatus={userStatus}/>
           <ErrorBanner currentError={error}/>
           <DreamsPage setError={setError}/>
+          <Footer/>
         </div>
       );
     }

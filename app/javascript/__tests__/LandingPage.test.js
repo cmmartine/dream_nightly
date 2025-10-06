@@ -1,16 +1,16 @@
 import { render, screen } from "@testing-library/react";
-import InfoPage from "../components/InfoPage";
+import LandingPage from "../components/LandingPage";
 import { appDescription } from "../constants/appInfo";
 
-describe('InfoPage', () => {
-  function renderInfoPage() {
+describe('LandingPage', () => {
+  function renderLandingPage() {
     return render(
-      <InfoPage/>
+      <LandingPage/>
     )
   };
 
   it('shows the applications description', () => {
-    renderInfoPage();
+    renderLandingPage();
     expect(screen.queryByText(appDescription.body)).toBeInTheDocument();
   });
 });

@@ -4,9 +4,10 @@
 @import './dream.css';
 @import './dream-input.css';
 @import './navbar.css';
-@import './info-page.css';
+@import './info-pages.css';
 @import './dreams-calendar.css';
 @import './error-banner.css';
+@import './footer.css';
 
 body {
   margin: 0;
@@ -68,6 +69,10 @@ a {
   cursor: pointer;
 }
 
+.footer-link-btn {
+  font-size: small;
+}
+
 #flash-container {
   display: flex;
   position: fixed;
@@ -80,13 +85,6 @@ a {
   background: rgba(19,2,27,1);
   border: 1px solid #808080;
   z-index: 1;
-}
-
-.not-found-page {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .loading-container {

@@ -1,4 +1,4 @@
-export const appName = "Dream Journal";
+export const appName = "Dream Nightly";
 
 export const appDescription = {
   callToAction: "Start your dream journey",

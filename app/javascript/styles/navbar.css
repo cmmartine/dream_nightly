@@ -10,6 +10,7 @@ nav {
   font-size: xx-large;
   font-weight: bold;
   align-self: center;
+  justify-self: flex-start;
 }
 
 .session-btns-container {
@@ -21,4 +22,10 @@ nav {
 
 .session-btn {
   margin-left: 10px;
+}
+
+@media (max-width: 600px) {
+  nav {
+    padding: 10px 10px;
+  }
 }

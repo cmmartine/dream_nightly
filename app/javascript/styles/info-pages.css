@@ -1,0 +1,74 @@
+.info-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.info-page-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 700px;
+}
+
+.info-page-bottom-row {
+  display: flex;
+  flex-direction: column;
+  width: 700px;
+}
+
+.info-call-to-action {
+  display: flex;
+  justify-content: center;
+  font-size: xx-large;
+}
+
+.info-text {
+  max-width: 600px;
+  justify-content: center;
+}
+
+.app-screenshot {
+  background-image: url('./images/DreamNightlyMobile.jpg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 240px;
+  height: 400px;
+  border: 1px solid white;
+  border-radius: 4px;
+}
+
+.not-found-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 600px) {
+  .info-call-to-action {
+    display: flex;
+    font-size: x-large;
+  }
+
+  .info-page-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .info-page-bottom-row {
+    width: 100%;
+  }
+
+  .app-screenshot {
+    max-width: 90%;
+  }
+
+  .info-text {
+    width: 95%
+  }
+}
