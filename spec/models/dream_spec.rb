@@ -100,7 +100,7 @@ RSpec.describe Dream, type: :model do
   describe 'dreamed_at_in_ms' do
     it 'converts the dreamed_at from datetime to ms' do
       dream = FactoryBot.create(:dream)
-      expect(dream.dreamed_at_in_ms).to eq(1_732_351_099_000)
+      expect(dream.dreamed_at_in_ms).to eq(1_759_221_499_000)
     end
   end
 

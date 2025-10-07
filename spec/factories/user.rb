@@ -7,6 +7,14 @@ FactoryBot.define do
   end
 end
 
+def create_dreams_for_logged_in_user
+  user = User.first
+  FactoryBot.create(:dream, :one_day_ago, user_id: user.id)
+  FactoryBot.create(:dream, user_id: user.id)
+  FactoryBot.create(:dream, :one_day_ahead, user_id: user.id)
+  user
+end
+
 def create_user_with_dreams
   user = FactoryBot.create(:user)
   FactoryBot.create(:dream, :one_day_ago, user_id: user.id)
