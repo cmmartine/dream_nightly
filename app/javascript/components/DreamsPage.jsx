@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { postDreamsFromDate } from "../api/dreamsApi";
 import Dream from "./Dream";
 import DreamInput from "./DreamInput";
+import Calendar from "./Calendar.jsx";
 import DreamsCalendar from "./DreamsCalendar";
 import * as NONVALID_DREAM_DATE from "../constants/shared/NONVALID_DREAM_DATE.json"
 import * as MAX_COUNTS from '../constants/shared/MAX_COUNTS.json';
@@ -94,7 +95,8 @@ export default function DreamsPage(props) {
 
   return(
     <div className='dreams-page-container'>
-      <DreamsCalendar setDateTimeInMs={setDateTimeInMs} convertDateTimeToMs={convertDateTimeToMs} setCalendarDay={setCalendarDay} setCalendarMonth={setCalendarMonth} setCalendarYear={setCalendarYear}/>
+      {/* <DreamsCalendar setDateTimeInMs={setDateTimeInMs} convertDateTimeToMs={convertDateTimeToMs} setCalendarDay={setCalendarDay} setCalendarMonth={setCalendarMonth} setCalendarYear={setCalendarYear}/> */}
+      <Calendar setDateTimeInMs={setDateTimeInMs} convertDateTimeToMs={convertDateTimeToMs} calendarDay={calendarDay} calendarMonth={calendarMonth} calendarYear={calendarYear} setCalendarDay={setCalendarDay} setCalendarMonth={setCalendarMonth} setCalendarYear={setCalendarYear}/>
       {!isDateOutsideAllowedRange() && 
       <DreamInput addNewDream={addNewDream} calendarYear={calendarYear} calendarMonth={calendarMonth} calendarDay={calendarDay} convertDateTimeToMs={convertDateTimeToMs} disableCreation={atMaximumNumDreams()} setError={setError}/>
       }

@@ -8,6 +8,7 @@
 @import './dreams-calendar.css';
 @import './error-banner.css';
 @import './footer.css';
+@import './calendar.css';
 
 body {
   margin: 0;
@@ -34,6 +35,12 @@ code {
   width: 100%;
   min-height: 100vh;
   max-height: 100vh;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 h1 {

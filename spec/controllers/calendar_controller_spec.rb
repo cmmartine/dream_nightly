@@ -54,13 +54,15 @@ RSpec.describe CalendarController, type: :controller do
         expect(days_info.select { |day| day['day_has_dreams'] == true }.count).to eq(2)
       end
 
-      it 'returns all days with day_has_dreams as false' do
-        current_user.dreams.destroy_all
-        get :days_info, params: valid_params, as: :json
+      context 'when there are no dreams' do
+        it 'returns all days with day_has_dreams as false' do
+          current_user.dreams.destroy_all
+          get :days_info, params: valid_params, as: :json
 
-        days_info = JSON.parse(response.body)['days']
+          days_info = JSON.parse(response.body)['days']
 
-        expect(days_info.all? { |day| day['day_has_dreams'] == false }).to be true
+          expect(days_info.all? { |day| day['day_has_dreams'] == false }).to be true
+        end
       end
     end
   end
