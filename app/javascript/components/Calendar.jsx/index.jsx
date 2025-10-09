@@ -3,18 +3,54 @@ import { useState, useEffect } from 'react';
 import { getCalendarDaysInfo } from '../../api/calendarApi';
 
 const months = {
-  0: 'January',
-  1: 'February',
-  2: 'March',
-  3: 'April',
-  4: 'May',
-  5: 'June',
-  6: 'July',
-  7: 'August',
-  8: 'September',
-  9: 'October',
-  10: 'November',
-  11: 'December'
+  0: {
+    long: 'January',
+    short: 'Jan'
+  },
+  1: {
+    long: 'February',
+    short: 'Feb'
+  },
+  2: {
+    long: 'March',
+    short: 'Mar'
+  },
+  3: {
+    long: 'April',
+    short: 'Apr'
+  },
+  4: {
+    long: 'May',
+    short: 'May'
+  },
+  5: {
+    long: 'June',
+    short: 'Jun'
+  },
+  6: {
+    long: 'July',
+    short: 'Jul'
+  },
+  7: {
+    long: 'August',
+    short: 'Aug'
+  },
+  8: {
+    long: 'September',
+    short: 'Sep'
+  },
+  9: {
+    long: 'October',
+    short: 'Oct'
+  },
+  10: {
+    long: 'November',
+    short: 'Nov'
+  },
+  11: {
+    long: 'December',
+    short: 'Dec'
+  }
 };
 
 export default function Calendar(props) {
@@ -30,7 +66,6 @@ export default function Calendar(props) {
     setError 
   } = props;
   const [daysInfo, setDaysInfo] = useState(null);
-  const [calendarValue, setCalendarValue] = useState();
 
   useEffect(() => {
     if (calendarYear && calendarMonth) {
@@ -40,8 +75,34 @@ export default function Calendar(props) {
 
   useEffect(() => {
     const today = new Date();
-    setCalendarStateFromDate(today);
-  })
+    handleDateChange({
+      newYear: today.getFullYear(),
+      newMonth: today.getMonth(),
+      newDay: today.getDate(),
+    })
+  }, []);
+
+  const fetchCalendarSetupInfo = async (year, month) => {
+    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const data = await getCalendarDaysInfo(year, month, userTimeZone, setError);
+    setDaysInfo(data.days);
+  };
+
+  const setCalendarStateFromDate = (year, month, day) => {
+    setCalendarYear(year);
+    setCalendarMonth(month + 1);
+    setCalendarDay(day);
+  };
+
+  const handleDateChange = ({ newYear, newMonth, newDay }) => {
+    const year = newYear || calendarYear;
+    const month = newMonth || calendarMonth - 1;
+    const day = newDay || calendarDay;
+    const newDateTime = new Date(year, month, day);
+    setCalendarStateFromDate(year, month, day);
+    const newDateTimeInMs = convertDateTimeToMs(newDateTime);
+    setDateTimeInMs(newDateTimeInMs);
+  };
 
   const renderDaysInMonth = () => {
     if (!daysInfo) return null;
@@ -54,66 +115,64 @@ export default function Calendar(props) {
 
     const dayCells = daysInfo.map((day) => (
       <div className={`calendar-day-container`}>
-        <div
+        <button
           key={day.day_num}
           className={`calendar-day ${day.day_has_dreams ? 'highlight' : ''}`}
+          aria-label='Change the day'
+          onClick={() => {
+            handleDateChange({ newDay: day.day_num })
+          }}
         >
           {day.day_num}
-        </div>
+        </button>
       </div>
     ));
 
     return [...emptyCells, ...dayCells];
   };
 
-  const fetchCalendarSetupInfo = async (year, month) => {
-    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const data = await getCalendarDaysInfo(year, month, userTimeZone, setError);
-    setDaysInfo(data.days);
-  };
+  const renderMonthsInYear = () => {
+    let monthButtons = [];
+    Object.keys(months).forEach((month) => {
+      monthButtons.push(
+        <button className='calendar-month-selector'>
+          {months[month].short}
+        </button>
+      );
+    });
 
-  const setCalendarStateFromDate = (date) => {
-    const dateYear = date.getFullYear();
-    const dateMonth = date.getMonth() + 1;
-    const dateDay = date.getDate();
-    setCalendarYear(dateYear);
-    setCalendarMonth(dateMonth);
-    setCalendarDay(dateDay);
-    const dateForCalendar = `${dateDay} ${months[dateMonth - 1]} ${dateYear}`;
-    setCalendarValue(dateForCalendar);
-  };
-
-  const handleDateChange = (e) => {
-    const [year, month, day] = e.target.value.split('-').map(Number);
-    const newDateTime = new Date(year, month - 1, day);
-    setCalendarStateFromDate(newDateTime);
-    const newDateTimeInMs = convertDateTimeToMs(newDateTime);
-    setDateTimeInMs(newDateTimeInMs);
+    return monthButtons;
   };
 
   return(
+    (calendarYear && calendarMonth && calendarDay) && 
     <div className='calendar-container'>
       <div className='calendar-header'>
-        <button className='prev-month'>
-          left arrow
+        <button className='calendar-date'>
+          {months[calendarMonth - 1].long}
         </button>
-        <button className='current-date'>
-          {calendarValue}
+        <button className='calendar-date'>
+          {calendarDay}
         </button>
-        <button className='next-month'>
-          right arrow
+        <button className='calendar-date'>
+          {calendarYear}
         </button>
       </div>
-      <div className='calendar-weekdays-container'>
-        <div className='calendar-weekday'>Sun</div>
-        <div className='calendar-weekday'>Mon</div>
-        <div className='calendar-weekday'>Tue</div>
-        <div className='calendar-weekday'>Wed</div>
-        <div className='calendar-weekday'>Thu</div>
-        <div className='calendar-weekday'>Fri</div>
-        <div className='calendar-weekday'>Sat</div>
+      <div className='calendar-months-view-container'>
+        {renderMonthsInYear()}
       </div>
-      <div className="calendar-days-container">{renderDaysInMonth()}</div>
+      <div className='calendar-days-view-container'>
+        <div className='calendar-weekdays-container'>
+          <div className='calendar-weekday'>Sun</div>
+          <div className='calendar-weekday'>Mon</div>
+          <div className='calendar-weekday'>Tue</div>
+          <div className='calendar-weekday'>Wed</div>
+          <div className='calendar-weekday'>Thu</div>
+          <div className='calendar-weekday'>Fri</div>
+          <div className='calendar-weekday'>Sat</div>
+        </div>
+        <div className="calendar-days-container">{renderDaysInMonth()}</div>
+      </div>
     </div>
   )
 };
