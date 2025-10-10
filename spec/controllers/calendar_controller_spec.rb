@@ -4,6 +4,7 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe CalendarController, type: :controller do
+  include ActiveSupport::Testing::TimeHelpers
   describe 'GET /days_info' do
     context 'when the user is logged in' do
       login_user
@@ -31,19 +32,24 @@ RSpec.describe CalendarController, type: :controller do
       end
 
       it 'returns an array with each days information for the month and year' do
-        get :days_info, params: valid_params, as: :json
+        travel_to Date.new(2025, 9, 30).end_of_day do
 
-        days_info = JSON.parse(response.body)['days']
+          get :days_info, params: valid_params, as: :json
 
-        first_day = days_info[0]
-        expect(first_day['day_num']).to eq(1)
-        expect(first_day['day_has_dreams']).to eq(false)
-        expect(first_day['day_of_week']).to eq(chosen_date.beginning_of_month.wday)
+          days_info = JSON.parse(response.body)['days']
 
-        last_day = days_info[days_info.length - 1]
-        expect(last_day['day_num']).to eq(30)
-        expect(last_day['day_has_dreams']).to eq(true)
-        expect(last_day['day_of_week']).to eq(chosen_date.end_of_month.wday)
+          first_day = days_info[0]
+          expect(first_day['day_num']).to eq(1)
+          expect(first_day['day_has_dreams']).to eq(false)
+          expect(first_day['day_of_week']).to eq(chosen_date.beginning_of_month.wday)
+          expect(first_day['is_today']).to eq(false)
+
+          last_day = days_info[days_info.length - 1]
+          expect(last_day['day_num']).to eq(30)
+          expect(last_day['day_has_dreams']).to eq(true)
+          expect(last_day['day_of_week']).to eq(chosen_date.end_of_month.wday)
+          expect(last_day['is_today']).to eq(true)
+        end
       end
 
       it 'returns that a day has dreams only for the chosen month' do
@@ -64,6 +70,8 @@ RSpec.describe CalendarController, type: :controller do
           expect(days_info.all? { |day| day['day_has_dreams'] == false }).to be true
         end
       end
+
+      context 'when the date is today'
     end
   end
 end

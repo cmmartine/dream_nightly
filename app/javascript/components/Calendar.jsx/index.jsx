@@ -117,7 +117,7 @@ export default function Calendar(props) {
       <div className={`calendar-day-container`}>
         <button
           key={day.day_num}
-          className={`calendar-day ${day.day_has_dreams ? 'highlight' : ''}`}
+          className={`calendar-day ${day.day_has_dreams ? 'highlight' : ''} ${day.is_today ? 'calendar-today' : ''}`}
           aria-label='Change the day'
           onClick={() => {
             handleDateChange({ newDay: day.day_num })

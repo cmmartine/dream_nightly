@@ -25,10 +25,12 @@ class CalendarController < ApplicationController
   end
 
   def create_day_object(year, month, day, dreams)
+    date = Date.new(year, month, day)
     {
       day_num: day,
       day_has_dreams: dreams.any? { |dream| dream.dreamed_at.day == day },
-      day_of_week: Date.new(year, month, day).wday
+      day_of_week: date.wday,
+      is_today: date == Date.current
     }
   end
 end

@@ -76,14 +76,35 @@
 
 .calendar-day.highlight {
   background-color: #4f2388;
-  border: 1px solid white;
 }
 
 .calendar-day.highlight:hover {
   background-color: #9059f0;
-  border: 1px solid white;
   cursor: pointer;
 }
+
+.calendar-day.highlight:active {
+  background-color: #6628d1;
+}
+
+.calendar-day.highlight.calendar-today {
+  border: 1px solid white;
+}
+
+.calendar-day.highlight.calendar-today:hover {
+  background-color: #9059f0;
+  cursor: pointer;
+}
+
+.calendar-day.highlight.calendar-today:active {
+  background-color: #6628d1;
+}
+
+.calendar-day.calendar-today {
+  border: 1px solid white;
+}
+
+
 
 .calendar-day.empty {
   background-color: transparent;
