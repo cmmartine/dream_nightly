@@ -63,6 +63,8 @@ export default function Calendar(props) {
     setCalendarDay,
     setCalendarMonth,
     setCalendarYear,
+    newDreamId,
+    deletedDreamId,
     setError 
   } = props;
   const [daysInfo, setDaysInfo] = useState(null);
@@ -71,7 +73,7 @@ export default function Calendar(props) {
     if (calendarYear && calendarMonth) {
       fetchCalendarSetupInfo(calendarYear, calendarMonth);
     };
-  }, [calendarYear, calendarMonth]);
+  }, [calendarYear, calendarMonth, newDreamId, deletedDreamId]);
 
   useEffect(() => {
     const today = new Date();
@@ -95,9 +97,9 @@ export default function Calendar(props) {
   };
 
   const handleDateChange = ({ newYear, newMonth, newDay }) => {
-    const year = newYear || calendarYear;
-    const month = newMonth || calendarMonth - 1;
-    const day = newDay || calendarDay;
+    const year = newYear != null ? newYear : calendarYear;
+    const month = newMonth != null ? newMonth : calendarMonth - 1;
+    const day = newDay != null ? newDay : calendarDay;
     const newDateTime = new Date(year, month, day);
     setCalendarStateFromDate(year, month, day);
     const newDateTimeInMs = convertDateTimeToMs(newDateTime);
@@ -135,7 +137,9 @@ export default function Calendar(props) {
     let monthButtons = [];
     Object.keys(months).forEach((month) => {
       monthButtons.push(
-        <button className='calendar-month-selector'>
+        <button className='calendar-month-selector' onClick={() => {
+          handleDateChange({ newMonth: parseInt(month) })
+        }}>
           {months[month].short}
         </button>
       );
@@ -144,12 +148,16 @@ export default function Calendar(props) {
     return monthButtons;
   };
 
+  const handleMonthClick = () => {
+
+  };
+
   return(
     (calendarYear && calendarMonth && calendarDay) && 
     <div className='calendar-container'>
       <div className='calendar-header'>
         <button className='calendar-date'>
-          {months[calendarMonth - 1].long}
+          {months[calendarMonth - 1]?.long}
         </button>
         <button className='calendar-date'>
           {calendarDay}

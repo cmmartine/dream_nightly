@@ -16,6 +16,7 @@ if Rails.env.development?
   end
 
   user1 = User.create!(email: 'testuser@test.com', password: 'Testuser1!', password_confirmation: 'Testuser1!', confirmed_at: Time.now - 1.day)
+  User.create!(email: 'testuser2@test.com', password: 'Testuser2!', password_confirmation: 'Testuser2!', confirmed_at: Time.now - 1.day)
 
   dream_description1 = 'I had a dream while sleeping, it involved something crazy'
   dream_description2 = 'I was in the woods walking along a path, it was a bright sunny day. Then bear started to chase me'
@@ -52,9 +53,16 @@ if Rails.env.development?
         body: dreams_descriptions[rand_dream],
         user_id: user1.id
       )
+      new_other_month_dream = Dream.new(
+        body: dreams_descriptions[rand_dream],
+        user_id: user1.id
+      )
 
       new_dream.dreamed_at = DateTime.new(DateTime.now.year, DateTime.now.month, DateTime.now.day, dreams_hours[rand_hour]) + num.day
       new_dream.save!
+
+      new_other_month_dream.dreamed_at = DateTime.new(DateTime.now.year, rand(1..12), DateTime.now.day, dreams_hours[rand_hour]) + num.day
+      new_other_month_dream.save!
     end
   end
 end
