@@ -4,25 +4,34 @@
   width: 400px;
 }
 
+.calendar-container.calendar-open {
+  background: rgba(19,2,27,1);
+  border: 1px solid #4f2388c4;
+  border-radius: 5px;
+  padding: 14px 15px 15px 15px;
+}
+
+.calendar-container.calendar-closed {
+  padding: 15px;
+}
+
 .calendar-header {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
-}
-
-.calendar-date {
   background: transparent;
   color:white;
   border: none;
-  font-size: 1.7em;
+  font-size: 28px;
   font-weight: bold;
 }
 
 .calendar-months-view-container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(6, 70px);
   text-align: center;
   font-weight: bold;
+  margin-top: 25px;
+  place-content: center;
 }
 
 .calendar-month {
@@ -31,9 +40,9 @@
   border: none;
   color: white;
   font-size: medium;
-  margin: 20px 10px;
+  margin-bottom: 10px;
   width: 40px;
-  height: 35px;
+  height: 40px;
   border-radius: 50%;
 }
 
@@ -77,6 +86,7 @@
   grid-template-columns: repeat(7, 1fr); /* 7 columns for weekdays */
   text-align: center;
   font-weight: bold;
+  margin-top: 25px;
 }
 
 .calendar-days-container {
@@ -153,5 +163,9 @@
 @media (max-width: 600px) {
   .calendar-container {
     width: 90%;
+  }
+
+  .calendar-months-view-container {
+    grid-template-columns: repeat(4, 80px);
   }
 }

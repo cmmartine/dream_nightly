@@ -33,6 +33,7 @@ export default function Calendar(props) {
   } = props;
   const [daysInfo, setDaysInfo] = useState(null);
   const [monthsInfo, setMonthsInfo] = useState(null);
+  const [calendarIsOpen, setCalendarIsOpen] = useState(false);
 
   useEffect(() => {
     if (calendarYear && calendarMonth) {
@@ -70,6 +71,16 @@ export default function Calendar(props) {
     setCalendarStateFromDate(year, month, day);
     const newDateTimeInMs = convertDateTimeToMs(newDateTime);
     setDateTimeInMs(newDateTimeInMs);
+  };
+
+  const renderCalendarHeader = () => {
+    return (
+      <button className='calendar-header' onClick={() => {
+        setCalendarIsOpen((prev) => !prev);
+      }}>
+        {months[calendarMonth - 1]} {calendarDay} {calendarYear}
+      </button>
+    )
   };
 
   const renderDaysInMonth = () => {
@@ -111,39 +122,32 @@ export default function Calendar(props) {
     ));
   };
 
-  const handleMonthClick = () => {
-
-  };
-
   return(
-    (calendarYear && calendarMonth && calendarDay) && 
-    <div className='calendar-container'>
-      <div className='calendar-header'>
-        <button className='calendar-date'>
-          {months[calendarMonth - 1]}
-        </button>
-        <button className='calendar-date'>
-          {calendarDay}
-        </button>
-        <button className='calendar-date'>
-          {calendarYear}
-        </button>
-      </div>
-      <div className='calendar-months-view-container'>
-        {renderMonthsInYear()}
-      </div>
-      <div className='calendar-days-view-container'>
-        <div className='calendar-weekdays-container'>
-          <div className='calendar-weekday'>Sun</div>
-          <div className='calendar-weekday'>Mon</div>
-          <div className='calendar-weekday'>Tue</div>
-          <div className='calendar-weekday'>Wed</div>
-          <div className='calendar-weekday'>Thu</div>
-          <div className='calendar-weekday'>Fri</div>
-          <div className='calendar-weekday'>Sat</div>
+    (calendarYear && calendarMonth && calendarDay) && (
+      calendarIsOpen && <div className='calendar-container calendar-open'>
+        <div className='calendar-header'>
+          {renderCalendarHeader()}
         </div>
-        <div className="calendar-days-container">{renderDaysInMonth()}</div>
+        <div className='calendar-months-view-container'>
+          {renderMonthsInYear()}
+        </div>
+        <div className='calendar-days-view-container'>
+          <div className='calendar-weekdays-container'>
+            <div className='calendar-weekday'>Sun</div>
+            <div className='calendar-weekday'>Mon</div>
+            <div className='calendar-weekday'>Tue</div>
+            <div className='calendar-weekday'>Wed</div>
+            <div className='calendar-weekday'>Thu</div>
+            <div className='calendar-weekday'>Fri</div>
+            <div className='calendar-weekday'>Sat</div>
+          </div>
+          <div className="calendar-days-container">{renderDaysInMonth()}</div>
+        </div>
       </div>
-    </div>
+      ||
+      <div className='calendar-container calendar-closed'>
+        {renderCalendarHeader()}
+      </div>
+    )
   )
 };
