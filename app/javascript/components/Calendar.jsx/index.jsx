@@ -1,6 +1,7 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { getCalendarDaysInfo } from '../../api/calendarApi';
+import { addOutsideClickListener } from '../../util/elementUtils';
 
 const months = {
   0: 'January',
@@ -33,7 +34,8 @@ export default function Calendar(props) {
   } = props;
   const [daysInfo, setDaysInfo] = useState(null);
   const [monthsInfo, setMonthsInfo] = useState(null);
-  const [calendarIsOpen, setCalendarIsOpen] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
+  const calendarRef = useRef();
 
   useEffect(() => {
     if (calendarYear && calendarMonth) {
@@ -42,13 +44,28 @@ export default function Calendar(props) {
   }, [calendarYear, calendarMonth, newDreamId, deletedDreamId]);
 
   useEffect(() => {
+    setToToday();
+  }, []);
+
+  useEffect(() => {
+    let cleanupFunction;
+    if(showCalendar && calendarRef?.current) {
+      cleanupFunction = addOutsideClickListener(calendarRef.current, () => setShowCalendar(false));
+    };
+
+    return () => {
+      if (cleanupFunction) cleanupFunction();
+    };
+  }, [showCalendar]);
+
+  const setToToday = () => {
     const today = new Date();
     handleDateChange({
       newYear: today.getFullYear(),
       newMonth: today.getMonth(),
       newDay: today.getDate(),
     })
-  }, []);
+  };
 
   const fetchCalendarSetupInfo = async (year, month) => {
     const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -75,11 +92,24 @@ export default function Calendar(props) {
 
   const renderCalendarHeader = () => {
     return (
-      <button className='calendar-header' onClick={() => {
-        setCalendarIsOpen((prev) => !prev);
-      }}>
-        {months[calendarMonth - 1]} {calendarDay} {calendarYear}
-      </button>
+      <div className='calendar-header-container'>
+        <div></div>
+        <button className='calendar-header' aria-label={`${showCalendar ? 'Close' : 'Open'} Calendar`} onClick={() => {
+          setShowCalendar((prev) => !prev);
+        }}>
+          {months[calendarMonth - 1]} {calendarDay} {calendarYear}
+        </button>
+        { 
+          showCalendar ?
+          <button className='calendar-reset-btn' onClick={() => {
+            setToToday();
+          }}>
+            Today
+          </button>
+          :
+          <div></div>
+        }
+      </div>
     )
   };
 
@@ -124,10 +154,8 @@ export default function Calendar(props) {
 
   return(
     (calendarYear && calendarMonth && calendarDay) && (
-      calendarIsOpen && <div className='calendar-container calendar-open'>
-        <div className='calendar-header'>
-          {renderCalendarHeader()}
-        </div>
+      showCalendar && <div ref={calendarRef} className='calendar-container calendar-open'>
+        {renderCalendarHeader()}
         <div className='calendar-months-view-container'>
           {renderMonthsInYear()}
         </div>
@@ -145,7 +173,7 @@ export default function Calendar(props) {
         </div>
       </div>
       ||
-      <div className='calendar-container calendar-closed'>
+      <div ref={calendarRef} className='calendar-container calendar-closed'>
         {renderCalendarHeader()}
       </div>
     )

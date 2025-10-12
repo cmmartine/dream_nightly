@@ -3,7 +3,7 @@
   flex-direction: column;
   width: 600px;
   max-width: 90%;
-  margin-top: 15px;
+  margin-top: calc(67px + 15px); /* 67px for the calendar container height */
   margin-bottom: 20px;
 }
 
