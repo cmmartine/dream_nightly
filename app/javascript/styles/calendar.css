@@ -25,12 +25,51 @@
   font-weight: bold;
 }
 
-.calendar-month-selector {
+.calendar-month {
+  justify-self: center;
   background: transparent;
   border: none;
   color: white;
   font-size: medium;
   margin: 20px 10px;
+  width: 40px;
+  height: 35px;
+  border-radius: 50%;
+}
+
+.calendar-month:hover {
+  background-color: #9059f0;
+  cursor: pointer;
+}
+
+.calendar-month.highlight {
+  background-color: #4f2388;
+}
+
+.calendar-month:active {
+  background-color: #6628d1;
+}
+
+.calendar-month.highlight:hover {
+  background-color: #9059f0;
+  cursor: pointer;
+}
+
+.calendar-month.highlight:active {
+  background-color: #6628d1;
+}
+
+.calendar-month.highlight.calendar-today {
+  border: 1px solid white;
+}
+
+.calendar-month.highlight.calendar-today:hover {
+  background-color: #9059f0;
+  cursor: pointer;
+}
+
+.calendar-month.highlight.calendar-today:active {
+  background-color: #6628d1;
 }
 
 .calendar-weekdays-container {

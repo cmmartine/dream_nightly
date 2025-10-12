@@ -3,54 +3,18 @@ import { useState, useEffect } from 'react';
 import { getCalendarDaysInfo } from '../../api/calendarApi';
 
 const months = {
-  0: {
-    long: 'January',
-    short: 'Jan'
-  },
-  1: {
-    long: 'February',
-    short: 'Feb'
-  },
-  2: {
-    long: 'March',
-    short: 'Mar'
-  },
-  3: {
-    long: 'April',
-    short: 'Apr'
-  },
-  4: {
-    long: 'May',
-    short: 'May'
-  },
-  5: {
-    long: 'June',
-    short: 'Jun'
-  },
-  6: {
-    long: 'July',
-    short: 'Jul'
-  },
-  7: {
-    long: 'August',
-    short: 'Aug'
-  },
-  8: {
-    long: 'September',
-    short: 'Sep'
-  },
-  9: {
-    long: 'October',
-    short: 'Oct'
-  },
-  10: {
-    long: 'November',
-    short: 'Nov'
-  },
-  11: {
-    long: 'December',
-    short: 'Dec'
-  }
+  0: 'January',
+  1: 'February',
+  2: 'March',
+  3: 'April',
+  4: 'May',
+  5: 'June',
+  6: 'July',
+  7: 'August',
+  8: 'September',
+  9: 'October',
+  10: 'November',
+  11: 'December'
 };
 
 export default function Calendar(props) {
@@ -68,6 +32,7 @@ export default function Calendar(props) {
     setError 
   } = props;
   const [daysInfo, setDaysInfo] = useState(null);
+  const [monthsInfo, setMonthsInfo] = useState(null);
 
   useEffect(() => {
     if (calendarYear && calendarMonth) {
@@ -88,6 +53,7 @@ export default function Calendar(props) {
     const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const data = await getCalendarDaysInfo(year, month, userTimeZone, setError);
     setDaysInfo(data.days);
+    setMonthsInfo(data.months);
   };
 
   const setCalendarStateFromDate = (year, month, day) => {
@@ -119,13 +85,13 @@ export default function Calendar(props) {
       <div className={`calendar-day-container`}>
         <button
           key={day.day_num}
-          className={`calendar-day ${day.day_has_dreams ? 'highlight' : ''} ${day.is_today ? 'calendar-today' : ''}`}
+          className={`calendar-day ${day.has_dreams ? 'highlight' : ''} ${day.is_today ? 'calendar-today' : ''}`}
           aria-label='Change the day'
           onClick={() => {
-            handleDateChange({ newDay: day.day_num })
+            handleDateChange({ newDay: day.num })
           }}
         >
-          {day.day_num}
+          {day.num}
         </button>
       </div>
     ));
@@ -134,18 +100,15 @@ export default function Calendar(props) {
   };
 
   const renderMonthsInYear = () => {
-    let monthButtons = [];
-    Object.keys(months).forEach((month) => {
-      monthButtons.push(
-        <button className='calendar-month-selector' onClick={() => {
-          handleDateChange({ newMonth: parseInt(month) })
-        }}>
-          {months[month].short}
-        </button>
-      );
-    });
+    if (!monthsInfo) return;
 
-    return monthButtons;
+    return monthsInfo.map((month) => (
+      <button className={`calendar-month ${month.has_dreams ? 'highlight' : ''} ${month.is_current ? 'calendar-today' : ''}`} onClick={() => {
+        handleDateChange({ newDay: 1, newMonth: month.num })
+      }}>
+        {month.short_name}
+      </button>
+    ));
   };
 
   const handleMonthClick = () => {
@@ -157,7 +120,7 @@ export default function Calendar(props) {
     <div className='calendar-container'>
       <div className='calendar-header'>
         <button className='calendar-date'>
-          {months[calendarMonth - 1]?.long}
+          {months[calendarMonth - 1]}
         </button>
         <button className='calendar-date'>
           {calendarDay}

@@ -3,11 +3,18 @@
 class CalendarController < ApplicationController
   before_action :authenticate_user!
 
-  def days_info
-    render json: { days: generate_days_info(params[:year].to_i, params[:month].to_i, params[:user_timezone]) }
+  def info
+    year = params[:year].to_i
+    month = params[:month].to_i
+    user_timezone = params[:user_timezone]
+
+    render json: {
+      days: generate_days_info(year, month, user_timezone),
+      months: generate_months_info(year, user_timezone)
+    }
   rescue StandardError => e
     Rails.logger.error("Calendars day info failure: #{e.message}")
-    render json: { message: 'Failed to retrieve calendar information' }
+    render json: { message: 'Failed to retrieve calendar day information' }
   end
 
   private
@@ -27,10 +34,31 @@ class CalendarController < ApplicationController
   def create_day_object(year, month, day, dreams)
     date = Date.new(year, month, day)
     {
-      day_num: day,
-      day_has_dreams: dreams.any? { |dream| dream.dreamed_at.day == day },
+      num: day,
+      has_dreams: dreams.any? { |dream| dream.dreamed_at.day == day },
       day_of_week: date.wday,
       is_today: date == Date.current
+    }
+  end
+
+  def generate_months_info(year, user_timezone)
+    Time.use_zone(user_timezone) do
+      (1..12).map do |month|
+        first_date = Date.new(year, month, 1)
+        last_date = first_date.end_of_month
+        dreams = current_user.dreams.where(dreamed_at: first_date.beginning_of_day..last_date.end_of_day)
+        create_month_object(year, month, dreams)
+      end
+    end
+  end
+
+  def create_month_object(year, month, dreams)
+    date = Date.new(year, month)
+    {
+      num: month - 1,
+      has_dreams: dreams.any?,
+      is_current: date.month == Date.current.month && date.year == Date.current.year,
+      short_name: date.strftime('%b')
     }
   end
 end

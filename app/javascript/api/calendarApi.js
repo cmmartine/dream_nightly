@@ -7,5 +7,5 @@ export const getCalendarDaysInfo = (year, month, userTimezone, setError) => {
     user_timezone: userTimezone
   }
 
-  return apiGetFetch('calendar/days_info', setError, getParams)
+  return apiGetFetch('calendar/info', setError, getParams)
 };
