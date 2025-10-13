@@ -100,16 +100,6 @@ export default function Calendar(props) {
         }}>
           {months[calendarMonth - 1]} {calendarDay} {calendarYear}
         </button>
-        { 
-          showCalendar ?
-          <button className='calendar-reset-btn' onClick={() => {
-            setToToday();
-          }}>
-            Today
-          </button>
-          :
-          <div></div>
-        }
       </div>
     )
   };
@@ -127,7 +117,7 @@ export default function Calendar(props) {
       <div className={`calendar-day-container`}>
         <button
           key={day.day_num}
-          className={`calendar-day ${day.has_dreams ? 'highlight' : ''} ${day.is_today ? 'calendar-today' : ''}`}
+          className={`calendar-day ${day.has_dreams ? 'highlight' : ''} ${day.is_today ? 'calendar-today' : ''} ${day.num === calendarDay ? 'highlight-selected' : ''}`}
           aria-label='Change the day'
           onClick={() => {
             handleDateChange({ newDay: day.num })
@@ -145,7 +135,7 @@ export default function Calendar(props) {
     if (!monthsInfo) return;
 
     return monthsInfo.map((month) => (
-      <button className={`calendar-month ${month.has_dreams ? 'highlight' : ''} ${month.is_current ? 'calendar-today' : ''}`} onClick={() => {
+      <button className={`calendar-month ${month.has_dreams ? 'highlight' : ''} ${month.is_current ? 'calendar-today' : ''} ${month.num === calendarMonth - 1 ? 'highlight-selected' : ''}`} onClick={() => {
         handleDateChange({ newDay: 1, newMonth: month.num })
       }}>
         {month.short_name}

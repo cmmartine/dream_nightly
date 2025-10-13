@@ -8,7 +8,7 @@
 @import './dreams-calendar.css';
 @import './error-banner.css';
 @import './footer.css';
-@import './calendar.css';
+@import './calendar/index.css';
 
 body {
   margin: 0;

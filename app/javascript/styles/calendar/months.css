@@ -1,0 +1,73 @@
+.calendar-months-view-container {
+  display: grid;
+  grid-template-columns: repeat(6, 70px);
+  text-align: center;
+  font-weight: bold;
+  margin-top: 25px;
+  place-content: center;
+}
+
+.calendar-month {
+  justify-self: center;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: medium;
+  margin-bottom: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.calendar-month:hover {
+  background: #9059f0;
+  cursor: pointer;
+}
+
+.calendar-month.highlight {
+  background: #4f2388;
+}
+
+.calendar-month:active {
+  background: #6628d1;
+}
+
+.calendar-month.highlight:hover {
+  background: #9059f0;
+  cursor: pointer;
+}
+
+.calendar-month.highlight:active {
+  background: #6628d1;
+}
+
+.calendar-month.highlight.calendar-today {
+  border: 1px solid white;
+}
+
+.calendar-month.highlight.calendar-today:hover {
+  background: #9059f0;
+  cursor: pointer;
+}
+
+.calendar-month.highlight.calendar-today:active {
+  background: #6628d1;
+}
+
+.calendar-month.highlight-selected {
+  background: #9059f0;
+}
+
+.calendar-month.highlight.highlight-selected {
+  background: #9059f0;
+}
+
+.calendar-month.highlight.calendar-today.highlight-selected {
+  background: #9059f0;
+}
+
+@media (max-width: 600px) {
+  .calendar-months-view-container {
+    grid-template-columns: repeat(4, 80px);
+  }
+}

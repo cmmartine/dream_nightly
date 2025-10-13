@@ -1,0 +1,23 @@
+.calendar-header-container {
+    display: flex;
+    place-content: center;
+  }
+
+.calendar-header {
+  display: flex;
+  justify-content: center;
+  background: transparent;
+  color:white;
+  border: none;
+  border-radius: 25px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.calendar-header:hover {
+  background: #9059f0;
+}
+
+.calendar-header:active{
+  background: #6628d1;
+}
