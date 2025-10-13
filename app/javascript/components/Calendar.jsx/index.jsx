@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { getCalendarDaysInfo } from '../../api/calendarApi';
 import { addOutsideClickListener } from '../../util/elementUtils';
+import * as NONVALID_DREAM_DATE from "../../constants/shared/NONVALID_DREAM_DATE.json"
 
 const months = {
   0: 'January',
@@ -152,10 +153,40 @@ export default function Calendar(props) {
     ));
   };
 
+  const isPrevYearValid = () => {
+    return calendarYear - 1 > Number(NONVALID_DREAM_DATE.BEFORE_YEAR);
+  };
+
+  const isNextYearValid = () => {
+    const today = new Date();
+    return calendarYear + 1 < today.getFullYear() + 1;
+  };
+
   return(
     (calendarYear && calendarMonth && calendarDay) && (
       showCalendar && <div ref={calendarRef} className='calendar-container calendar-open'>
         {renderCalendarHeader()}
+        <div className='calendar-year-container'>
+          {
+            isPrevYearValid() && 
+            <button
+              className="calendar-year-arrow lucide--arrow-left"
+              aria-label='Previous Year'
+              onClick={() => handleDateChange({ newYear: calendarYear - 1})}
+            /> ||
+            <div className='calendar-no-arrow'/>
+          }
+          {calendarYear}
+          {
+            isNextYearValid() && 
+            <button
+              className="calendar-year-arrow lucide--arrow-right"
+              aria-label='Next Year'
+              onClick={() => handleDateChange({ newYear: calendarYear + 1})}
+            /> ||
+            <div className='calendar-no-arrow'/>
+          }
+        </div>
         <div className='calendar-months-view-container'>
           {renderMonthsInYear()}
         </div>
