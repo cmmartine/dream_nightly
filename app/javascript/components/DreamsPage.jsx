@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { postDreamsFromDate } from "../api/dreamsApi";
 import Dream from "./Dream";
 import DreamInput from "./DreamInput";
-import Calendar from "./Calendar.jsx";
+import Calendar from "./Calendar";
 import * as NONVALID_DREAM_DATE from "../constants/shared/NONVALID_DREAM_DATE.json"
 import * as MAX_COUNTS from '../constants/shared/MAX_COUNTS.json';
 
