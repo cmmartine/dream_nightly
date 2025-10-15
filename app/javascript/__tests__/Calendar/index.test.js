@@ -6,9 +6,9 @@ describe('Calendar', () => {
 
   const setDateTimeInMs = jest.fn();
   const convertDateTimeToMs = jest.fn();
-  const calendarDay = '2';
-  const calendarMonth = '11';
-  const calendarYear = '2025';
+  const calendarDay = 2;
+  const calendarMonth = 11;
+  const calendarYear = 2025;
   const setCalendarDay = jest.fn();
   const setCalendarMonth = jest.fn();
   const setCalendarYear = jest.fn();
@@ -128,5 +128,13 @@ describe('Calendar', () => {
     fireEvent.click(screen.getByLabelText("Previous Year"));
     expect(setCalendarYear).toHaveBeenCalledWith(2024);
     expect(calendarApi.getCalendarInfo).toHaveBeenCalled();
+  });
+
+  it('closes the calendar when clicking outside', () => {
+    renderCalendar();
+    const headerButton = screen.getByRole('button', { name: /open calendar/i });
+    fireEvent.click(headerButton);
+    fireEvent.click(document.body);
+    expect(screen.queryByText('Oct')).not.toBeInTheDocument();
   });
 });

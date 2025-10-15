@@ -13,7 +13,7 @@ export default function CalendarYear(props) {
   
   const isNextYearValid = () => {
     const today = new Date();
-    return calendarYear + 1 < today.getFullYear() + 1;
+    return calendarYear < today.getFullYear();
   };
 
   return (

@@ -1,5 +1,4 @@
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { fireEvent, render, screen } from "@testing-library/react";
 import Dropdown from "../components/Dropdown";
 import * as usersApi from '../api/usersApi';
 
@@ -42,32 +41,32 @@ describe('Dropdown', () => {
 
   describe('After dropdown button has been clicked', () => {
     describe('The menu element', () => {
-      it('does not have a class of dropdown-closed', async() => {
+      it('does not have a class of dropdown-closed', () => {
         renderDropdown();
         const openDropdown = screen.getByRole('button');
-        await userEvent.click(openDropdown);
+        fireEvent.click(openDropdown);
         expect(screen.getByRole('menu')).not.toHaveClass('dropdown-closed');
       });
 
-      it('closes the dropdown when the area outside of the dropdown is clicked', async() => {
+      it('closes the dropdown when the area outside of the dropdown is clicked', () => {
         renderDropdown();
         const openDropdown = screen.getByRole('button');
-        await userEvent.click(openDropdown);
+        fireEvent.click(openDropdown);
         expect(screen.getByRole('menu')).toHaveClass('dropdown-open');
         const clickTestDiv = screen.getByTestId('click-test');
-        await userEvent.click(clickTestDiv);
+        fireEvent.click(clickTestDiv);
         expect(screen.getByRole('menu')).toHaveClass('dropdown-closed');
       });
 
-      it('does not reopen the dropdown when the area outside of the dropdown is clicked twice', async() => {
+      it('does not reopen the dropdown when the area outside of the dropdown is clicked twice', () => {
         renderDropdown();
         const openDropdown = screen.getByRole('button');
-        await userEvent.click(openDropdown);
+        fireEvent.click(openDropdown);
         expect(screen.getByRole('menu')).toHaveClass('dropdown-open');
         const clickTestDiv = screen.getByTestId('click-test');
-        await userEvent.click(clickTestDiv);
+        fireEvent.click(clickTestDiv);
         expect(screen.getByRole('menu')).toHaveClass('dropdown-closed');
-        await userEvent.click(clickTestDiv);
+        fireEvent.click(clickTestDiv);
         expect(screen.getByRole('menu')).toHaveClass('dropdown-closed');
       });
 
@@ -76,28 +75,28 @@ describe('Dropdown', () => {
           jest.spyOn(usersApi, 'logout').mockImplementation(jest.fn());
         });
 
-        it('is rendered on screen', async() => {
+        it('is rendered on screen', () => {
           renderDropdown();
           const openDropdown = screen.getByRole('button');
-          await userEvent.click(openDropdown);
+          fireEvent.click(openDropdown);
           expect(screen.getByText('Log Out')).toBeInTheDocument();
         });
 
-        it('calls the usersApi logout function when clicked', async() => {
+        it('calls the usersApi logout function when clicked', () => {
           renderDropdown();
           const openDropdown = screen.getByRole('button');
-          await userEvent.click(openDropdown);
+          fireEvent.click(openDropdown);
           const logoutBtn = screen.getByText('Log Out');
-          await(userEvent.click(logoutBtn));
+          fireEvent.click(logoutBtn);
           expect(usersApi.logout).toBeCalled();
         });
       })
 
       describe('The edit account button', () => {
-        it('is rendered on screen', async() => {
+        it('is rendered on screen', () => {
           renderDropdown();
           const openDropdown = screen.getByRole('button');
-          await userEvent.click(openDropdown);
+          fireEvent.click(openDropdown);
           expect(screen.getByRole('menuitem', { name: 'Link to Edit Account' })).toBeInTheDocument();
         });
       });

@@ -8,12 +8,17 @@ export default function CalendarMonths(props) {
   } = props;
 
   const renderMonthsInYear = () => {
-    if (!monthsInfo) return;
+    if (!monthsInfo) return null;
 
     return monthsInfo.map((month) => (
-      <button className={`calendar-month ${month.has_dreams ? 'highlight' : ''} ${month.is_current ? 'calendar-today' : ''} ${month.num === calendarMonth - 1 ? 'highlight-selected' : ''}`} onClick={() => {
-        handleDateChange({ newDay: 1, newMonth: month.num })
-      }}>
+      <button
+        key={month.num}
+        className={`calendar-month ${month.has_dreams ? 'highlight' : ''} ${month.is_current ? 'calendar-today' : ''} ${month.num === calendarMonth - 1 ? 'highlight-selected' : ''}`}
+        aria-label='Change the month'
+        onClick={() => {
+          handleDateChange({ newDay: 1, newMonth: month.num })
+        }}
+      >
         {month.short_name}
       </button>
     ));

@@ -19,7 +19,7 @@ export default function CalendarDays(props) {
     const dayCells = daysInfo.map((day) => (
       <div className={`calendar-day-container`}>
         <button
-          key={day.day_num}
+          key={day.num}
           className={`calendar-day ${day.has_dreams ? 'highlight' : ''} ${day.is_today ? 'calendar-today' : ''} ${day.num === calendarDay ? 'highlight-selected' : ''}`}
           aria-label='Change the day'
           onClick={() => {
