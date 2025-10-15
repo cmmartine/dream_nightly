@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
-import { getCalendarDaysInfo } from '../../api/calendarApi';
+import { getCalendarInfo } from '../../api/calendarApi';
 import { addOutsideClickListener } from '../../util/elementUtils';
 import CalendarHeader from './CalendarHeader';
 import CalendarYear from './CalendarYear';
@@ -58,7 +58,7 @@ export default function Calendar(props) {
 
   const fetchCalendarSetupInfo = async (year, month) => {
     const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const data = await getCalendarDaysInfo(year, month, userTimeZone, setError);
+    const data = await getCalendarInfo(year, month, userTimeZone, setError);
     setDaysInfo(data.days);
     setMonthsInfo(data.months);
   };

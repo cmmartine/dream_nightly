@@ -1,6 +1,6 @@
 import { apiGetFetch } from "./apiUtil";
 
-export const getCalendarDaysInfo = (year, month, userTimezone, setError) => {
+export const getCalendarInfo = (year, month, userTimezone, setError) => {
   const getParams = {
     year: year,
     month: month,
