@@ -1,0 +1,31 @@
+@import './header.css';
+@import './year.css';
+@import './months.css';
+@import './days.css';
+
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  padding: 15px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  position: absolute;
+  z-index: 2;
+}
+
+.calendar-container.calendar-open {
+  background: rgba(19,2,27,1);
+  border: 1px solid #4f2388c4;
+  border-radius: 5px;
+}
+
+.calendar-container.calendar-closed {
+  height: 35px;
+}
+
+@media (max-width: 600px) {
+  .calendar-container {
+    width: 90%;
+  }
+}

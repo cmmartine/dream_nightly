@@ -1,17 +1,17 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { postDeleteDream } from "../../api/dreamsApi";
 import { addOutsideClickListener } from "../../util/elementUtils";
 
 export const DreamDeletor = (props) => {
   const { dreamId, removeDreamFromPage, setShowSaveBtn, setError } = props;
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const deleteConfirmRef = useRef();
 
   useEffect(() => {
-    const deleteConfirmContainer = document.getElementById('confirm-delete-container');
     let cleanupFunction;
-    if(showConfirmDelete && deleteConfirmContainer) {
-      cleanupFunction = addOutsideClickListener(deleteConfirmContainer, () => setShowConfirmDelete(false));
+    if(showConfirmDelete && deleteConfirmRef?.current) {
+      cleanupFunction = addOutsideClickListener(deleteConfirmRef.current, () => setShowConfirmDelete(false));
     };
 
     return () => {
@@ -36,7 +36,7 @@ export const DreamDeletor = (props) => {
       }
       {
         showConfirmDelete &&
-        <div id='confirm-delete-container' className='confirm-delete-container'>
+        <div ref={deleteConfirmRef} className='confirm-delete-container'>
           <div>
             <button className='gen-btn confirm-delete-btn' aria-label='Cancel dream deletion' onClick={(e) => {
               e.preventDefault();

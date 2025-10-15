@@ -4,6 +4,7 @@
   align-items: center;
   flex-wrap: wrap;
   margin-top: 25px;
+  min-height: calc(100vh - 90px)
 }
 
 .dream-list {

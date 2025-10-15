@@ -1,0 +1,46 @@
+.calendar-year-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: larger;
+  margin-top: 25px;
+}
+
+.calendar-year-arrow {
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 32px;
+  margin: 0px 5px;
+}
+
+.calendar-no-arrow {
+  width: 36px;
+  height: 32px;
+  margin: 0px 5px;
+}
+
+.calendar-year-arrow:hover {
+  background: #9059f0;
+}
+
+.calendar-year-arrow:active{
+  background: #6628d1;
+}
+
+.calendar-year-arrow.lucide--arrow-left::after {
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+  vertical-align: -0.125em;
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m12 19l-7-7l7-7m7 7H5'/%3E%3C/svg%3E");
+}
+
+.calendar-year-arrow.lucide--arrow-right::after {
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+  vertical-align: -0.125em;
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 12h14m-7-7l7 7l-7 7'/%3E%3C/svg%3E");
+}

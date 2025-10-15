@@ -31,7 +31,7 @@ export default function Main() {
   } else {
     if(userStatus == false) {
       return(
-        <div>
+        <div className='main-container'>
           <NavBar userStatus={userStatus}/>
           <ErrorBanner currentError={error}/>
           <LandingPage/>
@@ -40,7 +40,7 @@ export default function Main() {
       );
     } else if (userStatus == true) {
       return(
-        <div>
+        <div className='main-container'>
           <NavBar userStatus={userStatus}/>
           <ErrorBanner currentError={error}/>
           <DreamsPage setError={setError}/>

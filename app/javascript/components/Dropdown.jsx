@@ -1,40 +1,22 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { logout } from "../api/usersApi";
+import { addOutsideClickListener } from "../util/elementUtils";
 
 export default function Dropdown() {
   const [openDropdown, setOpenDropdown] = useState(false);
+  const openDropdownRef = useRef(null);
 
-  useEffect(() => {
-    if (!openDropdown) return;
-
-    const dropdown = document.getElementsByClassName('dropdown-open')[0];
-    if (!dropdown) return;
-
-    let dropdownPosition = findElementPosition(dropdown);
-
-    const handler = (e) => closeDropdown(e, dropdownPosition);
-
-    document.addEventListener('click', handler);
-
-    return() => {
-      document.removeEventListener('click', handler);
-    }
-  }, [openDropdown]);
-
-  const findElementPosition = (dropdown) => {
-    return dropdown.getBoundingClientRect();
-  };
-
-  const closeDropdown = (e, dropdownPosition) => {
-    let posX = e.clientX;
-    let posY = e.clientY;
-    const posXOutOfBox = posX < dropdownPosition.left || posX > dropdownPosition.right;
-    const posYOutofBox = posY < dropdownPosition.top || posY > dropdownPosition.bottom;
-    if (posXOutOfBox || posYOutofBox) {
-      setOpenDropdown(false);
+   useEffect(() => {
+    let cleanupFunction;
+    if(openDropdown && openDropdownRef?.current) {
+      cleanupFunction = addOutsideClickListener(openDropdownRef.current, () => setOpenDropdown(false));
     };
-  };
+
+    return () => {
+      if (cleanupFunction) cleanupFunction();
+    };
+  }, [openDropdown]);
 
   if (!openDropdown) {
     return(
@@ -57,7 +39,7 @@ export default function Dropdown() {
     )
   } else {
     return (
-      <menu role='menu' aria-label='Opened Dropdown Menu' className="dropdown dropdown-open">
+      <menu role='menu' ref={openDropdownRef} aria-label='Opened Dropdown Menu' className="dropdown dropdown-open">
         <div className="dropdown-btn-container dropdown-btn-container-open">
           <button
             className="dropdown-btn close-dropdown-btn"

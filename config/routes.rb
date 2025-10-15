@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   post 'dreams/update'
   post 'dreams/destroy'
   post 'dreams/from_date'
+  get 'calendar/info'
 
   root 'main#index'
   get '/*path' => 'main#index'

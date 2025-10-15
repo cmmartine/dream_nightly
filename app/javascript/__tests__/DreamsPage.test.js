@@ -9,7 +9,7 @@ jest.mock('../components/DreamInput', () => () => {
 
 let mockCalendarDate;
 
-jest.mock('../components/DreamsCalendar', () => (props) => {
+jest.mock('../components/Calendar', () => (props) => {
   props.setCalendarYear(mockCalendarDate.getFullYear());
   props.setCalendarMonth(mockCalendarDate.getMonth() + 1);
   props.setCalendarDay(mockCalendarDate.getDate());

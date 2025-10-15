@@ -1,7 +1,10 @@
 import { getCsrfToken } from "./csrfToken";
 
-export const apiGetFetch = async (url, setError) => {
+export const apiGetFetch = async (baseUrl, setError, getParams) => {
   try {
+    const url = new URL(baseUrl, window.location.origin);
+    url.search = new URLSearchParams(getParams).toString();
+    
     const res = await fetch(url);
 
     const json = await res.json();

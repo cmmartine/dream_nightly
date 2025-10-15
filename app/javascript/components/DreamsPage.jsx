@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { postDreamsFromDate } from "../api/dreamsApi";
 import Dream from "./Dream";
 import DreamInput from "./DreamInput";
-import DreamsCalendar from "./DreamsCalendar";
+import Calendar from "./Calendar";
 import * as NONVALID_DREAM_DATE from "../constants/shared/NONVALID_DREAM_DATE.json"
 import * as MAX_COUNTS from '../constants/shared/MAX_COUNTS.json';
 
@@ -11,6 +11,7 @@ export default function DreamsPage(props) {
   const { setError } = props;
   const [dreams, setDreams] = useState([]);
   const [newDreamId, setNewDreamId] = useState(null);
+  const [deletedDreamId, setDeletedDreamId] = useState(null);
   const newDreamRef = useRef(null);
   const [dateTimeInMs, setDateTimeInMs] = useState();
   const [calendarYear, setCalendarYear] = useState();
@@ -71,6 +72,7 @@ export default function DreamsPage(props) {
         break;
       }
     }
+    setDeletedDreamId(deletedDreamId);
   };
 
   const atMaximumNumDreams = () => {
@@ -94,7 +96,7 @@ export default function DreamsPage(props) {
 
   return(
     <div className='dreams-page-container'>
-      <DreamsCalendar setDateTimeInMs={setDateTimeInMs} convertDateTimeToMs={convertDateTimeToMs} setCalendarDay={setCalendarDay} setCalendarMonth={setCalendarMonth} setCalendarYear={setCalendarYear}/>
+      <Calendar setDateTimeInMs={setDateTimeInMs} convertDateTimeToMs={convertDateTimeToMs} calendarDay={calendarDay} calendarMonth={calendarMonth} calendarYear={calendarYear} setCalendarDay={setCalendarDay} setCalendarMonth={setCalendarMonth} setCalendarYear={setCalendarYear} newDreamId={newDreamId} deletedDreamId={deletedDreamId} setError={setError}/>
       {!isDateOutsideAllowedRange() && 
       <DreamInput addNewDream={addNewDream} calendarYear={calendarYear} calendarMonth={calendarMonth} calendarDay={calendarDay} convertDateTimeToMs={convertDateTimeToMs} disableCreation={atMaximumNumDreams()} setError={setError}/>
       }
