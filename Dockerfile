@@ -1,36 +1,31 @@
+# For Prod use only
+
 FROM ruby:3.2.2
 
-RUN apt-get update -qq && apt-get install -y build-essential supervisor apt-utils libpq-dev gcc git curl make
+RUN apt-get update -qq && apt-get install -y build-essential libpq-dev curl git nodejs npm postgresql-15 supervisor=4.2.4-1
 
-WORKDIR /home
+WORKDIR /app
+
 ENV NODE_VERSION=20.4.0
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 ENV NVM_DIR=/root/.nvm
-RUN . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION}
-RUN . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION}
-RUN . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}
+RUN . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION} && nvm use ${NODE_VERSION} && nvm alias default ${NODE_VERSION}
 ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 
-WORKDIR /dream-journal
+COPY Gemfile Gemfile.lock ./
+COPY package.json package-lock.json ./
 
-COPY Gemfile* .
+RUN gem install bundler && bundle install --without development test
+RUN npm install && npm run build
 
-COPY package.json .
+COPY . .
 
-RUN gem install bundler:$(cat Gemfile.lock | tail -1 | tr -d " ")
-
-RUN bundle install
-
-RUN npm install
+RUN bundle exec rake assets:precompile
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-ARG DEFAULT_PORT 3000
+RUN mkdir -p /var/lib/postgresql/data && chown -R postgres:postgres /var/lib/postgresql
 
-EXPOSE ${DEFAULT_PORT}
+EXPOSE 3000
 
-COPY docker-bin/. /usr/bin/
-
-RUN chmod +x /usr/bin/startup.sh
-
-ENTRYPOINT ["startup.sh"]
+CMD ["/usr/bin/supervisord"]

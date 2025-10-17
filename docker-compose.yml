@@ -1,16 +1,19 @@
+# Development only
 services:
   postgres:
-    image: 'postgres:latest'
+    image: postgres:15
     volumes:
       - postgres:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=postgres
 
   rails:
-    build: ./
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
     command: /usr/bin/supervisord
     volumes:
-      - .:/dream-journal
+      - .:/app
     depends_on:
       - postgres
     env_file:
