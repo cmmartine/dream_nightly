@@ -3,5 +3,5 @@ class DeviseMailer < Devise::Mailer
   include Devise::Controllers::UrlHelpers
   default template_path: 'devise/mailer'
 
-  default from: 'dreamnightly.app@gmail.com'
+  default from: 'noreply@dreamnightly.app'
 end

@@ -94,4 +94,18 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'dreamnightly.app', protocol: 'https' }
 
   config.action_mailer.asset_host = 'https://dreamnightly.app'
+
+  config.mailer_sender = 'noreply@dreamnightly.app'
+
+  config.action_mailer.delivery_method = :smtp
+
+  config.action_mailer.smtp_settings = {
+    address: 'smtp.resend.com',
+    port: 587,
+    domain: 'dreamnightly.app',
+    user_name: 'resend',
+    password: ENV['RESEND_API_KEY'],
+    authentication: 'plain',
+    enable_starttls_auto: true
+  }
 end

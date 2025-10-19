@@ -18,7 +18,7 @@ en:
       unconfirmed: "You have to confirm your email address before continuing."
     mailer:
       confirmation_instructions:
-        subject: "Confirm your Dream Nightly account"
+        subject: "Welcome to Dream Nightly - confirm your account"
       reset_password_instructions:
         subject: "Reset password instructions for your Dream Nightly account"
       unlock_instructions:
