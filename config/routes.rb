@@ -4,10 +4,13 @@ Rails.application.routes.draw do
   devise_for :users
   get 'users/status'
   get '/users', to: redirect('/users/sign_up')
-  post 'dreams/create'
-  post 'dreams/update'
-  post 'dreams/destroy'
-  post 'dreams/from_date'
+
+  namespace :dreams do
+    post 'create'
+    post 'update'
+    post 'destroy'
+    post 'from_date'
+  end
   get 'calendar/info'
 
   root 'main#index'

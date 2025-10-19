@@ -7,4 +7,11 @@ export default defineConfig({
     RubyPlugin(),
     FullReload(['config/routes.rb', 'app/views/**/*'])
   ],
+   build: {
+    outDir: 'public/vite-dev',
+    manifest: true,
+    rollupOptions: {
+      input: 'app/javascript/entrypoints/application.js'
+    }
+  }
 })

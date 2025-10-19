@@ -1,24 +1,46 @@
-# First time set up
+# Dream Nightly
 
-Run the following:
-  1. `make build`
-  2. `make up`
-  3. `make rails`
-  4. `make db-reset` to seed the database with test users and dreams
+Dream Nightly is a journaling app for capturing dreams. Built with Rails and React.
 
-Test users:
-  1. email: testuser@test.com, pw: Testuser1!
-  2. email: testuser2@test.com, pw: Testuser2!
+## First-Time Setup
 
-## Running certain rails commands in Docker:
-In console run `sudo chown -R $USER:$USER .` to have editing permissions for files generated in docker containers.
+### Build & Boot the App
+```bash
+make build
+make up
+make rails
+```
+
+## Reseed the database on restart
+`make db-reset` to seed the database with test users and dreams
+
+## Test users:
+Email: `testuser@test.com`, Password: `Testuser1!`
+Email: `testuser2@test.com`, Password: `Testuser2!`
+
+## Docker notes
+To run Rails commands inside Docker with proper file permissions:
+```bash
+sudo chown -R $USER:$USER .
+```
 
 ## Running tests
-1. Run `make up`
-2. Backend tests: `make rspec` or to run only one test `make one-rspec <path to spec>`
-3. Frontend tests: `make jest` `make one-jest <path to spec>`
 
-### To use Launchy in WSL for mailer follow the steps in this link:
-https://github.com/copiousfreetime/launchy/issues/117#issuecomment-805730312
+### Backend tests:
+```bash
+make rspec
+make one-rspec <path/to/spec>
+```
+### Frontend tests:
+```bash
+make jest
+make one-jest <path/to/spec>
+```
 
-Then you can use `wslopen tmp/letter_opener/path_to_file`
+### To use Launchy with WSL: Follow [this workaround](https://github.com/copiousfreetime/launchy/issues/117#issuecomment-805730312)
+
+Then preview emails with:
+
+```bash
+wslopen tmp/letter_opener/path_to_file
+```
