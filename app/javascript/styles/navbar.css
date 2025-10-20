@@ -23,9 +23,3 @@ nav {
 .session-btn {
   margin-left: 10px;
 }
-
-@media (max-width: 600px) {
-  nav {
-    padding: 10px 10px;
-  }
-}

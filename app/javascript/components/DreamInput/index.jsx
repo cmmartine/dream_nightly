@@ -25,7 +25,16 @@ export default function DreamInput(props) {
   const [timeValue, setTimeValue] = useState(currentTime());
 
   useEffect(() => {
-    setTimeValue(currentTime());
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        setTimeValue(currentTime());
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, []);
 
   useEffect(() => {
@@ -41,15 +50,15 @@ export default function DreamInput(props) {
 
   function currentTime() {
     const date = new Date();
-    const hours = date.getHours();
+    const hours = date.getHours() || 0;
     const formattedHours = hours.toString().length === 1 ? `0${hours}` : hours; 
-    const minutes = date.getMinutes();
+    const minutes = date.getMinutes() || 0;
     const formattedMinutes = minutes.toString().length === 1 ? `0${minutes}` : minutes;
     return `${formattedHours}:${formattedMinutes}`;
   };
 
   function createdAtTimeInMs() {
-    if (!timeValue) return null;
+    if (!timeValue || !timeValue.includes(":")) return null;
     const [hour, minute] = timeValue.split(':').map(Number);
     const dateTime = new Date(calendarYear, calendarMonth - 1, calendarDay, hour, minute);
     return convertDateTimeToMs(dateTime);
@@ -63,7 +72,7 @@ export default function DreamInput(props) {
   };
 
   async function saveDream() {
-    if (dreamBody && dreamBody != formText) {
+    if (dreamBody && dreamBody != formText && dreamBody.length > 0) {
       updateDreamBody(formText);
       const updateData = await postUpdateDream(dreamId, formText, setError);
       updateData.status == 'ok' ? dreamUpdateNotice() : null;
@@ -100,7 +109,7 @@ export default function DreamInput(props) {
               onChange={e => setTimeValue(e.target.value)}
             /> || <div/>
           }
-          <div className='input-char-count'>{inputMaxLength - formText.length} characters left</div>
+          <div className='input-char-count'>{inputMaxLength - (formText?.length || 0)} characters left</div>
         </div>
         <div className='dream-input-bottom-row'>
           { dreamBody && 
