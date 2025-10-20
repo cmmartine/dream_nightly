@@ -6,6 +6,7 @@ import DreamInput from "./DreamInput";
 import Calendar from "./Calendar";
 import * as NONVALID_DREAM_DATE from "../constants/shared/NONVALID_DREAM_DATE.json"
 import * as MAX_COUNTS from '../constants/shared/MAX_COUNTS.json';
+import { noDreams } from "../constants/appInfo";
 
 export default function DreamsPage(props) {
   const { setError } = props;
@@ -40,7 +41,9 @@ export default function DreamsPage(props) {
   };
 
   const setUpDreams = () => {
-    if (!dreams) return null;
+    if (!dreams || dreams.length === 0) {
+      return <div>{noDreams}</div>
+    };
 
     const dreamList = dreams.map((dream) => {
        return (
@@ -100,7 +103,7 @@ export default function DreamsPage(props) {
       {!isDateOutsideAllowedRange() && 
       <DreamInput addNewDream={addNewDream} calendarYear={calendarYear} calendarMonth={calendarMonth} calendarDay={calendarDay} convertDateTimeToMs={convertDateTimeToMs} disableCreation={atMaximumNumDreams()} setError={setError}/>
       }
-      {setUpDreams() || <div>There doesn't seem to be any dreams this day.</div>}
+      {setUpDreams()}
     </div>
   );
 }

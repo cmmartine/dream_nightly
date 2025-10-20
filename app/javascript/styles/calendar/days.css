@@ -45,8 +45,18 @@
   cursor: pointer;
 }
 
+.calendar-day:disabled {
+  color: rgb(184, 184, 184);
+  background: none;
+  cursor: default;
+}
+
 .calendar-day:active {
   background: #6628d1;
+}
+
+.calendar-day:disabled:active {
+  background: none;
 }
 
 .calendar-day.highlight {

@@ -11,13 +11,15 @@ describe('CalendarDays', () => {
       num: 1,
       has_dreams: true,
       day_of_week: 3,
-      is_today: true
+      is_today: true,
+      is_in_future: false
     },
     {
       num: 2,
       has_dreams: false,
       day_of_week: 4,
-      is_today: false
+      is_today: false,
+      is_in_future: true
     }
   ]
 

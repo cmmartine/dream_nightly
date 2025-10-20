@@ -75,6 +75,7 @@ exports[`CalendarDays renders correctly 1`] = `
             <button
               aria-label="Change the day"
               class="calendar-day   highlight-selected"
+              disabled=""
             >
               2
             </button>
@@ -154,6 +155,7 @@ exports[`CalendarDays renders correctly 1`] = `
           <button
             aria-label="Change the day"
             class="calendar-day   highlight-selected"
+            disabled=""
           >
             2
           </button>

@@ -32,7 +32,7 @@ RSpec.describe CalendarController, type: :controller do
       end
 
       it 'returns an array with each days information for the month and year' do
-        travel_to Date.new(2025, 9, 30).end_of_day do
+        travel_to Date.new(2025, 9, 29).end_of_day do
           get :info, params: valid_params, as: :json
 
           days_info = JSON.parse(response.body)['days']
@@ -42,12 +42,17 @@ RSpec.describe CalendarController, type: :controller do
           expect(first_day['has_dreams']).to eq(false)
           expect(first_day['day_of_week']).to eq(chosen_date.beginning_of_month.wday)
           expect(first_day['is_today']).to eq(false)
+          expect(first_day['is_in_future']).to eq(false)
+
+          today = days_info[days_info.length - 2]
+          expect(today['num']).to eq(29)
+          expect(today['has_dreams']).to eq(true)
+          expect(today['day_of_week']).to eq(chosen_date.end_of_month.wday - 1)
+          expect(today['is_today']).to eq(true)
+          expect(today['is_in_future']).to eq(false)
 
           last_day = days_info[days_info.length - 1]
-          expect(last_day['num']).to eq(30)
-          expect(last_day['has_dreams']).to eq(true)
-          expect(last_day['day_of_week']).to eq(chosen_date.end_of_month.wday)
-          expect(last_day['is_today']).to eq(true)
+          expect(last_day['is_in_future']).to eq(true)
         end
       end
 

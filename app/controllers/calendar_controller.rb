@@ -37,7 +37,8 @@ class CalendarController < ApplicationController
       num: day,
       has_dreams: dreams.any? { |dream| dream.dreamed_at.day == day },
       day_of_week: date.wday,
-      is_today: date == Date.current
+      is_today: date == Date.current,
+      is_in_future: date >= Date.current + 1
     }
   end
 

@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import DreamsPage from "../components/DreamsPage";
 import * as dreamsApi from "../api/dreamsApi";
+import { noDreams } from "../constants/appInfo";
 
 jest.mock('../components/DreamInput', () => () => {
   const MockDreamInput = 'DreamInput';
@@ -87,5 +88,15 @@ describe('DreamsPage', () => {
     mockCalendarDate = tomorrow;
     renderDreamsPage();
     expect(dreamsApi.postDreamsFromDate).not.toBeCalled();
+  });
+
+  describe('when there are no dreams', () => {
+    it('shows text that no dreams were recorded', () => {
+      jest.spyOn(dreamsApi, 'postDreamsFromDate').mockReturnValue([]);
+
+      renderDreamsPage();
+
+      expect(screen.getByText(noDreams)).toBeInTheDocument();
+    })
   });
 });

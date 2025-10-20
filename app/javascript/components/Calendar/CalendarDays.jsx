@@ -25,6 +25,7 @@ export default function CalendarDays(props) {
           onClick={() => {
             handleDateChange({ newDay: day.num })
           }}
+          disabled={day.is_in_future}
         >
           {day.num}
         </button>
