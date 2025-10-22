@@ -1,5 +1,5 @@
 import React from "react";
-import { errorPageText } from "../constants/errorPage";
+import { errorPageText } from "../constants/errors";
 
 export default function ErrorBanner(props) {
   const { currentError } = props;

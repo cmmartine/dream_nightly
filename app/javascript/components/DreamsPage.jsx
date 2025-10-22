@@ -37,11 +37,11 @@ export default function DreamsPage(props) {
   const retrieveDreamsFromDate = async (dateTimeInMs) => {
     const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const data = await postDreamsFromDate(dateTimeInMs, userTimeZone, setError);
-    setDreams(data);
+    setDreams(data || []);
   };
 
   const setUpDreams = () => {
-    if (!dreams || dreams.length === 0) {
+    if (!dreams || dreams?.length === 0) {
       return <div>{noDreams}</div>
     };
 
@@ -71,7 +71,7 @@ export default function DreamsPage(props) {
   const handleDreamDeletion = (deletedDreamId) => {
     for(let i = 0; i < dreams.length; i++) {
       if(dreams[i].id === deletedDreamId) {
-        setDreams(dreams.filter((dream) => dream.id != deletedDreamId));
+        setDreams((dreams || []).filter((dream) => dream.id != deletedDreamId));
         break;
       }
     }
@@ -79,6 +79,7 @@ export default function DreamsPage(props) {
   };
 
   const atMaximumNumDreams = () => {
+    if (!dreams || dreams?.length === 0) return false;
     return dreams.length >= MAX_COUNTS.DREAMS_IN_A_DAY;
   };
 

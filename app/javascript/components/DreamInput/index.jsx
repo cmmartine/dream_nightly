@@ -72,7 +72,7 @@ export default function DreamInput(props) {
   };
 
   async function saveDream() {
-    if (dreamBody && dreamBody != formText && dreamBody.length > 0) {
+    if (dreamBody && dreamBody != formText && (dreamBody?.length || 0 ) > 0) {
       updateDreamBody(formText);
       const updateData = await postUpdateDream(dreamId, formText, setError);
       updateData.status == 'ok' ? dreamUpdateNotice() : null;

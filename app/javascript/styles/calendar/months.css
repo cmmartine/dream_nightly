@@ -24,6 +24,16 @@
   cursor: pointer;
 }
 
+.calendar-month:disabled {
+  color: rgb(184, 184, 184);
+  background: none;
+  cursor: default;
+}
+
+.calendar-month:disabled:active {
+  background: none;
+}
+
 .calendar-month.highlight {
   background: #4f2388;
 }

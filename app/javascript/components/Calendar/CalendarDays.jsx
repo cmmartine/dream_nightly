@@ -1,4 +1,5 @@
 import React from "react";
+import { calendarLoadingError } from '../../constants/errors';
 
 export default function CalendarDays(props) {
   const {
@@ -8,7 +9,9 @@ export default function CalendarDays(props) {
   } = props;
 
   const renderDaysInMonth = () => {
-    if (!daysInfo) return null;
+    if (!daysInfo || daysInfo?.length === 0) {
+      return <div className='calendar-loading-error'>{calendarLoadingError}</div>
+    }
 
     const firstDayOfWeek = daysInfo[0].day_of_week;
 
@@ -32,7 +35,7 @@ export default function CalendarDays(props) {
       </div>
     ));
 
-    return [...emptyCells, ...dayCells];
+    return <div className="calendar-days-container">{[...emptyCells, ...dayCells]}</div>;
   };
 
   return (
@@ -46,7 +49,7 @@ export default function CalendarDays(props) {
         <div className='calendar-weekday'>Fri</div>
         <div className='calendar-weekday'>Sat</div>
       </div>
-      <div className="calendar-days-container">{renderDaysInMonth()}</div>
+      {renderDaysInMonth()}
     </div>
   );
 }

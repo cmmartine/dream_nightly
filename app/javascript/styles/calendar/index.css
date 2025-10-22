@@ -24,6 +24,13 @@
   height: 35px;
 }
 
+.calendar-loading-error {
+  display: flex;
+  justify-self: center;
+  width: 350px;
+  padding: 25px;
+}
+
 @media (max-width: 600px) {
   .calendar-container {
     width: 90%;

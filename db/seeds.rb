@@ -61,7 +61,7 @@ if Rails.env.development?
       new_dream.dreamed_at = DateTime.new(DateTime.now.year, DateTime.now.month, DateTime.now.day, dreams_hours[rand_hour]) + num.day
       new_dream.save!
 
-      new_other_month_dream.dreamed_at = DateTime.new(DateTime.now.year, rand(1..12), DateTime.now.day, dreams_hours[rand_hour]) + num.day
+      new_other_month_dream.dreamed_at = DateTime.new(DateTime.now.year, rand(1..DateTime.now.month), DateTime.now.day, dreams_hours[rand_hour]) + num.day
       new_other_month_dream.save!
     end
   end

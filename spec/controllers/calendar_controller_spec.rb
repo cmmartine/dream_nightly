@@ -69,12 +69,17 @@ RSpec.describe CalendarController, type: :controller do
           expect(first_month['has_dreams']).to eq(false)
           expect(first_month['is_current']).to eq(false)
           expect(first_month['short_name']).to eq('Jan')
+          expect(first_month['is_in_future']).to eq(false)
 
           current_month = months_info[8]
           expect(current_month['num']).to eq(8)
           expect(current_month['has_dreams']).to eq(true)
           expect(current_month['is_current']).to eq(true)
           expect(current_month['short_name']).to eq('Sep')
+          expect(current_month['is_in_future']).to eq(false)
+
+          next_month = months_info[9]
+          expect(next_month['is_in_future']).to eq(true)
         end
       end
 

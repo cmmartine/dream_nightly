@@ -9,6 +9,10 @@ class User < ApplicationRecord
 
   validate :password_complexity
 
+  def dreams_from_year(year)
+    dreams.where(dreamed_at: Date.new(year, 1, 1).beginning_of_year..Date.new(year, 12, 31).end_of_year)
+  end
+
   private
 
   def password_complexity

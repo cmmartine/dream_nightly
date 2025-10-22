@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import ErrorBanner from "../components/ErrorBanner";
-import { errorPageText } from "../constants/errorPage";
+import { errorPageText } from "../constants/errors";
 
 describe('ErrorBanner', () => {
   function renderErrorBanner(currentError) {

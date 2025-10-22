@@ -1,11 +1,12 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import CalendarMonths from "../../components/Calendar/CalendarMonths";
+import { calendarLoadingError } from "../../constants/errors";
 
 describe('CalendarMonths', () => {
   const calendarMonth = 9;
   const handleDateChange = jest.fn();
 
-  const monthsInfo = [
+  const validMonthsInfo = [
     {
       num: 9,
       has_dreams: false,
@@ -20,7 +21,7 @@ describe('CalendarMonths', () => {
     }
   ]
 
-  function renderCalendarMonths() {
+  function renderCalendarMonths(monthsInfo) {
     return render(
       <CalendarMonths calendarMonth={calendarMonth} monthsInfo={monthsInfo} handleDateChange={handleDateChange}/>
     );
@@ -31,7 +32,7 @@ describe('CalendarMonths', () => {
   });
 
   it('renders a button for each month passed in', () => {
-    renderCalendarMonths();
+    renderCalendarMonths(validMonthsInfo);
 
     expect(screen.getByText('Oct')).toBeInTheDocument();
     expect(screen.getByText('Nov')).toBeInTheDocument();
@@ -39,14 +40,28 @@ describe('CalendarMonths', () => {
   });
 
   it('renders correctly', () => {
-    const calendarMonths = renderCalendarMonths();
+    const calendarMonths = renderCalendarMonths(validMonthsInfo);
     expect(calendarMonths).toMatchSnapshot();
   });
 
   it('calls handleDateChange when a month button is clicked', () => {
-    renderCalendarMonths();
+    renderCalendarMonths(validMonthsInfo);
 
     fireEvent.click(screen.getByText('Oct'));
     expect(handleDateChange).toHaveBeenCalled();
+  });
+
+  describe('shows a calendar loading error when', () => {
+    it('monthsInfo is empty', () => {
+      renderCalendarMonths([]);
+
+      expect(screen.getByText(calendarLoadingError)).toBeInTheDocument();
+    });
+
+    it('monthsInfo is null', () => {
+      renderCalendarMonths(null);
+
+      expect(screen.getByText(calendarLoadingError)).toBeInTheDocument();
+    });
   });
 });

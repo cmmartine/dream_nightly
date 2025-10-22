@@ -70,10 +70,10 @@ describe('DreamsPage', () => {
     expect(await screen.findByTestId('mock-dream-input')).toBeInTheDocument();
   });
 
-  it('does not show dream input form when date is invalid', async () => {
+  it('does not show dream input form when date is invalid', () => {
     mockCalendarDate = new Date(2000, 0, 1);
     renderDreamsPage();
-    expect(await screen.queryByTestId('mock-dream-input')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('mock-dream-input')).not.toBeInTheDocument();
   });
 
   it('does not call dreams API for date before 2010', () => {

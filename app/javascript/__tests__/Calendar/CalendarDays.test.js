@@ -1,12 +1,13 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import CalendarDays from "../../components/Calendar/CalendarDays";
+import { calendarLoadingError } from "../../constants/errors";
 
 describe('CalendarDays', () => {
 
   const calendarDay = 2;
   const handleDateChange= jest.fn();
 
-  const daysInfo = [
+  const validDaysInfo = [
     {
       num: 1,
       has_dreams: true,
@@ -23,7 +24,7 @@ describe('CalendarDays', () => {
     }
   ]
 
-  function renderCalendarDays() {
+  function renderCalendarDays(daysInfo) {
     return render(
       <CalendarDays calendarDay={calendarDay} daysInfo={daysInfo} handleDateChange={handleDateChange}/>
     )
@@ -34,7 +35,7 @@ describe('CalendarDays', () => {
   });
 
   it('renders a button for each day passed in', () => {
-    renderCalendarDays();
+    renderCalendarDays(validDaysInfo);
 
     expect(screen.getByText('1')).toBeInTheDocument();
     expect(screen.getByText('2')).toBeInTheDocument();
@@ -42,14 +43,28 @@ describe('CalendarDays', () => {
   })
 
   it('renders correctly', () => {
-    const calendarDays = renderCalendarDays();
+    const calendarDays = renderCalendarDays(validDaysInfo);
     expect(calendarDays).toMatchSnapshot();
   });
 
   it('calls handleDateChange when a number button is clicked', () => {
-    renderCalendarDays();
+    renderCalendarDays(validDaysInfo);
 
     fireEvent.click(screen.getAllByRole('button')[0]);
     expect(handleDateChange).toHaveBeenCalled();
+  });
+
+  describe('shows a calendar loading error when', () => {
+    it('daysInfo is empty', () => {
+      renderCalendarDays([]);
+
+      expect(screen.getByText(calendarLoadingError)).toBeInTheDocument();
+    });
+
+    it('daysInfo is null', () => {
+      renderCalendarDays(null);
+
+      expect(screen.getByText(calendarLoadingError)).toBeInTheDocument();
+    });
   });
 });
