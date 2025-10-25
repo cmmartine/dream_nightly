@@ -7,6 +7,11 @@
   margin-bottom: 20px;
 }
 
+#dream-input-form.edit-form {
+  margin-top: 15px;
+  align-self: center;
+}
+
 #dream-input-textarea {
   height: 80px;
   color-scheme: dark;
@@ -26,11 +31,6 @@
 .disabled-creation-msg {
   margin-top: 15px;
   margin-bottom: 15px;
-}
-
-.edit-form {
-  width: 80%;
-  align-self: center;
 }
 
 .input-char-count {

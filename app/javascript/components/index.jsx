@@ -6,6 +6,7 @@ import Footer from "./Footer";
 import LandingPage from "./LandingPage";
 import DreamsPage from "./DreamsPage";
 import ErrorBanner from "./ErrorBanner";
+import ContextProviderWrapper from "./context/ContextProviderWrapper";
 
 export default function Main() {
   const [userStatus, setUserStatus] = useState(false);
@@ -21,6 +22,8 @@ export default function Main() {
     setUserStatus(status);
     setLoading(false);
   };
+
+
 
   if (loading == true) {
     return(
@@ -40,12 +43,14 @@ export default function Main() {
       );
     } else if (userStatus == true) {
       return(
-        <div className='main-container'>
-          <NavBar userStatus={userStatus}/>
-          <ErrorBanner currentError={error}/>
-          <DreamsPage setError={setError}/>
-          <Footer/>
-        </div>
+        <ContextProviderWrapper>
+          <div className='main-container'>
+            <NavBar userStatus={userStatus}/>
+            <ErrorBanner currentError={error}/>
+            <DreamsPage setError={setError}/>
+            <Footer/>
+          </div>
+        </ContextProviderWrapper>
       );
     }
   }

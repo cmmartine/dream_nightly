@@ -6,6 +6,7 @@ import CalendarHeader from './CalendarHeader';
 import CalendarYear from './CalendarYear';
 import CalendarMonths from './CalendarMonths';
 import CalendarDays from './CalendarDays';
+import { useVisibility } from '../context/providers/VisibilityProvider';
 
 export default function Calendar(props) {
   const { 
@@ -25,6 +26,7 @@ export default function Calendar(props) {
   const [monthsInfo, setMonthsInfo] = useState(null);
   const [showCalendar, setShowCalendar] = useState(false);
   const calendarRef = useRef();
+  const isVisible = useVisibility();
 
   useEffect(() => {
     if (calendarYear && calendarMonth) {
@@ -33,8 +35,10 @@ export default function Calendar(props) {
   }, [calendarYear, calendarMonth, newDreamId, deletedDreamId]);
 
   useEffect(() => {
-    setToToday();
-  }, []);
+    if (isVisible) {
+      setToToday();
+    }
+  }, [isVisible])
 
   useEffect(() => {
     let cleanupFunction;

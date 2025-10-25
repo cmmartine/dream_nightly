@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { postCreateDream, postUpdateDream } from "../../api/dreamsApi";
 import * as MAX_COUNTS from '../../constants/shared/MAX_COUNTS.json';
 import { DreamDeletor } from "./DreamDeletor";
+import { useVisibility } from "../context/providers/VisibilityProvider";
 
 export default function DreamInput(props) {
   const {
@@ -23,19 +24,13 @@ export default function DreamInput(props) {
   const [showDreamUpdatedMsg, setShowDreamUpdatedMsg] = useState(false);
   const [showSaveBtn, setShowSaveBtn] = useState(true);
   const [timeValue, setTimeValue] = useState(currentTime());
+  const isVisible = useVisibility();
 
   useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        setTimeValue(currentTime());
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, []);
+    if (isVisible) {
+      setTimeValue(currentTime());
+    }
+  }, [isVisible]);
 
   useEffect(() => {
     const existingDreamText = checkDreamBody();
