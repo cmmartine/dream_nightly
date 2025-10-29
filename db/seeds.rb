@@ -28,6 +28,16 @@ if Rails.env.development?
   dream_description8 = 'I was on a train that never stopped. Each car was themed differently—one was a jungle, another a library with floating books, and one was filled with mirrors that didnt reflect me but showed scenes from my childhood.'
   dream_description9 = 'I was baking a cake in a kitchen that kept shifting locations. One moment I was in a cozy cabin, the next I was on a boat in the middle of a storm. The cake kept changing flavors every time I looked away—chocolate, then lemon, then something glowing and blue.'
   dream_description10 = 'I was attending a lecture in a massive amphitheater carved into the side of a mountain. The professor was a talking owl wearing a tweed jacket, explaining quantum mechanics using floating holograms of dancing particles. Suddenly, the mountain cracked open and revealed a hidden city inside, where everyone communicated through musical notes. I wandered into a library made of crystal and opened a book that played back one of my forgotten memories like a movie. As I tried to leave, the owl stopped me and said, "You havent asked the right question yet."'
+  dream_description11 = 'I was swimming in a pool that stretched endlessly in all directions. The water was warm and glowed faintly. Every stroke I took changed the color of the sky above me, cycling through sunset, aurora, and deep space.'
+  dream_description12 = 'I was walking through a city made entirely of glass. The buildings shimmered with reflections of alternate versions of myself—one was a painter, another a pirate, and one just stared back silently.'
+  dream_description13 = 'I was in a video game where the objective was to hug as many creatures as possible. Some were friendly, like fuzzy cubes, and others were terrifying, like shadow wolves. Hugging them made them burst into confetti.'
+  dream_description14 = 'I was in a courtroom where the judge was a giant snail wearing a monocle. I was on trial for “excessive dreaming.” My defense attorney was a talking cactus who kept quoting Shakespeare.'
+  dream_description15 = 'I was climbing a staircase that spiraled into the clouds. Each step played a musical note, and the higher I climbed, the more the melody revealed a song I somehow recognized from childhood lullabies.'
+  dream_description16 = 'I was in a desert where the sand whispered secrets. I dug into one dune and found a buried piano. When I played it, the wind stopped and a door appeared in the sky.'
+  dream_description17 = 'I was in a spaceship shaped like a seashell, drifting through a nebula that smelled like cinnamon. My co-pilot was a jellyfish who communicated through pulses of light. We were searching for a lost moon that sang lullabies.'
+  dream_description18 = 'I was attending a wedding underwater. Everyone wore coral suits and jellyfish veils. The bride was a dolphin and the groom was a cloud trapped in a diving bell. The ceremony was conducted by a sea turtle with a golden scroll.'
+  dream_description19 = 'I was in a forest where the trees grew upside down from the sky. I walked on clouds and picked fruit that whispered advice. One apple told me to “stop worrying about the small things.”'
+  dream_description20 = 'I was in a library where the books rearranged themselves based on my thoughts. I tried to think of nothing, and the shelves collapsed into a spiral staircase leading to a room filled with clocks, all ticking in reverse.'
 
   create_for_days = [-5, -4, -3, -2, -1, 0]
   dreams_hours = [0, 1.1, 2.2, 3.3, 4.4, 5.5, 20.6, 21.7, 22.8, 23.9]
@@ -42,12 +52,22 @@ if Rails.env.development?
     dream_description7,
     dream_description8,
     dream_description9,
-    dream_description10
+    dream_description10,
+    dream_description11,
+    dream_description12,
+    dream_description13,
+    dream_description14,
+    dream_description15,
+    dream_description16,
+    dream_description17,
+    dream_description18,
+    dream_description19,
+    dream_description20
   ]
 
   create_for_days.each do |num|
     rand(1..10).times do
-      rand_dream = rand(0..9)
+      rand_dream = rand(0..19)
       rand_hour = rand(0..9)
       new_dream = Dream.new(
         body: dreams_descriptions[rand_dream],

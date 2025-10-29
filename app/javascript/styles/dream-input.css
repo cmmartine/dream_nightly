@@ -29,7 +29,7 @@
 }
 
 .disabled-creation-msg {
-  margin-top: 15px;
+  margin-top: calc(67px + 15px);
   margin-bottom: 15px;
 }
 

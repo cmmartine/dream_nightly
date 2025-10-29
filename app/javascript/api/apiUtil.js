@@ -15,7 +15,9 @@ export const apiGetFetch = async (baseUrl, setError, getParams) => {
 
     return json;
   } catch (error) {
-    setError(error);
+    if(setError) {
+      setError(error);
+    }
   }
 };
 

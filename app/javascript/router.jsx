@@ -1,6 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ContextProviderWrapper from "./components/context/ContextProviderWrapper";
 import Main from "./components";
 import ContactPage from "./components/InfoPages/ContactPage";
 import PrivacyPage from "./components/InfoPages/PrivacyPage";
@@ -26,5 +27,7 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById('root')).render(
-    <RouterProvider router={router} />
+    <ContextProviderWrapper>
+        <RouterProvider router={router} />
+    </ContextProviderWrapper>
 );
