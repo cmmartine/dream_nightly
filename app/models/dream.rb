@@ -1,8 +1,19 @@
 # frozen_string_literal: true
 
 class Dream < ApplicationRecord
+  include PgSearch::Model
+
   belongs_to :user
   validates :body, presence: true, length: { in: 1..Constants::MAX_COUNTS['DREAM_CHARS'] }
+
+  pg_search_scope :search_by_body,
+                  against: :body,
+                  using: {
+                    tsearch: {
+                      dictionary: 'english',
+                      prefix: true
+                    }
+                  }
 
   def self.from_date(date_time, user_timezone)
     Time.use_zone(user_timezone) do

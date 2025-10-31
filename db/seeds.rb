@@ -33,11 +33,11 @@ if Rails.env.development?
   dream_description13 = 'I was in a video game where the objective was to hug as many creatures as possible. Some were friendly, like fuzzy cubes, and others were terrifying, like shadow wolves. Hugging them made them burst into confetti.'
   dream_description14 = 'I was in a courtroom where the judge was a giant snail wearing a monocle. I was on trial for “excessive dreaming.” My defense attorney was a talking cactus who kept quoting Shakespeare.'
   dream_description15 = 'I was climbing a staircase that spiraled into the clouds. Each step played a musical note, and the higher I climbed, the more the melody revealed a song I somehow recognized from childhood lullabies.'
-  dream_description16 = 'I was in a desert where the sand whispered secrets. I dug into one dune and found a buried piano. When I played it, the wind stopped and a door appeared in the sky.'
-  dream_description17 = 'I was in a spaceship shaped like a seashell, drifting through a nebula that smelled like cinnamon. My co-pilot was a jellyfish who communicated through pulses of light. We were searching for a lost moon that sang lullabies.'
-  dream_description18 = 'I was attending a wedding underwater. Everyone wore coral suits and jellyfish veils. The bride was a dolphin and the groom was a cloud trapped in a diving bell. The ceremony was conducted by a sea turtle with a golden scroll.'
-  dream_description19 = 'I was in a forest where the trees grew upside down from the sky. I walked on clouds and picked fruit that whispered advice. One apple told me to “stop worrying about the small things.”'
-  dream_description20 = 'I was in a library where the books rearranged themselves based on my thoughts. I tried to think of nothing, and the shelves collapsed into a spiral staircase leading to a room filled with clocks, all ticking in reverse.'
+  dream_description16 = 'I was in a desert after the zombie outbreak. The sand whispered secrets from buried survivors. I dug into one dune and found a piano covered in blood. When I played it, the wind stopped and a hatch opened in the sky — an escape route to the last bunker.'
+  dream_description17 = 'I was in a spaceship shaped like a seashell, drifting through a nebula infected with zombie spores. My co-pilot was a jellyfish wearing a hazmat suit, pulsing emergency signals. We were searching for a lost moon rumored to hold the cure for the undead plague.'
+  dream_description18 = 'I was attending a wedding underwater, deep in a quarantined zone. Everyone wore coral suits and jellyfish veils to hide signs of infection. The bride was a dolphin with glowing eyes, and the groom was a cloud trapped in a diving bell. The ceremony was interrupted by zombie divers clawing at the glass.'
+  dream_description19 = "I was in a forest where the trees grew upside down from the sky, their roots dripping with zombie venom. I walked on clouds and picked fruit that whispered survival tips. One apple told me to 'find the bunker before nightfall — they rise when the moon does.'"
+  dream_description20 = 'I was in a library after the apocalypse. The books rearranged themselves based on my fears. I tried to think of nothing, and the shelves collapsed into a spiral staircase leading to a room filled with infected clocks, all ticking in reverse — counting down to the next outbreak.'
 
   create_for_days = [-5, -4, -3, -2, -1, 0]
   dreams_hours = [0, 1.1, 2.2, 3.3, 4.4, 5.5, 20.6, 21.7, 22.8, 23.9]
@@ -81,7 +81,7 @@ if Rails.env.development?
       new_dream.dreamed_at = DateTime.new(DateTime.now.year, DateTime.now.month, DateTime.now.day, dreams_hours[rand_hour]) + num.day
       new_dream.save!
 
-      new_other_month_dream.dreamed_at = DateTime.new(DateTime.now.year, rand(1..DateTime.now.month), DateTime.now.day, dreams_hours[rand_hour]) + num.day
+      new_other_month_dream.dreamed_at = DateTime.new(DateTime.now.year, rand(1..DateTime.now.month), rand(1..28), dreams_hours[rand_hour]) + num.day
       new_other_month_dream.save!
     end
   end

@@ -2,17 +2,16 @@
 
 class DreamsController < ApplicationController
   before_action :authenticate_user!
+  include TimeConversion
 
   # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def create
     time_in_ms = dream_params[:time_in_ms]
-    date_time = convert_from_time_in_ms(time_in_ms)
+    date_time = TimeConversion.from_ms(time_in_ms)
     user_timezone = dream_params[:user_timezone]
 
     if Dream.valid_range?(time_in_ms, user_timezone) &&
        Dream.from_date(date_time, user_timezone).length < Constants::MAX_COUNTS['DREAMS_IN_A_DAY']
-
-      date_time = convert_from_time_in_ms(time_in_ms)
 
       dream = Dream.new(body: dream_params[:body], dreamed_at: date_time, user_id: current_user.id)
       if !dream.valid?
@@ -69,7 +68,7 @@ class DreamsController < ApplicationController
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   def from_date
-    date_time = convert_from_time_in_ms(dream_params[:time_in_ms])
+    date_time = TimeConversion.from_ms(dream_params[:time_in_ms])
     filtered_dreams = current_user.dreams.filtered_from_date(date_time, dream_params[:user_timezone])
     render json: filtered_dreams
   rescue StandardError => e
@@ -77,18 +76,21 @@ class DreamsController < ApplicationController
     render json: { message: 'Failed to retrieve dreams' }, status: :unprocessable_entity
   end
 
+  # def search
+  #   found_dreams = DreamSearch.new(current_user, DreamSearchParams.new(search_params)).results
+
+  #   render json: { dreams: found_dreams }
+  # rescue StandardError => e
+  #   Rails.logger.error "Dream search failed: #{e.message}"
+  # end
+
   private
 
   def dream_params
     params.require(:dream).permit(:body, :dream_id, :time_in_ms, :user_timezone)
   end
 
-  def convert_from_time_in_ms(time)
-    raise StandardError, 'time_in_ms is missing' if time.nil?
-
-    int_time = Integer(time)
-    raise StandardError, 'time_in_ms is not a valid integer' if int_time.nil?
-
-    Time.at(int_time / 1000)
-  end
+  # def search_params
+  #   params.permit(:from_date, :to_date, :search_phrase, :page, :user_timezone)
+  # end
 end
