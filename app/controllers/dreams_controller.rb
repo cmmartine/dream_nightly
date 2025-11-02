@@ -23,13 +23,15 @@ class DreamsController < ApplicationController
       end
     else
       render json: {
-        error: 'Only 10 dreams can be created per day, and dreams cannot be created before 2010 or beyond today'
+        # rubocop:disable Layout/LineLength
+        error: "Only 10 dreams can be created per day, and cannot be created before #{Constants::NONVALID_DREAM_DATE['BEFORE_YEAR']} or beyond today"
       }, status: :forbidden
     end
   rescue StandardError => e
     Rails.logger.error "Dream creation failed: #{e.message}"
     render json: { message: 'Dream creation failed' }, status: :unprocessable_entity
   end
+  # rubocop:enable Layout/LineLength
 
   def update
     dream = Dream.find_owned_by(current_user, dream_params[:dream_id])
@@ -76,13 +78,14 @@ class DreamsController < ApplicationController
     render json: { message: 'Failed to retrieve dreams' }, status: :unprocessable_entity
   end
 
-  # def search
-  #   found_dreams = DreamSearch.new(current_user, DreamSearchParams.new(search_params)).results
+  def search
+    found_dreams = DreamSearch.new(current_user, DreamSearchParams.new(search_params)).results
 
-  #   render json: { dreams: found_dreams }
-  # rescue StandardError => e
-  #   Rails.logger.error "Dream search failed: #{e.message}"
-  # end
+    render json: { dreams: found_dreams, count: found_dreams.count }, status: :ok
+  rescue StandardError => e
+    Rails.logger.error "Dream search failed: #{e.message}"
+    render json: { message: 'Failed to search dreams' }, status: :unprocessable_entity
+  end
 
   private
 
@@ -90,7 +93,7 @@ class DreamsController < ApplicationController
     params.require(:dream).permit(:body, :dream_id, :time_in_ms, :user_timezone)
   end
 
-  # def search_params
-  #   params.permit(:from_date, :to_date, :search_phrase, :page, :user_timezone)
-  # end
+  def search_params
+    params.permit(:from_date, :to_date, :search_phrase, :page, :user_timezone)
+  end
 end

@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     post 'update'
     post 'destroy'
     post 'from_date'
+    get 'search'
   end
   get 'calendar/info'
 

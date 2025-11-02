@@ -118,7 +118,9 @@ RSpec.describe DreamsController, type: :controller do
             allow(Dream).to receive(:valid_range?).and_return(true)
           end
 
-          it 'renders a 422 status code' do
+          it 'renders a 422 status code and logs an error' do
+            expect(Rails.logger).to receive(:error)
+
             post :create, params: nil_dream_time_params, as: :json
             expect(response.status).to eq(422)
           end
@@ -129,7 +131,9 @@ RSpec.describe DreamsController, type: :controller do
             allow(Dream).to receive(:valid_range?).and_return(true)
           end
 
-          it 'renders a 422 status code' do
+          it 'renders a 422 status code and logs an error' do
+            expect(Rails.logger).to receive(:error)
+
             post :create, params: invalid_dream_time_params, as: :json
             expect(response.status).to eq(422)
           end
@@ -217,7 +221,7 @@ RSpec.describe DreamsController, type: :controller do
       end
 
       describe 'and the dream is not valid' do
-        it 'returns an unprocessable status ' do
+        it 'returns an unprocessable status' do
           Dream.create!(body: 'New dream', user_id: user.id, dreamed_at: Time.now)
           post :update, params: invalid_updated_dream_params, as: :json
           expect(response.status).to eq(422)
@@ -282,9 +286,12 @@ RSpec.describe DreamsController, type: :controller do
       end
 
       context 'and the dream is NOT destroyed successfully' do
-        it 'returns an unprocessable status' do
+        it 'returns an unprocessable status and logs the error' do
           Dream.create!(body: 'New dream', user_id: user.id, dreamed_at: Time.now)
           allow_any_instance_of(Dream).to receive(:destroyed?) { false }
+
+          expect(Rails.logger).to receive(:error)
+
           post :destroy, params: dream_params, as: :json
           expect(response.status).to eq(422)
         end
@@ -400,7 +407,9 @@ RSpec.describe DreamsController, type: :controller do
       end
 
       context 'and an error occurs' do
-        it 'returns an error message' do
+        it 'returns an error message and logs the error' do
+          expect(Rails.logger).to receive(:error)
+
           post :from_date, params: invalid_dream_params, as: :json
           expect(response.status).to eq(422)
           expect(response.body).to include('Failed to retrieve dreams')
@@ -415,6 +424,60 @@ RSpec.describe DreamsController, type: :controller do
       it 'does not render the filtered dream array' do
         post :from_date, params: dream_params, as: :json
         expect(response.body).to include('error')
+      end
+    end
+  end
+
+  describe 'GET /search' do
+    context 'when the user is logged in' do
+      login_user
+
+      let(:user) { User.first }
+      let(:users_dream) { user.dreams.first }
+      let(:date_with_dreams) { Time.new(2025, 9, 29).to_i * 1000 }
+      let(:date_without_dreams) { Time.new(2025, 9, 1).to_i * 1000 }
+      def search_params(date)
+        {
+          from_date: date,
+          to_date: date,
+          search_phrase: 'for dream',
+          page: '1',
+          user_timezone: 'America/New_York'
+        }
+      end
+
+      before(:each) do
+        create_dreams_for_logged_in_user
+        create_other_user_two_dreams
+      end
+
+      it 'returns dreams and count for a successful search' do
+        get :search, params: search_params(date_with_dreams), as: :json
+
+        parsed_res = JSON.parse(response.body)
+        expect(parsed_res['dreams'][0]['body']).to eq(users_dream['body'])
+        expect(parsed_res['dreams'][0]['user_id']).to eq(users_dream['user_id'])
+        expect(parsed_res['count']).to eq(1)
+        expect(response.status).to eq(200)
+      end
+
+      it 'returns an empty array when there are no dreams' do
+        get :search, params: search_params(date_without_dreams), as: :json
+
+        parsed_res = JSON.parse(response.body)
+        expect(parsed_res['dreams']).to eq([])
+        expect(parsed_res['count']).to eq(0)
+        expect(response.status).to eq(200)
+      end
+
+      it 'logs and renders an error message when an error occurs' do
+        allow_any_instance_of(DreamSearch).to receive(:results).and_raise(StandardError)
+
+        expect(Rails.logger).to receive(:error)
+
+        get :search, params: search_params(date_with_dreams), as: :json
+
+        expect(response.status).to eq(422)
       end
     end
   end
