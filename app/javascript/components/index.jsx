@@ -1,29 +1,25 @@
 import React from "react";
-import { useState } from "react"
 import { useUserStatus } from "./context/providers/UserStatusProvider";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 import LandingPage from "./LandingPage";
-import DreamsPage from "./DreamsPage";
 import ErrorBanner from "./ErrorBanner";
+import LoadingSpinner from "./LoadingSpinner";
 
-export default function Main() {
+export default function Main({ children }) {
   const userStatus = useUserStatus();
-  const [error, setError] = useState(null);
 
 
   if (userStatus == 'loading') {
     return(
-      <div className="loading-container">
-        <span className="loading" />
-      </div>
+      <LoadingSpinner loading={true}/>
     )
   } else {
     if(userStatus == false) {
       return(
         <div className='main-container'>
           <NavBar userStatus={userStatus}/>
-          <ErrorBanner currentError={error}/>
+          <ErrorBanner />
           <LandingPage/>
           <Footer/>
         </div>
@@ -32,8 +28,8 @@ export default function Main() {
       return(
           <div className='main-container'>
             <NavBar userStatus={userStatus}/>
-            <ErrorBanner currentError={error}/>
-            <DreamsPage setError={setError}/>
+            <ErrorBanner />
+            {children}
             <Footer/>
           </div>
       );

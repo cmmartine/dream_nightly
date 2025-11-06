@@ -1,11 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import ErrorBanner from "../components/ErrorBanner";
 import { errorPageText } from "../constants/errors";
+import { ErrorContext } from "../components/context/providers/ErrorProvider";
 
 describe('ErrorBanner', () => {
-  function renderErrorBanner(currentError) {
+  function renderErrorBanner(mockError) {
     return render(
-      <ErrorBanner currentError={currentError}/>
+      <ErrorContext.Provider value={{ error: mockError }}>
+        <ErrorBanner/>
+      </ErrorContext.Provider>
     );
   };
 

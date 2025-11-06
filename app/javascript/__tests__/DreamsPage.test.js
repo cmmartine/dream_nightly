@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import DreamsPage from "../components/DreamsPage";
 import * as dreamsApi from "../api/dreamsApi";
 import { noDreams } from "../constants/appInfo";
+import { ErrorProvider } from "../components/context/providers/ErrorProvider";
 
 jest.mock('../components/DreamInput', () => () => {
   const MockDreamInput = 'DreamInput';
@@ -39,11 +40,11 @@ describe('DreamsPage', () => {
     }
   ];
 
-  const mockSetError = jest.fn();
-
   function renderDreamsPage() {
     return render(
-      <DreamsPage setError={mockSetError}/>
+      <ErrorProvider>
+        <DreamsPage/>
+      </ErrorProvider>
     )
   };
 

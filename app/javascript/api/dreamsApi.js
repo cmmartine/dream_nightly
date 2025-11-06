@@ -1,4 +1,4 @@
-import { apiPostFetch } from "./apiUtil";
+import { apiGetFetch, apiPostFetch } from "./apiUtil";
 
 export const postDreamsFromDate = (dateInMs, userTimezone, setError) => {
   const postParams = {
@@ -42,4 +42,8 @@ export const postDeleteDream = (dreamId, setError) => {
   }
 
   apiPostFetch('dreams/destroy', postParams, setError);
+};
+
+export const getSearchDreams = (getParams, setError) => {
+  return apiGetFetch('dreams/search', setError, getParams)
 };

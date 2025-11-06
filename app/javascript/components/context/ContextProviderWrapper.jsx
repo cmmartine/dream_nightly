@@ -1,13 +1,16 @@
 import React from "react";
 import { UserStatusProvider } from "./providers/UserStatusProvider";
 import { VisibilityProvider } from "./providers/VisibilityProvider";
+import { ErrorProvider } from "./providers/ErrorProvider";
 
 export default function ContextProviderWrapper({ children }) {
   return (
     <UserStatusProvider>
-      <VisibilityProvider>
-        {children}
-      </VisibilityProvider>
+      <ErrorProvider>
+        <VisibilityProvider>
+          {children}
+        </VisibilityProvider>
+      </ErrorProvider>
     </UserStatusProvider>
   );
 };

@@ -62,6 +62,14 @@ a {
   background-color: #9059f0;
 }
 
+.gen-btn:disabled {
+  color: rgb(171, 171, 171);
+}
+
+.gen-btn:disabled:hover {
+  background-color: #723cd1;
+}
+
 .link-btn {
   font-size: large;
   background-color: transparent;
