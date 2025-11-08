@@ -456,7 +456,7 @@ RSpec.describe DreamsController, type: :controller do
 
         parsed_res = JSON.parse(response.body)
         expect(parsed_res['dreams'][0]['body']).to eq(users_dream['body'])
-        expect(parsed_res['dreams'][0]['user_id']).to eq(users_dream['user_id'])
+        expect(parsed_res['dreams'][0]['id']).to eq(users_dream['id'])
         expect(parsed_res['count']).to eq(1)
         expect(response.status).to eq(200)
       end
