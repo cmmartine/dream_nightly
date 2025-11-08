@@ -27,6 +27,7 @@ export default function SearchForm(props) {
         <input
           id='search-input'
           type='search'
+          role='search'
           value={searchValue}
           onChange={(e) => {
             e.preventDefault();

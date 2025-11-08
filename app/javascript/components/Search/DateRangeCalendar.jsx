@@ -66,7 +66,7 @@ export default function DateRangeCalendar(props) {
         id={`search-calendar-${calendarType}`}
         type='date'
         value={calendarDate || null}
-        aria-label={`Search ${calendarType} Date`}
+        aria-label={`Set search ${calendarType} date`}
         aria-describedby={`${calendarType}-date-range-desc`}
         ref={calendarRef}
         onChange={(e) => {

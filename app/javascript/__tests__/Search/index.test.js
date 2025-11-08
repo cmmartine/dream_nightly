@@ -8,19 +8,23 @@ let mockSetError = jest.fn();
 
 describe('SearchPage', () => {
   function renderSearchPage() {
-    render(
+    return render(
       <ErrorContext.Provider value={{ setError: mockSetError }}>
         <SearchPage/>
       </ErrorContext.Provider>
     )
   };
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe('when a search is made', () => {
     it('shows a loading spinner', async () => {
       jest.spyOn(dreamsApi, 'getSearchDreams').mockReturnValue(new Promise(() => {}))
       renderSearchPage();
 
-      const formInput = screen.getByRole('searchbox');
+      const formInput = screen.getByRole('search');
       await userEvent.type(formInput, 'test dream');
 
       const formBtn = screen.getByRole('button', { name: /search/i });
@@ -33,7 +37,7 @@ describe('SearchPage', () => {
       jest.spyOn(dreamsApi, 'getSearchDreams').mockResolvedValue({ dreams: [], count: 0 })
       renderSearchPage();
 
-      const formInput = screen.getByRole('searchbox');
+      const formInput = screen.getByRole('search');
       await userEvent.type(formInput, 'test dream');
 
       const formBtn = screen.getByRole('button', { name: /search/i });
@@ -50,7 +54,7 @@ describe('SearchPage', () => {
     it(`shows an error and disables form submission when invalid and does not show an error and allows submission when valid`, async () => {
       renderSearchPage();
 
-      const formInput = screen.getByRole('searchbox');
+      const formInput = screen.getByRole('search');
       await userEvent.type(formInput, 'te');
 
       const formBtn = screen.getByRole('button', { name: /search/i });
