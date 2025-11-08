@@ -70,6 +70,7 @@ export const useSearch = () => {
 
   return {
     currentPage,
+    setCurrentPage,
     searchValue,
     setSearchValue,
     setStartDateInMs,
