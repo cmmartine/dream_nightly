@@ -22,7 +22,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_11_04_110747) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "dreamed_at", null: false
-    t.index ["body"], name: "index_dreams_on_body"
+    t.tsvector "search_body_vector"
+    t.index ["search_body_vector"], name: "index_dreams_on_search_body_vector", using: :gin
     t.index ["user_id"], name: "index_dreams_on_user_id"
   end
 

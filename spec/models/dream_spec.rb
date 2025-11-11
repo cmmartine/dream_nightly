@@ -11,6 +11,13 @@ RSpec.describe Dream, type: :model do
     it { should validate_length_of(:body).is_at_least(1).is_at_most(Constants::MAX_COUNTS['DREAM_CHARS']) }
   end
 
+  describe 'on dream save' do
+    it 'updates the tsvector search_body_vector' do
+      dream = FactoryBot.create(:dream)
+      expect(dream.search_body_vector.to_s.strip).not_to eq('')
+    end
+  end
+
   describe 'self.from_date' do
     let(:user) { create_user_two_same_date_dreams }
     let(:oldest_dream) { user.dreams.first }

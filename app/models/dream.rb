@@ -3,13 +3,15 @@
 class Dream < ApplicationRecord
   include PgSearch::Model
 
+  before_save :update_search_body_vector
+
   belongs_to :user
   validates :body, presence: true, length: { in: 1..Constants::MAX_COUNTS['DREAM_CHARS'] }
 
   pg_search_scope :search_by_body,
-                  against: :body,
                   using: {
                     tsearch: {
+                      tsvector_column: 'search_body_vector',
                       dictionary: 'english',
                       prefix: true
                     }
@@ -59,5 +61,14 @@ class Dream < ApplicationRecord
       invalid_after_date = (Time.now + 1.day).beginning_of_day.to_i
       converted_date_time > invalid_before_date && converted_date_time <= invalid_after_date
     end
+  end
+
+  private
+
+  def update_search_body_vector
+    quoted_body = ActiveRecord::Base.connection.quote(body.to_s)
+    sql = "SELECT to_tsvector('english', #{quoted_body})"
+    result = ActiveRecord::Base.connection.execute(sql)
+    self.search_body_vector = result.first['to_tsvector']
   end
 end
