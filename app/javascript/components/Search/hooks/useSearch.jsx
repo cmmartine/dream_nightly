@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { getSearchDreams } from "../../../api/dreamsApi";
 import { useErrorContext } from "../../context/providers/ErrorProvider";
 import * as MAX_COUNTS from "../../../constants/shared/MAX_COUNTS.json";
+import { searchTypes } from "../../../constants/searchTypes";
 
 export const useSearch = () => {
   const { setError } = useErrorContext();
@@ -39,14 +40,23 @@ export const useSearch = () => {
     return (!searchValue || searchValue.length >= minSearchLength) && searchValue != activeSearchPhrase
   };
 
-  const fetchSearch = (page) => {
+  const determineSearchPhrase = (typeOfSearch) => {
+    if (typeOfSearch === searchTypes.INITIAL) {
+      setActiveSearchPhrase(searchValue);
+      return searchValue;
+    } else if (typeOfSearch === searchTypes.PAGE_CHANGE) {
+      return activeSearchPhrase;
+    }
+  };
+
+  const fetchSearch = (page, typeOfSearch) => {
     if(fetchTimeoutRef?.current) {
       clearTimeout(fetchTimeoutRef.current);
     }
 
     fetchTimeoutRef.current = setTimeout(async () => {
       setCurrentPage(page)
-      setActiveSearchPhrase(searchValue);
+      let searchPhraseToUse = determineSearchPhrase(typeOfSearch);
       setLoading(true);
 
       const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -54,7 +64,7 @@ export const useSearch = () => {
         {
           from_date: startDateInMs,
           to_date: endDateInMs,
-          search_phrase: searchValue,
+          search_phrase: searchPhraseToUse,
           page: page,
           user_timezone: userTimeZone 
         },
@@ -68,20 +78,30 @@ export const useSearch = () => {
     }, 500);
   };
 
+  const clearSearch = () => {
+    setSearchValue('');
+    setActiveSearchPhrase('');
+    setFoundDreams([]);
+    setFoundDreamsCount(0);
+  };
+
   return {
     currentPage,
-    setCurrentPage,
     searchValue,
     setSearchValue,
     setStartDateInMs,
     setEndDateInMs,
+    activeSearchPhrase,
     foundDreams,
+    setFoundDreams,
     foundDreamsCount,
+    setFoundDreamsCount,
     loading,
     minSearchLength,
     showValidationMsg,
     validateInputLength,
     isValidSearch,
-    fetchSearch
+    fetchSearch,
+    clearSearch
   };
 };

@@ -1,5 +1,6 @@
 import React from "react";
 import DateRangeCalendar from "./DateRangeCalendar";
+import { searchTypes } from "../../constants/searchTypes";
 
 export default function SearchForm(props) {
   const {
@@ -20,7 +21,7 @@ export default function SearchForm(props) {
       id='search-form'
       onSubmit={(e) => {
         e.preventDefault();
-        fetchSearch(1)
+        fetchSearch(1, searchTypes.INITIAL);
       }}
     >
       <div className='search-input-container'>

@@ -47,6 +47,7 @@ describe('useSearch', () => {
     expect(result.current.minSearchLength).toBe(MAX_COUNTS.MIN_SEARCH_LENGTH);
     expect(result.current.foundDreams).toEqual([]);
     expect(result.current.foundDreamsCount).toBe(0);
+    expect(result.current.activeSearchPhrase).toBe('');
   });
 
   it('shows validation message for short input after debounce', () => {
@@ -120,5 +121,11 @@ describe('useSearch', () => {
     })
   });
 
+  it('determines which search value to use depending on the search type', () => {
 
+  });
+
+  it('clears search state', () => {
+
+  });
 });
