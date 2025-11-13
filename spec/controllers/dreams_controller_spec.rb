@@ -451,13 +451,14 @@ RSpec.describe DreamsController, type: :controller do
         create_other_user_two_dreams
       end
 
-      it 'returns dreams and count for a successful search' do
+      it 'returns dreams, count, has_next_page for a successful search' do
         get :search, params: search_params(date_with_dreams), as: :json
 
         parsed_res = JSON.parse(response.body)
         expect(parsed_res['dreams'][0]['body']).to eq(users_dream['body'])
         expect(parsed_res['dreams'][0]['id']).to eq(users_dream['id'])
         expect(parsed_res['count']).to eq(1)
+        expect(parsed_res['has_next_page']).to eq(false)
         expect(response.status).to eq(200)
       end
 
@@ -467,6 +468,7 @@ RSpec.describe DreamsController, type: :controller do
         parsed_res = JSON.parse(response.body)
         expect(parsed_res['dreams']).to eq([])
         expect(parsed_res['count']).to eq(0)
+        expect(parsed_res['has_next_page']).to eq(false)
         expect(response.status).to eq(200)
       end
 

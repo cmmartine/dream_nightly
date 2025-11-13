@@ -15,9 +15,20 @@ class DreamSearch
                .offset(@params.offset)
                .limit(@params.limit)
 
-      dreams.map do |dream|
+      filtered_dreams = dreams.map do |dream|
         Dream.filtered_dream_object(dream)
       end
+
+      construct_return_search_object(filtered_dreams)
     end
+  end
+
+  private
+
+  def construct_return_search_object(dreams)
+    {
+      found_dreams: dreams.first(Constants::MAX_COUNTS['SEARCH_PAGE_SIZE']),
+      has_next_page: dreams.length > Constants::MAX_COUNTS['SEARCH_PAGE_SIZE']
+    }
   end
 end

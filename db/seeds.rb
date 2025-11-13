@@ -19,7 +19,7 @@ if Rails.env.development?
   User.create!(email: 'testuser2@test.com', password: 'Testuser2!', password_confirmation: 'Testuser2!', confirmed_at: Time.now - 1.day)
 
   dream_description1 = 'I had a dream while sleeping, it involved something crazy'
-  dream_description2 = 'I was in the woods walking along a path, it was a bright sunny day. Then bear started to chase me'
+  dream_description2 = 'I was in the woods walking along a path, it was a bright sunny day. Then a bear started to chase me'
   dream_description3 = 'A zombie apocalypse just broke out while I was shopping for groceries. I threw a can of peeled tomatoes at a zombie that was coming down the aisle towards me and then ran for it'
   dream_description4 = 'Driving down a long stretch of highway and decided to stop off at the next exit to get some food. I pulled off and went to the drive through. When I got to the window, a T-rex was standing there waiting to give me the food'
   dream_description5 = 'I was playing Mount and Blade Warband multiplayer. I was climbing up a ladder with my axe and shield in hand, ready to start swinging at the top.'
@@ -39,7 +39,7 @@ if Rails.env.development?
   dream_description19 = "I was in a forest where the trees grew upside down from the sky, their roots dripping with zombie venom. I walked on clouds and picked fruit that whispered survival tips. One apple told me to 'find the bunker before nightfall — they rise when the moon does.'"
   dream_description20 = 'I was in a library after the apocalypse. The books rearranged themselves based on my fears. I tried to think of nothing, and the shelves collapsed into a spiral staircase leading to a room filled with infected clocks, all ticking in reverse — counting down to the next outbreak.'
 
-  create_for_days = [-5, -4, -3, -2, -1, 0]
+  create_for_days = [-11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0]
   dreams_hours = [0, 1.1, 2.2, 3.3, 4.4, 5.5, 20.6, 21.7, 22.8, 23.9]
 
   dreams_descriptions = [

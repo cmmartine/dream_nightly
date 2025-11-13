@@ -14,10 +14,10 @@ class DreamSearchParams
   end
 
   def offset
-    (page - 1) * limit
+    (page - 1) * (Constants::MAX_COUNTS['SEARCH_PAGE_SIZE'])
   end
 
   def limit
-    50
+    Constants::MAX_COUNTS['SEARCH_PAGE_SIZE'] + 1
   end
 end

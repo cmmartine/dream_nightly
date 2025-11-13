@@ -79,10 +79,13 @@ class DreamsController < ApplicationController
   end
 
   def search
-    found_dreams = DreamSearch.new(current_user, DreamSearchParams.new(search_params)).results
+    finished_search = DreamSearch.new(current_user, DreamSearchParams.new(search_params)).results
 
-    # TODO: add has_next_page, grab up to 51 records and if there are 51, frontend will know to display the next page button
-    render json: { dreams: found_dreams, count: found_dreams.count }, status: :ok
+    render json: {
+      dreams: finished_search[:found_dreams],
+      count: finished_search[:found_dreams].length,
+      has_next_page: finished_search[:has_next_page]
+    }, status: :ok
   rescue StandardError => e
     Rails.logger.error "Dream search failed: #{e.message}"
     render json: { message: 'Failed to search dreams' }, status: :unprocessable_entity

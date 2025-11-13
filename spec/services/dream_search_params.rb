@@ -36,7 +36,7 @@ RSpec.describe DreamSearchParams do
 
   describe '#limit' do
     it 'returns the current limit' do
-      expect(search_params.limit).to eq(50)
+      expect(search_params.limit).to eq(51)
     end
   end
 end

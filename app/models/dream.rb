@@ -13,7 +13,8 @@ class Dream < ApplicationRecord
                     tsearch: {
                       tsvector_column: 'search_body_vector',
                       dictionary: 'english',
-                      prefix: true
+                      prefix: true,
+                      any_word: true
                     }
                   }
 
