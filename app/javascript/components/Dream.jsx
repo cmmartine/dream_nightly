@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 import DreamInput from "./DreamInput";
+import { formatDateStringFromBackendMs, formatTimeFromBackendMs } from "../util/dateTimeFormatUtil";
 
 export default function Dream(props) {
   const { dreamInfo, removeDreamFromPage, setError, newDreamRef, isSearch } = props;
@@ -34,19 +35,6 @@ export default function Dream(props) {
     setDreamBody(newBody);
   };
 
-  function formatTimeFromMs(ms) {
-    const date = new Date(ms);
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-  };
-
-  function formatDateStringFromMs(ms) {
-    const date = new Date(ms);
-    const dateYear = date.getFullYear();
-    const dateMonth = date.toLocaleString('default', { month: 'short' });
-    const dateDay = date.getDay();
-    return `${dateMonth} ${dateDay} ${dateYear}`;
-  }
-
   function handleUnexpand() {
     setExpanded(false);
     setScrolledTo(false);
@@ -57,8 +45,8 @@ export default function Dream(props) {
       <div className={containerClass} ref={newDreamRef}>
         <div className='dream-top-row-container'>
           <div>
-            {isSearch && <div>{formatDateStringFromMs(dreamInfo.dreamed_at)}</div>}
-            <div>{formatTimeFromMs(dreamInfo.dreamed_at)}</div>
+            {isSearch && <div>{formatDateStringFromBackendMs(dreamInfo.dreamed_at)}</div>}
+            <div>{formatTimeFromBackendMs(dreamInfo.dreamed_at)}</div>
           </div>
           <button
             className='expand-btn lucide--edit'

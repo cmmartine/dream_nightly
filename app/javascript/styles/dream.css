@@ -36,6 +36,13 @@
   overflow-wrap: anywhere;
 }
 
+.dream-body.search-row-dream-body {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .expand-btn {
   background: transparent;
   border: none;
