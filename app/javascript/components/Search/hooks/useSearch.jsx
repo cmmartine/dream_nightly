@@ -13,6 +13,7 @@ export const useSearch = () => {
   const [activeSearchPhrase, setActiveSearchPhrase] = useState('');
   const [foundDreams, setFoundDreams] = useState([]);
   const [foundDreamsCount, setFoundDreamsCount] = useState(0);
+  const [hasNextPage, setHasNextPage] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showValidationMsg, setShowValidationMsg] = useState(false);
 
@@ -74,6 +75,7 @@ export const useSearch = () => {
       setFoundDreams(data.dreams || []);
       // Count only for current page
       setFoundDreamsCount(data.count || 0);
+      setHasNextPage(data.has_next_page || false);
       setLoading(false);
     }, 500);
   };
@@ -93,9 +95,8 @@ export const useSearch = () => {
     setEndDateInMs,
     activeSearchPhrase,
     foundDreams,
-    setFoundDreams,
     foundDreamsCount,
-    setFoundDreamsCount,
+    hasNextPage,
     loading,
     minSearchLength,
     showValidationMsg,

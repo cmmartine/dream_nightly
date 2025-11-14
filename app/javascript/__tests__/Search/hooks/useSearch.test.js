@@ -2,6 +2,7 @@ import { renderHook, act, waitFor } from '@testing-library/react';
 import { useSearch } from "../../../components/Search/hooks/useSearch";
 import * as dreamsApi from "../../../api/dreamsApi";
 import * as MAX_COUNTS from "../../../constants/shared/MAX_COUNTS.json";
+import { searchTypes } from '../../../constants/searchTypes';
 import { ErrorContext } from '../../../components/context/providers/ErrorProvider';
 
 jest.useFakeTimers();
@@ -47,6 +48,7 @@ describe('useSearch', () => {
     expect(result.current.minSearchLength).toBe(MAX_COUNTS.MIN_SEARCH_LENGTH);
     expect(result.current.foundDreams).toEqual([]);
     expect(result.current.foundDreamsCount).toBe(0);
+    expect(result.current.hasNextPage).toBe(false);
     expect(result.current.activeSearchPhrase).toBe('');
   });
 
@@ -94,7 +96,7 @@ describe('useSearch', () => {
     expect(result.current.isValidSearch()).toBe(true);
 
     act(() => {
-      result.current.fetchSearch(1);
+      result.current.fetchSearch(1, searchTypes.INITIAL);
       jest.advanceTimersByTime(500);
     });
 
@@ -119,13 +121,5 @@ describe('useSearch', () => {
       expect(result.current.foundDreams).toEqual(returnedDreams.dreams);
       expect(result.current.foundDreamsCount).toBe(returnedDreams.count);
     })
-  });
-
-  it('determines which search value to use depending on the search type', () => {
-
-  });
-
-  it('clears search state', () => {
-
   });
 });

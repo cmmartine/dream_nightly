@@ -8,9 +8,8 @@ export default function SearchResults(props) {
     currentPage,
     activeSearchPhrase,
     foundDreams,
-    setFoundDreams,
     foundDreamsCount,
-    setFoundDreamsCount,
+    hasNextPage,
     fetchSearch,
     clearSearch
   } = props;
@@ -40,7 +39,11 @@ export default function SearchResults(props) {
         clearSearch={clearSearch}
       />
       {setUpSearchResults()}
-      <SearchResultsFooter currentPage={currentPage} fetchSearch={fetchSearch}/>
+      <SearchResultsFooter
+        currentPage={currentPage}
+        hasNextPage={hasNextPage}
+        fetchSearch={fetchSearch}
+      />
     </div>
   );
 } 
