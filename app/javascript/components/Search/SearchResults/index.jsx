@@ -28,11 +28,11 @@ export default function SearchResults(props) {
       );
     });
 
-    return <ul>{foundDreamsList}</ul>
+    return <ul className='search-results-list'>{foundDreamsList}</ul>
   };
 
   return(
-    <div>
+    <div className='search-results-container'>
       <SearchResultsHeader
         activeSearchPhrase={activeSearchPhrase}
         foundDreamsCount={foundDreamsCount}
@@ -43,6 +43,7 @@ export default function SearchResults(props) {
         currentPage={currentPage}
         hasNextPage={hasNextPage}
         fetchSearch={fetchSearch}
+        foundDreamsCount={foundDreamsCount}
       />
     </div>
   );

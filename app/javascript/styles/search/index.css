@@ -1,0 +1,17 @@
+@import './search-form.css';
+@import './date-range-calendar.css';
+@import './search-results/index.css';
+
+.search-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 25px;
+  min-height: calc(100vh - 90px)
+}
+
+@media (max-width: 600px) {
+  .search-page-container {
+    max-width: 100vw;
+  }
+}

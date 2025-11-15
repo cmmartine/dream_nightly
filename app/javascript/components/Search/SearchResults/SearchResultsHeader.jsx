@@ -8,12 +8,16 @@ export default function SearchResultsHeader(props) {
   } = props;
 
   return(
-    <div>
+    <div className='search-header-container'>
       <span>{foundDreamsCount} dreams containing {activeSearchPhrase} on this page</span>
-      <button onClick={(e) => {
-        e.preventDefault();
-        clearSearch()
-      }}>Clear search</button>
+      <button
+        className='gen-btn search-clear-btn'
+        onClick={(e) => {
+          e.preventDefault();
+          clearSearch()
+        }}>
+        Clear search
+      </button>
     </div>
   );
 }

@@ -1,0 +1,24 @@
+@import './search-results-header.css';
+@import './search-results-row.css';
+@import './search-results-footer.css';
+
+.search-results-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 600px;
+}
+
+.search-results-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .search-results-container {
+    width: 95%;
+  }
+}

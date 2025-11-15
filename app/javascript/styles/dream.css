@@ -36,13 +36,6 @@
   overflow-wrap: anywhere;
 }
 
-.dream-body.search-row-dream-body {
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .expand-btn {
   background: transparent;
   border: none;
@@ -82,6 +75,6 @@
 
 @media (max-width: 600px) {
   .dream-container {
-    width: 90%;
+    width: 95%;
   }
 }

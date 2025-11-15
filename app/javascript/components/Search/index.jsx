@@ -8,7 +8,7 @@ export default function SearchPage() {
   const search = useSearch();
 
   return(
-    <div>
+    <div className='search-page-container'>
       <SearchForm {...search}/>
       {search.loading && <LoadingSpinner loading={search.loading}/>}
       {!search.loading && search.activeSearchPhrase && <SearchResults {...search}/>}

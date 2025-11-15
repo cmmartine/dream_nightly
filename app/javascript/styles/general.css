@@ -9,6 +9,7 @@
 @import './error-banner.css';
 @import './footer.css';
 @import './calendar/index.css';
+@import './search/index.css';
 
 body {
   margin: 0;

@@ -1,0 +1,28 @@
+.dream-container.search-row-container {
+  display: flex;
+  flex-direction: row;
+  padding: 0px 10px;
+  justify-content: space-around;
+}
+
+.dream-body.search-row-dream-body {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: calc(600px - 32px - 100px - 34px); /*32 dream body margin/padding, 110 date, 34 button */
+}
+
+.search-dream-date {
+  width: 100px;
+  align-content: center;
+}
+
+.lucide--expand::after {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  vertical-align: -0.125em;
+  padding: 3px;
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m15 15l6 6M15 9l6-6m0 13v5h-5m5-13V3h-5M3 16v5h5m-5 0l6-6M3 8V3h5m1 6L3 3'/%3E%3C/svg%3E");
+}

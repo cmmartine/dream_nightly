@@ -58,12 +58,14 @@ export default function DateRangeCalendar(props) {
   };
 
   return(
-    <div>
+    <div className='search-date-range-container'>
       <span id={`${calendarType}-date-range-desc`} style={{ display: 'none' }}>
         {`Select a ${calendarType} date between ${minCalendarVal} and ${maxCalendarVal}.`}
       </span>
+      <div className='search-date-range-desc'>{calendarType.charAt(0).toUpperCase() + calendarType.slice(1) + ': '}</div>
       <input
-        id={`search-calendar-${calendarType}`}
+        name={`search-calendar-${calendarType}`}
+        className='search-date-range-calendar'
         type='date'
         value={calendarDate || null}
         aria-label={`Set search ${calendarType} date`}

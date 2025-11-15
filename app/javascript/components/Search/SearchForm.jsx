@@ -39,26 +39,28 @@ export default function SearchForm(props) {
           onBlur={() => validateInputLength(searchValue)}
           aria-describedby='search-validation-msg'
         />
-        {
-          showValidationMsg && 
-          <span
-            id='search-validation-msg'
-            role='alert'
-            aria-live='polite'
-          >
-            Please enter at least {minSearchLength} characters
-          </span>
-        }
+        <button className='gen-btn' disabled={!isValidSearch() || loading}>Search</button>
       </div>
-      <DateRangeCalendar
-        setDateTimeInMs={setStartDateInMs}
-        calendarType='start'
-      />
-      <DateRangeCalendar
-        setDateTimeInMs={setEndDateInMs}
-        calendarType='end'
-      />
-      <button className='gen-btn' disabled={!isValidSearch() || loading}>Search</button>
+      {
+        showValidationMsg && 
+        <span
+          id='search-validation-msg'
+          role='alert'
+          aria-live='polite'
+        >
+          Please enter at least {minSearchLength} characters
+        </span>
+      }
+      <div className='date-range-picker-container'>
+        <DateRangeCalendar
+          setDateTimeInMs={setStartDateInMs}
+          calendarType='start'
+        />
+        <DateRangeCalendar
+          setDateTimeInMs={setEndDateInMs}
+          calendarType='end'
+        />
+      </div>
     </form>
   );
 }

@@ -8,16 +8,10 @@ export default function SearchResultsRow(props) {
   } = props;
 
   return(
-    <div className='dream-container'>
-      <div className='dream-top-row-container'>
-        <div className='search-datetime-container'>
-          {/* Make separate component for the time and date, combined with this div container from Dream */}
-          <div>{formatDateStringFromBackendMs(dream.dreamed_at)}</div>
-          <div>{formatTimeFromBackendMs(dream.dreamed_at)}</div>
-        </div>
-        <button className='expand-btn lucide--edit'/>
-      </div>
+    <div className='dream-container search-row-container'>
+      <div className='search-dream-date'>{formatDateStringFromBackendMs(dream.dreamed_at)}</div>
       <div className='dream-body search-row-dream-body'>{dream.body}</div>
+      <button className='expand-btn lucide--expand'/>
     </div>
   );
 }
