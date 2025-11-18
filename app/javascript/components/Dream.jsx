@@ -4,7 +4,7 @@ import DreamInput from "./DreamInput";
 import { formatDateStringFromBackendMs, formatTimeFromBackendMs } from "../util/dateTimeFormatUtil";
 
 export default function Dream(props) {
-  const { dreamInfo, removeDreamFromPage, setError, newDreamRef, isSearch } = props;
+  const { dreamInfo, removeDreamFromPage, setError, newDreamRef, isSearch, handleSearchRowExpandClick } = props;
   const [expanded, setExpanded] = useState(false);
   const [dreamBody, setDreamBody] = useState(dreamInfo.body);
   const [scrolledTo, setScrolledTo] = useState(false);
@@ -48,17 +48,26 @@ export default function Dream(props) {
             {isSearch && <div>{formatDateStringFromBackendMs(dreamInfo.dreamed_at)}</div>}
             <div>{formatTimeFromBackendMs(dreamInfo.dreamed_at)}</div>
           </div>
-          <button
-            className='expand-btn lucide--edit'
-            aria-label='Open dream editor'
-            data-testid='expand-btn'
-            tabIndex={0}
-            onClick={(e) => {
-              e.preventDefault();
-              setExpanded(true);
-            }}
-            
-          />
+          <div>
+            {isSearch && <button
+              className='expand-btn minimize-btn lucide--minimize-2'
+              aria-label='Unexpand searched dream'
+              data-testid='minimize-btn'
+              onClick={(e) => {
+                e.preventDefault();
+                handleSearchRowExpandClick();
+              }}
+            />}
+            <button
+              className='expand-btn lucide--edit'
+              aria-label='Open dream editor'
+              data-testid='expand-btn'
+              onClick={(e) => {
+                e.preventDefault();
+                setExpanded(true);
+              }}
+            />
+          </div>
         </div>
         <div className='dream-body'>{dreamBody}</div>
       </div>
@@ -68,8 +77,8 @@ export default function Dream(props) {
       <div className='dream-container' ref={expandedDreamRef}>
         <div className='dream-top-row-container'>
           <div>
-            {isSearch && <div>{formatDateStringFromMs(dreamInfo.dreamed_at)}</div>}
-            <div>{formatTimeFromMs(dreamInfo.dreamed_at)}</div>
+            {isSearch && <div>{formatDateStringFromBackendMs(dreamInfo.dreamed_at)}</div>}
+            <div>{formatTimeFromBackendMs(dreamInfo.dreamed_at)}</div>
           </div>
           <div className='expand-btn lucide--x' aria-label='Close dream editor' data-testid='unexpand-btn' tabIndex={0} onClick={(e) => {
             e.preventDefault();

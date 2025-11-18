@@ -11,7 +11,8 @@ export default function SearchResults(props) {
     foundDreamsCount,
     hasNextPage,
     fetchSearch,
-    clearSearch
+    clearSearch,
+    setError
   } = props;
 
   const setUpSearchResults = () => {
@@ -23,7 +24,8 @@ export default function SearchResults(props) {
       return(
         <SearchResultsRow
           key={dream.id}
-          dream={dream}
+          dreamInfo={dream}
+          setError={setError}
         />
       );
     });

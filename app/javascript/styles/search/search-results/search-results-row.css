@@ -10,11 +10,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: calc(600px - 32px - 100px - 34px); /*32 dream body margin/padding, 110 date, 34 button */
+  width: calc(600px - 32px - 100px - 34px); /*32 dream body margin/padding, 100 date, 34 button */
 }
 
 .search-dream-date {
-  width: 100px;
+  width: fit-content;
+  margin-right: 8px;
   align-content: center;
 }
 

@@ -103,6 +103,7 @@ export const useSearch = () => {
     validateInputLength,
     isValidSearch,
     fetchSearch,
-    clearSearch
+    clearSearch,
+    setError
   };
 };

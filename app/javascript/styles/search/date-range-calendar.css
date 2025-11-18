@@ -1,6 +1,8 @@
 .search-date-range-container {
-  display: flex;
+  display: grid;
+  grid-template-columns: 45px 0.8fr;
   margin-top: 5px;
+  width:fit-content
 }
 
 .search-date-range-desc {
