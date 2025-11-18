@@ -23,14 +23,17 @@ describe('Dream', () => {
   const removeDreamFromPage = jest.fn();
   const setError = jest.fn();
   const scrollIntoViewMock = jest.fn();
+  const handleSearchRowExpandClick = jest.fn();
 
-  function renderDream(dreamInfo, dreamRef) {
+  function renderDream(dreamInfo, dreamRef, isSearch) {
     return render(
       <Dream
         dreamInfo={dreamInfo}
         removeDreamFromPage={removeDreamFromPage}
         setError={setError}
         newDreamRef={dreamRef}
+        isSearch={isSearch}
+        handleSearchRowExpandClick={handleSearchRowExpandClick}
       />
     )
   };
@@ -104,6 +107,18 @@ describe('Dream', () => {
           expect(screen.queryByTestId('expand-btn')).toBeInTheDocument();
         });
       });
+    });
+  });
+
+  describe('when passed search props', () => {
+    it('shows a minimize button and calls the minimize function passed in when clicked', async () => {
+      renderDream(aDream, null, true);
+
+      const minimizeBtn = screen.queryByTestId('minimize-btn')
+      expect(minimizeBtn).toBeInTheDocument();
+
+      await userEvent.click(minimizeBtn);
+      expect(handleSearchRowExpandClick).toHaveBeenCalled();
     });
   });
 });
