@@ -80,6 +80,12 @@ export const useSearch = () => {
     }, 500);
   };
 
+  const handleDreamDeletion = (deletedDreamId) => {
+    const newDreamsArray = foundDreams.filter((dream) => dream.id != deletedDreamId);
+    setFoundDreams(newDreamsArray);
+    setFoundDreamsCount((prev) => prev - 1);
+  };
+
   const clearSearch = () => {
     setSearchValue('');
     setActiveSearchPhrase('');
@@ -103,6 +109,7 @@ export const useSearch = () => {
     validateInputLength,
     isValidSearch,
     fetchSearch,
+    handleDreamDeletion,
     clearSearch,
     setError
   };

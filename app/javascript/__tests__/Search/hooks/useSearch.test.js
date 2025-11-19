@@ -122,4 +122,29 @@ describe('useSearch', () => {
       expect(result.current.foundDreamsCount).toBe(returnedDreams.count);
     })
   });
+
+  it('removes the dream from the array when deleted', async () => {
+    const { result } = renderHook(() => useSearch(), { wrapper });
+
+    act(() => {
+      result.current.setSearchValue('lucid');
+    });
+
+    act(() => {
+      result.current.fetchSearch(1, searchTypes.INITIAL);
+      jest.advanceTimersByTime(500);
+    });
+
+    await(waitFor(() => {
+      expect(result.current.foundDreams.length).toBe(1);
+      expect(result.current.foundDreamsCount).toBe(1);
+    }));
+
+    act(() => {
+      result.current.handleDreamDeletion(1);
+    });
+
+    expect(result.current.foundDreams.length).toBe(0);
+    expect(result.current.foundDreamsCount).toBe(0);
+  });
 });

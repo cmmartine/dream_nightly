@@ -11,6 +11,7 @@ export default function SearchResults(props) {
     foundDreamsCount,
     hasNextPage,
     fetchSearch,
+    handleDreamDeletion,
     clearSearch,
     setError
   } = props;
@@ -25,6 +26,7 @@ export default function SearchResults(props) {
         <SearchResultsRow
           key={dream.id}
           dreamInfo={dream}
+          handleDreamDeletion={handleDreamDeletion}
           setError={setError}
         />
       );

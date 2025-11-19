@@ -6,6 +6,7 @@ import Dream from "../../Dream";
 export default function SearchResultsRow(props) {
   const {
     dreamInfo,
+    handleDreamDeletion,
     setError
   } = props;
 
@@ -29,7 +30,7 @@ export default function SearchResultsRow(props) {
         dreamInfo={dreamInfo}
         isSearch={true}
         handleSearchRowExpandClick={handleSearchRowExpandClick}
-        removeDreamFromPage={''}
+        removeDreamFromPage={handleDreamDeletion}
         setError={setError}
       />
     )
