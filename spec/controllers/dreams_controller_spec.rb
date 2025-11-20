@@ -322,21 +322,17 @@ RSpec.describe DreamsController, type: :controller do
     end
   end
 
-  describe 'POST /from_date' do
+  describe 'GET /from_date' do
     let(:dream_params) do
       {
-        dream: {
-          time_in_ms: users_dream.dreamed_at.to_i * 1000
-        }
+        time_in_ms: users_dream.dreamed_at.to_i * 1000
       }
     end
 
     let(:invalid_dream_params) do
       {
-        dream: {
-          time_in_ms: 'invalid_time',
-          user_timezone: 'no timezone'
-        }
+        time_in_ms: 'invalid_time',
+        user_timezone: 'no timezone'
       }
     end
 
@@ -368,10 +364,8 @@ RSpec.describe DreamsController, type: :controller do
           end.to_i * 1000
 
           params = {
-            dream: {
-              time_in_ms: time.to_i * 1000,
-              user_timezone: 'America/New_York'
-            }
+            time_in_ms: time.to_i * 1000,
+            user_timezone: 'America/New_York'
           }
           post :from_date, params: params, as: :json
           expected = [
@@ -396,10 +390,8 @@ RSpec.describe DreamsController, type: :controller do
         # 2024-01-02 00:00:00 EST in UTC is 2024-01-02 05:00:00 UTC
         time_to_get_dreams = Time.use_zone('America/New_York') { Time.zone.local(2024, 1, 2, 0, 0, 0) }
         params = {
-          dream: {
-            time_in_ms: time_to_get_dreams.to_i * 1000,
-            user_timezone: 'America/New_York'
-          }
+          time_in_ms: time_to_get_dreams.to_i * 1000,
+          user_timezone: 'America/New_York'
         }
         post :from_date, params: params, as: :json
         # Should not include the UTC dream, since it's on 2024-01-01 in EST

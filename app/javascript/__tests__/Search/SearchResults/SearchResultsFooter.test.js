@@ -11,6 +11,7 @@ describe('SearchResultsFooter', () => {
         currentPage={currentPage}
         hasNextPage={hasNextPage}
         fetchSearch={mockFetchSearch}
+        foundDreamsCount={1}
       />
     );
   };
@@ -19,12 +20,11 @@ describe('SearchResultsFooter', () => {
     jest.clearAllMocks();
   });
 
-  // uncomment once classnames and everything else is added
-  // it('renders correctly', () => {
-  //   const header = renderSearchResultsFooter();
+  it('renders correctly', () => {
+    const header = renderSearchResultsFooter(1, true);
 
-  //   expect(header).toMatchSnapshot();
-  // });
+    expect(header).toMatchSnapshot();
+  });
 
   describe('Next button', () => {
     it('shows when hasNextPage is true', () => {

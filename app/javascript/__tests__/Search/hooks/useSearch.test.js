@@ -80,11 +80,13 @@ describe('useSearch', () => {
   });
 
 
-  it('returns false if input is too short or matches active phrase', async () => {
+  it('returns false if input is too short or matches active phrase or start/end time', async () => {
     const { result } = renderHook(() => useSearch(), { wrapper });
 
     act(() => {
       result.current.setSearchValue('te');
+      result.current.setStartDateInMs(1762214040000);
+      result.current.setEndDateInMs(1762214040000);
     });
 
     expect(result.current.isValidSearch()).toBe(false);
@@ -100,7 +102,42 @@ describe('useSearch', () => {
       jest.advanceTimersByTime(500);
     });
 
-    expect(result.current.isValidSearch()).toBe(false);
+    await waitFor(() => {
+      expect(result.current.isValidSearch()).toBe(false);
+    });
+
+    act(() => {
+      result.current.setSearchValue('luci');
+    });
+
+    await waitFor(() => {
+      expect(result.current.isValidSearch()).toBe(true);
+    });
+
+    act(() => {
+      result.current.setSearchValue('lucid');
+      result.current.setStartDateInMs(1762214040001);
+    });
+
+    await waitFor(() => {
+      expect(result.current.isValidSearch()).toBe(true);
+    });
+
+    act(() => {
+      result.current.setStartDateInMs(1762214040000);
+    });
+
+    await waitFor(() => {
+      expect(result.current.isValidSearch()).toBe(false);
+    });
+
+    act(() => {
+      result.current.setEndDateInMs(1762214040001);
+    });
+
+    await waitFor(() => {
+      expect(result.current.isValidSearch()).toBe(true);
+    });
   });
 
   it('fetches search results and updates state', async () => {

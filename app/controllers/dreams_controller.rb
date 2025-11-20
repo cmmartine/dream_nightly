@@ -70,8 +70,8 @@ class DreamsController < ApplicationController
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   def from_date
-    date_time = TimeConversion.from_ms(dream_params[:time_in_ms])
-    filtered_dreams = current_user.dreams.filtered_from_date(date_time, dream_params[:user_timezone])
+    date_time = TimeConversion.from_ms(params[:time_in_ms])
+    filtered_dreams = current_user.dreams.filtered_from_date(date_time, params[:user_timezone])
     render json: filtered_dreams
   rescue StandardError => e
     Rails.logger.error "Dream filtering failed: #{e.message}"

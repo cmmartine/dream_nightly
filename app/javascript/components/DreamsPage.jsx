@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
-import { postDreamsFromDate } from "../api/dreamsApi";
+import { getDreamsFromDate } from "../api/dreamsApi";
 import Dream from "./Dream";
 import DreamInput from "./DreamInput";
 import Calendar from "./Calendar";
@@ -37,7 +37,7 @@ export default function DreamsPage() {
 
   const retrieveDreamsFromDate = async (dateTimeInMs) => {
     const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const data = await postDreamsFromDate(dateTimeInMs, userTimeZone, setError);
+    const data = await getDreamsFromDate(dateTimeInMs, userTimeZone, setError);
     setDreams(data || []);
   };
 

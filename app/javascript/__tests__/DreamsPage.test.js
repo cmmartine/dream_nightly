@@ -49,7 +49,7 @@ describe('DreamsPage', () => {
   };
 
   beforeEach(() => {
-    jest.spyOn(dreamsApi, 'postDreamsFromDate').mockReturnValue(returnedDreams);
+    jest.spyOn(dreamsApi, 'getDreamsFromDate').mockReturnValue(returnedDreams);
     jest.spyOn(dreamsApi, 'postDeleteDream').mockReturnValue(null);
   });
 
@@ -60,7 +60,7 @@ describe('DreamsPage', () => {
   it('shows all dreams returned from api call', async () => {
     mockCalendarDate = new Date(2025, 8, 12);
     renderDreamsPage();
-    expect(dreamsApi.postDreamsFromDate).toBeCalled();
+    expect(dreamsApi.getDreamsFromDate).toBeCalled();
     expect(await screen.findByText(dreamBody1)).toBeInTheDocument();
     expect(await screen.findByText(dreamBody2)).toBeInTheDocument();
   });
@@ -80,7 +80,7 @@ describe('DreamsPage', () => {
   it('does not call dreams API for date before 2010', () => {
     mockCalendarDate = new Date(2000, 0, 1);
     renderDreamsPage();
-    expect(dreamsApi.postDreamsFromDate).not.toBeCalled();
+    expect(dreamsApi.getDreamsFromDate).not.toBeCalled();
   });
 
   it('does not call dreams API for date after today', () => {
@@ -88,12 +88,12 @@ describe('DreamsPage', () => {
     const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
     mockCalendarDate = tomorrow;
     renderDreamsPage();
-    expect(dreamsApi.postDreamsFromDate).not.toBeCalled();
+    expect(dreamsApi.getDreamsFromDate).not.toBeCalled();
   });
 
   describe('when there are no dreams', () => {
     it('shows text that no dreams were recorded', () => {
-      jest.spyOn(dreamsApi, 'postDreamsFromDate').mockReturnValue([]);
+      jest.spyOn(dreamsApi, 'getDreamsFromDate').mockReturnValue([]);
 
       renderDreamsPage();
 

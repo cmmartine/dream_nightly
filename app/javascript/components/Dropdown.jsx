@@ -56,6 +56,14 @@ export default function Dropdown() {
         <div className='dropdown-items-container'>
           <a
             className='link-btn dropdown-link-btn'
+            href='/search'
+            role='menuitem'
+            aria-label='Link to Dream Search page'
+          >
+            Dream Search
+          </a>
+          <a
+            className='link-btn dropdown-link-btn'
             href='/users/edit'
             role='menuitem'
             aria-label='Link to Edit Account'

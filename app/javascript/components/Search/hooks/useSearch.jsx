@@ -9,7 +9,9 @@ export const useSearch = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState('');
   const [startDateInMs, setStartDateInMs] = useState();
+  const [activeSearchStartMs, setActiveSearchStartMs] = useState(null);
   const [endDateInMs, setEndDateInMs] = useState();
+  const [activeSearchEndMs, setActiveSearchEndMs] = useState(null);
   const [activeSearchPhrase, setActiveSearchPhrase] = useState('');
   const [foundDreams, setFoundDreams] = useState([]);
   const [foundDreamsCount, setFoundDreamsCount] = useState(0);
@@ -38,7 +40,8 @@ export const useSearch = () => {
   };
 
   const isValidSearch = () => {
-    return (!searchValue || searchValue.length >= minSearchLength) && searchValue != activeSearchPhrase
+    return (!searchValue || searchValue.length >= minSearchLength)
+    && (searchValue != activeSearchPhrase || startDateInMs != activeSearchStartMs || endDateInMs != activeSearchEndMs)  
   };
 
   const determineSearchPhrase = (typeOfSearch) => {
@@ -76,6 +79,8 @@ export const useSearch = () => {
       // Count only for current page
       setFoundDreamsCount(data.count || 0);
       setHasNextPage(data.has_next_page || false);
+      setActiveSearchStartMs(startDateInMs);
+      setActiveSearchEndMs(endDateInMs);
       setLoading(false);
     }, 500);
   };
@@ -91,6 +96,8 @@ export const useSearch = () => {
     setActiveSearchPhrase('');
     setFoundDreams([]);
     setFoundDreamsCount(0);
+    setActiveSearchStartMs(null);
+    setActiveSearchEndMs(null);
   };
 
   return {
