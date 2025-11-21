@@ -20,12 +20,11 @@ describe('SearchResultsHeader', () => {
     jest.clearAllMocks();
   });
 
-  // uncomment once classnames and everything else is added
-  // it('renders correctly', () => {
-  //   const header = renderSearchResultsHeader();
+  it('renders correctly', () => {
+    const header = renderSearchResultsHeader();
 
-  //   expect(header).toMatchSnapshot();
-  // });
+    expect(header).toMatchSnapshot();
+  });
 
   it('calls clearSearch when the clear search button is clicked', () => {
     renderSearchResultsHeader();

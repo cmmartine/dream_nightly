@@ -7,6 +7,7 @@ export const getUserStatus = () => {
 
 export const logout = () => {
   let csrf = getCsrfToken();
+  localStorage.clear();
   fetch('/users/sign_out', {
     method: 'DELETE',
     headers: {

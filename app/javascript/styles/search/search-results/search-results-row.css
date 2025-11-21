@@ -1,7 +1,7 @@
 .dream-container.search-row-container {
   display: flex;
   flex-direction: row;
-  padding: 0px 10px;
+  padding: 10px 15px;
   justify-content: space-around;
 }
 
@@ -10,12 +10,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: calc(600px - 32px - 100px - 34px); /*32 dream body margin/padding, 100 date, 34 button */
 }
 
 .search-dream-date {
-  width: fit-content;
-  margin-right: 8px;
+  width: 80px;
   align-content: center;
 }
 
