@@ -38,6 +38,7 @@ describe('DreamInput', () => {
     jest.spyOn(dreamsApi, 'postCreateDream').mockReturnValue(returnValue);
     jest.spyOn(dreamsApi, 'postUpdateDream').mockReturnValue('');
     convertDateTimeToMs.mockReturnValue(dateInMsForPost);
+    localStorage.clear();
   });
 
   afterEach(() => {
@@ -180,6 +181,36 @@ describe('DreamInput', () => {
       renderNewDreamInput(true);
 
       expect(screen.getByText(`Only ${MAX_COUNTS.DREAMS_IN_A_DAY} dreams can be created per day`)).toBeInTheDocument();
+    });
+  });
+
+  describe('LocalStorage integration', () => {
+    const localStorageKey = 'newDreamInputBody';
+
+    it('stores textarea input into localStorage when creating a new dream', async () => {
+      renderNewDreamInput();
+      const textArea = screen.getByLabelText('Enter dream');
+      await userEvent.type(textArea, 'Hello Dream');
+      expect(localStorage.getItem(localStorageKey)).toBe(JSON.stringify('Hello Dream'));
+    });
+
+    it('hydrates textarea from localStorage if no dreamBody prop is provided', async () => {
+      localStorage.setItem(localStorageKey, JSON.stringify('Stored Dream'));
+      renderNewDreamInput();
+      const textArea = screen.getByLabelText('Enter dream');
+      expect(textArea.value).toBe('Stored Dream');
+    });
+
+    it('clears localStorage after successful dream creation', async () => {
+      renderNewDreamInput();
+      const textArea = screen.getByLabelText('Enter dream');
+      const saveBtn = screen.getByLabelText('Save dream');
+
+      await userEvent.type(textArea, 'Hello Dream');
+      expect(localStorage.getItem(localStorageKey)).toBe(JSON.stringify('Hello Dream'));
+
+      await userEvent.click(saveBtn);
+      expect(localStorage.getItem(localStorageKey)).toBeNull();
     });
   });
 });
