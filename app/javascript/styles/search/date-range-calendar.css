@@ -1,0 +1,24 @@
+.search-date-range-container {
+  display: grid;
+  grid-template-columns: 45px 0.8fr;
+  margin-top: 10px;
+  width:fit-content
+}
+
+.search-date-range-desc {
+  align-self: center;
+}
+
+.search-date-range-calendar {
+  color-scheme: dark;
+  background: transparent;
+  border: none;
+  font-size: large;
+  margin-left: 5px;
+}
+
+.search-date-range-calendar:hover {
+  background: #9059f0;
+  cursor: pointer;
+  border-radius: 4px;
+}

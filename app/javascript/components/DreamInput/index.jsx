@@ -4,6 +4,7 @@ import { postCreateDream, postUpdateDream } from "../../api/dreamsApi";
 import * as MAX_COUNTS from '../../constants/shared/MAX_COUNTS.json';
 import { DreamDeletor } from "./DreamDeletor";
 import { useVisibility } from "../context/providers/VisibilityProvider";
+import { setLocalStorageData, retrieveLocalStorageData, removeLocalStorageData } from "../../util/localStorageUtil";
 
 export default function DreamInput(props) {
   const {
@@ -25,6 +26,7 @@ export default function DreamInput(props) {
   const [showSaveBtn, setShowSaveBtn] = useState(true);
   const [timeValue, setTimeValue] = useState(currentTime());
   const isVisible = useVisibility();
+  const localStorageKey = 'newDreamInputBody';
 
   useEffect(() => {
     if (isVisible) {
@@ -34,7 +36,14 @@ export default function DreamInput(props) {
 
   useEffect(() => {
     const existingDreamText = checkDreamBody();
-    setFormText(existingDreamText);
+    if(existingDreamText) {
+      setFormText(existingDreamText);
+    } else {
+      const localStorageData = retrieveLocalStorageData(localStorageKey);
+      if(localStorageData) {
+        setFormText(localStorageData);
+      }
+    }
   }, []);
 
   const formClass = dreamBody ? 'edit-form' : null;
@@ -74,8 +83,11 @@ export default function DreamInput(props) {
     } else if (!dreamBody) {
       const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
        const data = await postCreateDream(formText, createdAtTimeInMs(), userTimeZone, setError);
-       data.status == 'created' ? addNewDream(data.dream) : null;
-       setFormText('');
+       if(data.status == 'created') {
+        addNewDream(data.dream)
+        setFormText('');
+        removeLocalStorageData(localStorageKey);
+       };
     }
   };
 
@@ -93,6 +105,9 @@ export default function DreamInput(props) {
         onChange={(e) => {
           e.preventDefault();
           setFormText(e.target.value);
+          if(!dreamBody) {
+            setLocalStorageData(localStorageKey, e.target.value);
+          }
         }}/>
         <div className='dream-input-top-row'>
           {!dreamBody && 

@@ -100,6 +100,15 @@ describe('Dropdown', () => {
           expect(screen.getByRole('menuitem', { name: 'Link to Edit Account' })).toBeInTheDocument();
         });
       });
+
+      describe('The dream search link', () => {
+        it('is rendered on screen', () => {
+          renderDropdown();
+          const openDropdown = screen.getByRole('button');
+          fireEvent.click(openDropdown);
+          expect(screen.getByRole('menuitem', { name: 'Link to Dream Search page' })).toBeInTheDocument();
+        })
+      });
     });
   });
 });

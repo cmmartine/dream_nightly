@@ -1,15 +1,16 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
-import { postDreamsFromDate } from "../api/dreamsApi";
+import { getDreamsFromDate } from "../api/dreamsApi";
 import Dream from "./Dream";
 import DreamInput from "./DreamInput";
 import Calendar from "./Calendar";
+import { useErrorContext } from "./context/providers/ErrorProvider";
 import * as NONVALID_DREAM_DATE from "../constants/shared/NONVALID_DREAM_DATE.json"
 import * as MAX_COUNTS from '../constants/shared/MAX_COUNTS.json';
 import { noDreams } from "../constants/appInfo";
 
-export default function DreamsPage(props) {
-  const { setError } = props;
+export default function DreamsPage() {
+  const { setError } = useErrorContext();
   const [dreams, setDreams] = useState([]);
   const [newDreamId, setNewDreamId] = useState(null);
   const [deletedDreamId, setDeletedDreamId] = useState(null);
@@ -36,7 +37,7 @@ export default function DreamsPage(props) {
 
   const retrieveDreamsFromDate = async (dateTimeInMs) => {
     const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const data = await postDreamsFromDate(dateTimeInMs, userTimeZone, setError);
+    const data = await getDreamsFromDate(dateTimeInMs, userTimeZone, setError);
     setDreams(data || []);
   };
 

@@ -162,6 +162,9 @@ GEM
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pg (1.5.9)
+    pg_search (2.3.7)
+      activerecord (>= 6.1)
+      activesupport (>= 6.1)
     psych (5.1.2)
       stringio
     public_suffix (6.0.1)
@@ -291,6 +294,7 @@ DEPENDENCIES
   jbuilder
   letter_opener
   pg (~> 1.1)
+  pg_search
   puma (~> 5.0)
   rails (~> 7.0.8, >= 7.0.8.6)
   rspec-rails

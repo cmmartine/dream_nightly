@@ -1,0 +1,22 @@
+.search-footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-footer-btn-container {
+  display: flex;
+  align-items: center;
+}
+
+.search-footer-current-page {
+  border: 1px solid white;
+}
+
+.search-footer-item {
+  display: flex;
+  width: 25px;
+  justify-content: center;
+  margin: 0px 10px;
+  font-size: large;
+}

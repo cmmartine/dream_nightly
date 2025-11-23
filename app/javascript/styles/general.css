@@ -9,6 +9,7 @@
 @import './error-banner.css';
 @import './footer.css';
 @import './calendar/index.css';
+@import './search/index.css';
 
 body {
   margin: 0;
@@ -60,6 +61,14 @@ a {
 
 .gen-btn:hover {
   background-color: #9059f0;
+}
+
+.gen-btn:disabled {
+  color: rgb(171, 171, 171);
+}
+
+.gen-btn:disabled:hover {
+  background-color: #723cd1;
 }
 
 .link-btn {

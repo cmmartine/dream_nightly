@@ -24,7 +24,9 @@ class CalendarController < ApplicationController
     Time.use_zone(user_timezone) do
       first_date = Date.new(year, month, 1)
       last_date = first_date.end_of_month
-      dreams_in_range = users_dreams.where(dreamed_at: first_date.beginning_of_day..last_date.end_of_day)
+      dreams_in_range = users_dreams
+                        .where(dreamed_at: first_date.beginning_of_day..last_date.end_of_day)
+                        .to_a
 
       (1..last_date.day).map do |day|
         create_day_object(year, month, day, dreams_in_range)
@@ -48,7 +50,7 @@ class CalendarController < ApplicationController
       (1..12).map do |month|
         first_date = Date.new(year, month, 1)
         last_date = first_date.end_of_month
-        dreams_in_range = users_dreams.where(dreamed_at: first_date.beginning_of_day..last_date.end_of_day)
+        dreams_in_range = users_dreams.where(dreamed_at: first_date.beginning_of_day..last_date.end_of_day).to_a
         create_month_object(year, month, dreams_in_range)
       end
     end

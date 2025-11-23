@@ -29,3 +29,10 @@ def create_user_two_same_date_dreams
   FactoryBot.create(:dream, user_id: user.id, dreamed_at: '2024-11-22 08:15:11')
   user
 end
+
+def create_other_user_two_dreams
+  user = FactoryBot.create(:user, email: 'testemail2@test.com')
+  FactoryBot.create(:dream, user_id: user.id, dreamed_at: '2024-11-22 07:15:11')
+  FactoryBot.create(:dream, user_id: user.id, dreamed_at: '2025-09-29 07:15:11')
+  user
+end

@@ -5,6 +5,7 @@
   font-weight: bold;
   margin-top: 25px;
   place-content: center;
+  overflow-x: auto;
 }
 
 .calendar-month {

@@ -95,6 +95,7 @@ menu {
 
 .link-btn.dropdown-link-btn {
   margin-top: 20px;
+  align-self: center
 }
 
 @media (max-width: 600px) {
