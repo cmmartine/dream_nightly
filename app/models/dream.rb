@@ -70,6 +70,6 @@ class Dream < ApplicationRecord
     quoted_body = ActiveRecord::Base.connection.quote(body.to_s)
     sql = "SELECT to_tsvector('english', #{quoted_body})"
     result = ActiveRecord::Base.connection.execute(sql)
-    self.search_body_vector = result.first['to_tsvector']
+    self.search_body_vector = result.first['to_tsvector'].to_s
   end
 end
