@@ -37,7 +37,7 @@ export const apiPostFetch = async (url, postParams, setError) => {
     const json = await res.json();
 
     if (!res.ok) {
-      throw new Error(`${res.status}: ${json.message}`);
+      throw new Error(`${res.status}: ${json.message || res.statusText}`);
     }
 
     return json;

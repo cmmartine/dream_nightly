@@ -5,12 +5,12 @@ import { ErrorProvider } from "./providers/ErrorProvider";
 
 export default function ContextProviderWrapper({ children }) {
   return (
-    <UserStatusProvider>
-      <ErrorProvider>
-        <VisibilityProvider>
-          {children}
-        </VisibilityProvider>
-      </ErrorProvider>
-    </UserStatusProvider>
+    <VisibilityProvider>
+      <UserStatusProvider>
+        <ErrorProvider>
+            {children}
+        </ErrorProvider>
+      </UserStatusProvider>
+    </VisibilityProvider>
   );
 };
