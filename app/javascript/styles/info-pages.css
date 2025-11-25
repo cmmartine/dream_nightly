@@ -26,18 +26,33 @@
 }
 
 .info-text {
+  display: flex;
   max-width: 600px;
   justify-content: center;
+  text-align: center;
+}
+
+.screenshot {
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 300px;
+  height: auto;
+  aspect-ratio: 1 / 1.78;
+  border: 1px solid white;
+  border-radius: 4px;
+  margin-bottom: 16px;
 }
 
 .app-screenshot {
-  background-image: url('./images/DreamNightlyMobile.jpg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  width: 198px;
-  height: 385px;
-  border: 1px solid white;
-  border-radius: 4px;
+  background-image: url('./images/DreamNightlyInput.jpg');
+}
+
+.calendar-screenshot {
+  background-image: url('./images/DreamNightlyCalendar.jpg');
+}
+
+.search-screenshot {
+  background-image: url('./images/DreamNightlySearch.jpg');
 }
 
 .not-found-page {
@@ -64,11 +79,11 @@
     width: 100%;
   }
 
-  .app-screenshot {
+  .screenshot {
     max-width: 90%;
   }
 
   .info-text {
-    width: 95%
+    width: 95%;
   }
 }
