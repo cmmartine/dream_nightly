@@ -94,6 +94,7 @@ export default function Calendar(props) {
           setShowCalendar={setShowCalendar}
         />
         <CalendarYear
+          calendarMonth={calendarMonth}
           calendarYear={calendarYear}
           handleDateChange={handleDateChange}
         />

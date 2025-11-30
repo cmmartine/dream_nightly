@@ -137,4 +137,37 @@ describe('Calendar', () => {
     fireEvent.click(document.body);
     expect(screen.queryByText('Oct')).not.toBeInTheDocument();
   });
+
+  it('resets to January when navigating into the current year from a future month', async () => {
+    const futureMonth = 11; // December
+    const futureYear = 2024;
+    render(
+      <Calendar
+        setDateTimeInMs={setDateTimeInMs}
+        convertDateTimeToMs={convertDateTimeToMs}
+        calendarDay={calendarDay}
+        calendarMonth={futureMonth}
+        calendarYear={futureYear}
+        setCalendarDay={setCalendarDay}
+        setCalendarMonth={setCalendarMonth}
+        setCalendarYear={setCalendarYear}
+        newDreamId={newDreamId}
+        deletedDreamId={deletedDreamId}
+        setError={setError}
+      />
+    );
+
+    const headerButton = screen.getByRole("button", { name: /open calendar/i });
+    fireEvent.click(headerButton);
+
+    // Move forward into 2025 while on December
+    const nextYearButton = await screen.findByLabelText("Next Year");
+    fireEvent.click(nextYearButton);
+
+    expect(setCalendarYear).toHaveBeenCalledWith(2025);
+
+    // setCalendarState from date adds 1, so 1 is January here
+    expect(setCalendarMonth).toHaveBeenCalledWith(1);
+    expect(calendarApi.getCalendarInfo).toHaveBeenCalled();
+  });
 });
