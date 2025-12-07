@@ -18,8 +18,7 @@ class DreamsController < ApplicationController
         render json: { status: 'unprocessable' }, status: :unprocessable_entity
       else
         dream.save!
-        filtered_dream = Dream.filtered_dream_object(dream)
-        render json: { status: 'created', dream: filtered_dream }, status: :created
+        render json: { status: 'created', dream: DreamSerializer.new(dream).as_json }, status: :created
       end
     else
       render json: {
@@ -67,29 +66,34 @@ class DreamsController < ApplicationController
     Rails.logger.error "Dream destruction failed: #{e.message}"
     render json: { message: 'Dream deletion failed' }, status: :unprocessable_entity
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   def from_date
     date_time = TimeConversion.from_ms(params[:time_in_ms])
-    filtered_dreams = current_user.dreams.filtered_from_date(date_time, params[:user_timezone])
-    render json: filtered_dreams
+    found_dreams = current_user.dreams.from_date(date_time, params[:user_timezone])
+
+    render json: found_dreams, each_serializer: DreamSerializer
   rescue StandardError => e
     Rails.logger.error "Dream filtering failed: #{e.message}"
     render json: { message: 'Failed to retrieve dreams' }, status: :unprocessable_entity
   end
 
   def search
-    finished_search = DreamSearch.new(current_user, DreamSearchParams.new(search_params)).results
+    search = DreamSearch.new(current_user, DreamSearchParams.new(search_params))
+    dreams = search.results.first(Constants::MAX_COUNTS['SEARCH_PAGE_SIZE'])
 
     render json: {
-      dreams: finished_search[:found_dreams],
-      count: finished_search[:found_dreams].length,
-      has_next_page: finished_search[:has_next_page]
+      dreams: ActiveModelSerializers::SerializableResource.new(
+        dreams,
+        each_serializer: DreamSerializer
+      ),
+      count: dreams.length,
+      has_next_page: search.next_page?
     }, status: :ok
   rescue StandardError => e
     Rails.logger.error "Dream search failed: #{e.message}"
     render json: { message: 'Failed to search dreams' }, status: :unprocessable_entity
   end
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   private
 

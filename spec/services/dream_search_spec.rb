@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe DreamSearch do
   page_size_plus_one = Constants::MAX_COUNTS['SEARCH_PAGE_SIZE'] + 1
+  page_size = Constants::MAX_COUNTS['SEARCH_PAGE_SIZE']
   let(:user) { create_user_with_dreams }
   let(:user_first_dream) { user.dreams.first }
   let!(:other_user) { create_other_user_two_dreams }
@@ -19,38 +20,38 @@ RSpec.describe DreamSearch do
       limit: page_size_plus_one
     )
   end
-  let(:expected_dream_format) do
-    {
-      id: user_first_dream.id,
-      body: user_first_dream.body,
-      ai_interpretation: user_first_dream.ai_interpretation,
-      lucid: user_first_dream.lucid,
-      dreamed_at: user_first_dream.dreamed_at.to_i * 1000
-    }
-  end
 
   subject(:search) { described_class.new(user, params) }
 
   describe '#results' do
-    it 'returns any matching dreams for the user in the correct format' do
+    it 'returns any matching dreams for the user' do
       search_results = search.results
-      found_dreams = search_results[:found_dreams]
 
-      expect(found_dreams.length).to eq(2)
-      expect(found_dreams.first).to eq(expected_dream_format)
-      expect(search_results[:has_next_page]).to eq(false)
+      expect(search_results.length).to eq(2)
+      expect(search_results.first).to eq(user.dreams.first)
       other_user.dreams.each do |dream|
         expect(search_results).not_to include(dream)
       end
     end
+  end
 
-    it "returns true for has_next_page when there are more than #{Constants::MAX_COUNTS['SEARCH_PAGE_SIZE']} dreams" do
+  describe '#next_page?' do
+    it "returns true when there are more than #{Constants::MAX_COUNTS['SEARCH_PAGE_SIZE']} dreams" do
+      user.dreams.destroy_all
       page_size_plus_one.times do
         FactoryBot.create(:dream, user_id: user.id)
       end
 
-      search_results = search.results
-      expect(search_results[:has_next_page]).to eq(true)
+      expect(search.next_page?).to eq(true)
+    end
+
+    it "returns false when there are #{Constants::MAX_COUNTS['SEARCH_PAGE_SIZE']} or less dreams" do
+      user.dreams.destroy_all
+      page_size.times do
+        FactoryBot.create(:dream, user_id: user.id)
+      end
+
+      expect(search.next_page?).to eq(false)
     end
   end
 end

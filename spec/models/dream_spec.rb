@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe Dream, type: :model do
   describe 'associations' do
     it { should belong_to(:user) }
@@ -42,50 +45,6 @@ RSpec.describe Dream, type: :model do
       second_time = Time.utc(2024, 1, 5, 0, 0, 0)
       Dream.create!(body: 'Test dream2', user_id: user.id, dreamed_at: second_time)
       expect(user.dreams.from_date(first_dream.dreamed_at, timezone)).to eq([first_dream])
-    end
-  end
-
-  describe 'self.filtered_from_date' do
-    let(:user) { create_user_with_dreams }
-    let(:dream) { user.dreams.first }
-    let(:dreams_date) { dream.dreamed_at }
-    let(:timezone) { 'America/New_York' }
-    let(:filtered_dream) do
-      {
-        id: dream.id,
-        body: dream.body,
-        ai_interpretation: dream.ai_interpretation,
-        lucid: dream.lucid,
-        dreamed_at: dream.dreamed_at.to_i * 1000
-      }
-    end
-    let(:not_dreams_date) { '2000-01-01 00:00:00'.to_datetime }
-
-    it 'returns an array of filtered dreams from the given date' do
-      expect(user.dreams.filtered_from_date(dreams_date, timezone)).to eq([filtered_dream])
-    end
-
-    it 'returns an EMPTY array if there are no dreams from the date' do
-      expect(user.dreams.filtered_from_date(not_dreams_date, timezone)).to eq([])
-    end
-  end
-
-  describe('self.filtered_dream_object') do
-    let(:user) { create_user_with_dreams }
-    let(:dream) { user.dreams.first }
-
-    it 'returns the dream object with attributes converted correctly' do
-      filtered_dream = Dream.filtered_dream_object(dream)
-
-      expect(filtered_dream).to eq(
-        {
-          id: dream.id,
-          body: dream.body,
-          ai_interpretation: dream.ai_interpretation,
-          lucid: dream.lucid,
-          dreamed_at: dream.dreamed_at.to_i * 1000
-        }
-      )
     end
   end
 
@@ -138,3 +97,4 @@ RSpec.describe Dream, type: :model do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

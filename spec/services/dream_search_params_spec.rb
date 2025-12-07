@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe DreamSearchParams do
   let(:params) do
     {
@@ -40,3 +41,4 @@ RSpec.describe DreamSearchParams do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength
