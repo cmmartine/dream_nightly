@@ -24,25 +24,14 @@ class CalendarController < ApplicationController
     Time.use_zone(user_timezone) do
       first_date = Date.new(year, month, 1)
       last_date = first_date.end_of_month
-      dreams_in_range = users_dreams
-                        .where(dreamed_at: first_date.beginning_of_day..last_date.end_of_day)
-                        .to_a
+      dreams_in_range = users_dreams.where(dreamed_at: first_date.beginning_of_day..last_date.end_of_day)
 
       (1..last_date.day).map do |day|
-        create_day_object(year, month, day, dreams_in_range)
+        date = Date.new(year, month, day)
+        days_dreams = dreams_in_range.where(dreamed_at: date.beginning_of_day..date.end_of_day)
+        DaySerializer.new(year, month, day, days_dreams).as_json
       end
     end
-  end
-
-  def create_day_object(year, month, day, dreams_in_range)
-    date = Date.new(year, month, day)
-    {
-      num: day,
-      has_dreams: dreams_in_range.any? { |dream| dream.dreamed_at.day == day },
-      day_of_week: date.wday,
-      is_today: date == Date.current,
-      is_in_future: date >= Date.current + 1
-    }
   end
 
   def generate_months_info(year, user_timezone, users_dreams)
@@ -51,20 +40,8 @@ class CalendarController < ApplicationController
         first_date = Date.new(year, month, 1)
         last_date = first_date.end_of_month
         dreams_in_range = users_dreams.where(dreamed_at: first_date.beginning_of_day..last_date.end_of_day).to_a
-        create_month_object(year, month, dreams_in_range)
+        MonthSerializer.new(year, month, dreams_in_range).as_json
       end
     end
-  end
-
-  def create_month_object(year, month, dreams_in_range)
-    date = Date.new(year, month)
-    current_date = Date.current
-    {
-      num: month - 1,
-      has_dreams: dreams_in_range.any?,
-      is_current: date.month == current_date.month && date.year == current_date.year,
-      short_name: date.strftime('%b'),
-      is_in_future: date.year >= current_date.year && date.month > current_date.month
-    }
   end
 end
