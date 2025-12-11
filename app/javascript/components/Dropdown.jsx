@@ -1,10 +1,11 @@
-import React from "react";
-import { useState, useEffect, useRef } from "react";
-import { logout } from "../api/usersApi";
-import { addOutsideClickListener } from "../util/elementUtils";
+import React from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { logout } from '../api/usersApi';
+import { addOutsideClickListener } from '../util/elementUtils';
 
 export default function Dropdown() {
   const [openDropdown, setOpenDropdown] = useState(false);
+  const [animationClass, setAnimationClass] = useState('');
   const openDropdownRef = useRef(null);
 
    useEffect(() => {
@@ -18,61 +19,49 @@ export default function Dropdown() {
     };
   }, [openDropdown]);
 
-  if (!openDropdown) {
-    return(
-      <menu role='menu' aria-label='Closed Dropdown Menu' className="dropdown dropdown-closed">
-        <div className="dropdown-btn-container" role='menuitem'>
-          <button
-            className="dropdown-btn"
-            aria-label='Open drowndown menu'
-            onClick={(e) => {
-              e.preventDefault();
-              setOpenDropdown((prev) => !prev);
-            }}
-          >
-            <span className="hamburger-icon-line top-line"/>
-            <span className="hamburger-icon-line"/>
-            <span className="hamburger-icon-line"/>
-          </button>
-        </div>
-      </menu>
-    )
-  } else {
-    return (
-      <menu role='menu' ref={openDropdownRef} aria-label='Opened Dropdown Menu' className="dropdown dropdown-open">
-        <div className="dropdown-btn-container dropdown-btn-container-open">
-          <button
-            className="dropdown-btn close-dropdown-btn"
-            aria-label='Close drowndown menu'
-            role='menuitem'
-            onClick={(e) => {
-              e.preventDefault();
-              setOpenDropdown((prev) => !prev);
-            }}
-          >
-            <span className="hamburger-close-icon-line">X</span>
-          </button>
-        </div>
+  const changeLineClasses = () => {
+    (animationClass == '' || animationClass == 'line-close')? setAnimationClass('line-open') : setAnimationClass('line-close');
+  };
+
+  return (
+    <nav
+      ref={openDropdownRef}
+      aria-label='User menu'
+      className={openDropdown ? 'dropdown dropdown-open' : 'dropdown dropdown-closed'}
+    >
+      <div className={openDropdown ? 'dropdown-btn-container dropdown-btn-container-open' : 'dropdown-btn-container'}>
+        <button
+          className={openDropdown ? 'dropdown-btn close-dropdown-btn open' : 'dropdown-btn'}
+          aria-haspopup="true"
+          aria-expanded={openDropdown}
+          aria-controls="user-menu-items"
+          onClick={(e) => {
+            e.preventDefault();
+            setOpenDropdown((prev) => !prev);
+            changeLineClasses();
+          }}
+        >
+          <span className={`hamburger-icon-line top-line`}/>
+          <span className={`hamburger-icon-line middle-line`}/>
+          <span className={`hamburger-icon-line bottom-line`}/>
+        </button>
+      </div>
+      { openDropdown && 
         <div className='dropdown-items-container'>
           <a
             className='link-btn dropdown-link-btn'
             href='/search'
-            role='menuitem'
-            aria-label='Link to Dream Search page'
           >
             Dream Search
           </a>
           <a
             className='link-btn dropdown-link-btn'
             href='/users/edit'
-            role='menuitem'
-            aria-label='Link to Edit Account'
           >
             Edit Account
           </a>
           <button
-            className="link-btn dropdown-link-btn"
-            role='menuitem'
+            className='link-btn dropdown-link-btn'
             onClick={() => {
               logout();
             }}
@@ -80,7 +69,7 @@ export default function Dropdown() {
             Log Out
           </button>
         </div>
-      </menu>
-    )
-  }
+      }
+    </nav>
+  )
 };

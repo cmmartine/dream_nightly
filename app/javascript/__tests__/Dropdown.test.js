@@ -31,10 +31,10 @@ describe('Dropdown', () => {
   });
 
   describe('When first rendered, and dropdown button has not been clicked', () => {
-    describe('The menu element', () => {
+    describe('The nav element', () => {
       it('has a class of dropdown-closed', () => {
         renderDropdown();
-        expect(screen.getByRole('menu')).toHaveClass('dropdown-closed');
+        expect(screen.getByLabelText('User menu')).toHaveClass('dropdown-closed');
       });
     });
   });
@@ -45,29 +45,29 @@ describe('Dropdown', () => {
         renderDropdown();
         const openDropdown = screen.getByRole('button');
         fireEvent.click(openDropdown);
-        expect(screen.getByRole('menu')).not.toHaveClass('dropdown-closed');
+        expect(screen.getByLabelText('User menu')).not.toHaveClass('dropdown-closed');
       });
 
       it('closes the dropdown when the area outside of the dropdown is clicked', () => {
         renderDropdown();
         const openDropdown = screen.getByRole('button');
         fireEvent.click(openDropdown);
-        expect(screen.getByRole('menu')).toHaveClass('dropdown-open');
+        expect(screen.getByLabelText('User menu')).toHaveClass('dropdown-open');
         const clickTestDiv = screen.getByTestId('click-test');
         fireEvent.click(clickTestDiv);
-        expect(screen.getByRole('menu')).toHaveClass('dropdown-closed');
+        expect(screen.getByLabelText('User menu')).toHaveClass('dropdown-closed');
       });
 
       it('does not reopen the dropdown when the area outside of the dropdown is clicked twice', () => {
         renderDropdown();
         const openDropdown = screen.getByRole('button');
         fireEvent.click(openDropdown);
-        expect(screen.getByRole('menu')).toHaveClass('dropdown-open');
+        expect(screen.getByLabelText('User menu')).toHaveClass('dropdown-open');
         const clickTestDiv = screen.getByTestId('click-test');
         fireEvent.click(clickTestDiv);
-        expect(screen.getByRole('menu')).toHaveClass('dropdown-closed');
+        expect(screen.getByLabelText('User menu')).toHaveClass('dropdown-closed');
         fireEvent.click(clickTestDiv);
-        expect(screen.getByRole('menu')).toHaveClass('dropdown-closed');
+        expect(screen.getByLabelText('User menu')).toHaveClass('dropdown-closed');
       });
 
       describe('The logout button', () => {
@@ -97,7 +97,7 @@ describe('Dropdown', () => {
           renderDropdown();
           const openDropdown = screen.getByRole('button');
           fireEvent.click(openDropdown);
-          expect(screen.getByRole('menuitem', { name: 'Link to Edit Account' })).toBeInTheDocument();
+          expect(screen.getByText('Edit Account')).toBeInTheDocument();
         });
       });
 
@@ -106,7 +106,7 @@ describe('Dropdown', () => {
           renderDropdown();
           const openDropdown = screen.getByRole('button');
           fireEvent.click(openDropdown);
-          expect(screen.getByRole('menuitem', { name: 'Link to Dream Search page' })).toBeInTheDocument();
+          expect(screen.getByText('Dream Search')).toBeInTheDocument();
         })
       });
     });
